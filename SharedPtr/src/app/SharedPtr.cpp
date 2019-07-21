@@ -1,6 +1,6 @@
 #include "SharedPtr.h"
 
-#include "SimpleEvent.h"
+#include "Event.h"
 
 #include <thread>
 #include <utility>
@@ -16,7 +16,7 @@ namespace SharedPtr
             std::mutex mutex_{};
             std::string result_{};
 
-            SimpleEvent event_{};
+            Event event_{Event::Mode::manualReset, Event::State::nonSignalled};
         };
         using DataPtr = std::shared_ptr<Data>;
     }
@@ -30,7 +30,7 @@ namespace SharedPtr
     std::string BadGetWithTimeout(std::chrono::milliseconds timeout)
     {
         std::string result{};
-        SimpleEvent event{};
+        Event event{Event::Mode::manualReset, Event::State::nonSignalled};
 
         std::thread thread{[&]{
             result = SlowNoninterruptableGet();
