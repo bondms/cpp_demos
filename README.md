@@ -1,3 +1,6 @@
+# BinarySearch
+Example self-implemented binary search with parameterized tests.
+
 # ConsumerProducer
 Example use of C++ threading primitives.
 
@@ -12,6 +15,3 @@ Example use of jsoncpp library.
 
 # SharedPtr
 Example usage of C++ std::shared_ptr.
-
-# BinarySearch
-Example self-implemented binary search with parameterized tests.
