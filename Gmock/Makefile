@@ -28,6 +28,7 @@ TST_CPP_FILES := $(shell find $(TST_SRC_DIR) -name '*.cpp')
 TST_OBJ_FILES := $(TST_CPP_FILES:$(TST_SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
 TST_DEP_FILES := $(TST_CPP_FILES:$(TST_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
 TST_BIN_TARGETS = $(TST_CPP_FILES:$(TST_SRC_DIR)/%.cpp=$(TST_BIN_DIR)/%)
+TST_RESULTS = $(TST_CPP_FILES:$(TST_SRC_DIR)/%.cpp=$(INT_DIR)/%.passed)
 
 DEP_FLAGS = -MT $@ -MMD -MP -MF $(INT_DIR)/$*.d
 STD_FLAGS = --std=c++14 -pthread -fno-rtti
@@ -50,7 +51,9 @@ GTEST_LIB_DIR=$(GTEST_BUILD_DIR)
 
 .PHONY: all, clean
 
-all: application tests
+all: application tests run_tests
+
+rebuild: clean all
 
 application: $(BIN_TARGET)
 
@@ -58,6 +61,8 @@ clean:
 	rm --force --recursive $(BIN_DIR) $(INT_DIR)
 
 tests: $(TST_BIN_TARGETS)
+
+run_tests: $(TST_RESULTS)
 
 $(APP_OBJ_FILES): $(INT_DIR)/%.o: $(APP_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
@@ -74,7 +79,10 @@ $(TST_BIN_DIR)/notifier_test : $(INT_DIR)/notifier_test.o $(INT_DIR)/notifier.o 
 
 $(TST_BIN_DIR)/account_test : $(INT_DIR)/account_test.o $(INT_DIR)/account.o $(GTEST_LIB_DIR)/libgtest.a $(GMOCK_LIB_DIR)/libgmock.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
-	$@
+
+$(TST_RESULTS) : $(INT_DIR)/%.passed: $(TST_BIN_DIR)/%
+	$<
+	date > $@
 
 $(APP_DEP_FILES): $(INT_DIR)/%.d: ;
 $(TST_DEP_FILES): $(INT_DIR)/%.d: ;
