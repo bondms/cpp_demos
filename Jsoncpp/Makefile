@@ -38,6 +38,8 @@ JSONCPP_DIST_DIR=$(JSONCPP_DIR)/dist
 
 all: application
 
+rebuild: clean all
+
 application: $(BIN_TARGET)
 
 clean:
