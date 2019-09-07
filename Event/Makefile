@@ -1,5 +1,3 @@
-# TODO(MarkBond): A failed test run should re-run on next incremental build.
-
 # Delete the default suffixes (otherwise visible in 'make -d').
 .SUFFIXES:
 
