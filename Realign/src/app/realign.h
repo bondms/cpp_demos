@@ -1,12 +1,21 @@
 #pragma once
 
 #include <algorithm>
-#include <cctype>
+#include <iterator>
 
-template<typename Container>
-void realign(Container & container)
+template<typename It>
+auto realign(It first, It last)
 {
-    auto r_it_source{ std::find_if_not(container.rbegin(), container.rend(), std::isspace) };
-    auto r_it_moved{ std::move(r_it_source, container.rend(), container.rbegin()) };
-    std::fill(r_it_moved, container.rend(), static_cast<typename Container::value_type>(' '));
+    auto r_first{ std::make_reverse_iterator(last) };
+    auto r_last{ std::make_reverse_iterator(first) };
+
+    auto r_source_first{ std::find_if_not(r_first, r_last, [](wchar_t ch)
+    {
+        return ' ' == ch;
+    }) };
+
+    auto r_moved{ std::move(r_source_first, r_last, r_first) };
+    std::fill(r_moved, r_last, ' ');
+
+    return r_moved.base();
 }

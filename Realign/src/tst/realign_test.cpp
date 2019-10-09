@@ -2,7 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <iterator>
 #include <string>
 
 namespace
@@ -76,11 +75,10 @@ TEST_P(TestFixture, simple)
     const auto & param{ GetParam() };
 
     auto data{ param.input };
-    // const auto ret{ realign(data.begin(), data.end()) };
-    realign(data);
+    const auto ret{ realign(data.begin(), data.end()) };
 
     const auto & expected{ param.output };
 
     EXPECT_EQ(expected, data);
-    // EXPECT_EQ(param.pos, std::distance(data.begin(), ret));
+    EXPECT_EQ(param.pos, std::distance(data.begin(), ret));
 }
