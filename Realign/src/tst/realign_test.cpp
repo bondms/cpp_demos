@@ -10,7 +10,7 @@ namespace
     {
         const std::wstring input{};
         const std::wstring output{};
-        const std::size_t pos{};
+        const std::wstring value{};
     };
 
     TestParameter test_parameter[] =
@@ -18,47 +18,47 @@ namespace
         {
             L"",
             L"",
-            0,
+            L"",
         },
         {
             L" ",
             L" ",
-            1,
+            L"",
         },
         {
             L"a",
             L"a",
-            0,
+            L"a",
         },
         {
             L"a ",
             L" a",
-            1,
+            L"a",
         },
         {
             L"ab  ",
             L"  ab",
-            2,
+            L"ab",
         },
         {
             L"a b ",
             L" a b",
-            1,
+            L"a b",
         },
         {
             L"a b    ",
             L"    a b",
-            4,
+            L"a b",
         },
         {
             L" ab  ",
             L"   ab",
-            2,
+            L" ab",
         },
         {
             L"   ab  ",
             L"     ab",
-            2,
+            L"   ab",
         },
     };
 
@@ -80,5 +80,5 @@ TEST_P(TestFixture, simple)
     const auto & expected{ param.output };
 
     EXPECT_EQ(expected, data);
-    EXPECT_EQ(param.pos, std::distance(data.begin(), ret));
+    EXPECT_EQ(param.value, std::wstring(ret, data.end()));
 }
