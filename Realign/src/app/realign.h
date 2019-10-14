@@ -16,7 +16,7 @@ auto realign(It first, It last)
 
     if ( r_source_first == r_first )
     {
-        // Return early if no moving is required since std::move `behavior is
+        // Return early if no move is required since std::move `behavior is
         // undefined if d_first is within the range [first, last).`
         return first;
     }
