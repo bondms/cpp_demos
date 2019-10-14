@@ -14,6 +14,13 @@ auto realign(It first, It last)
         return ' ' == ch;
     }) };
 
+    if ( r_source_first == r_first )
+    {
+        // Return early if no moving is required since std::move `behavior is
+        // undefined if d_first is within the range [first, last).`
+        return first;
+    }
+
     auto r_moved{ std::move(r_source_first, r_last, r_first) };
     std::fill(r_moved, r_last, ' ');
 
