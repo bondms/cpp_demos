@@ -84,7 +84,7 @@ TEST_F(EventTestFixture, autoReset_SignalsOnlyOnce_Quick)
     {
         // Spin.
     }
-    EXPECT_EQ(i, 1);
+    EXPECT_EQ(1, i);
 
     e.Signal();
     t.join();
