@@ -108,7 +108,7 @@ TEST_F(EventTestFixture, autoReset_SignalsOnlyOnce_Slow)
 
     e.Signal();
     std::this_thread::sleep_for(1s);
-    EXPECT_EQ(i, 1);
+    EXPECT_EQ(1, i);
 
     e.Signal();
     t.join();
