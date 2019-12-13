@@ -13,5 +13,9 @@ Example use of Google's gmock framework.
 # Jsoncpp
 Example use of jsoncpp library.
 
+# Realign
+Moves a left-aligned string in a buffer to be right-aligned returning an iterator to the new start position of the string.
+Uses a parameterized gtest unit test.
+
 # SharedPtr
 Example usage of C++ std::shared_ptr.
