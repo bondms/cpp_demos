@@ -13,7 +13,7 @@ namespace
         const std::wstring value{};
     };
 
-    TestParameter test_parameter[] =
+    TestParameter test_parameters[] =
     {
         {
             L"",
@@ -68,7 +68,7 @@ namespace
     };
 } // namespace
 
-INSTANTIATE_TEST_CASE_P(simple, TestFixture, ::testing::ValuesIn(test_parameter));
+INSTANTIATE_TEST_CASE_P(simple, TestFixture, ::testing::ValuesIn(test_parameters));
 
 TEST_P(TestFixture, simple)
 {
