@@ -174,7 +174,7 @@ TEST_F(LoggerTestFixture, LOG_DEBUG_Simple)
 #endif
 }
 
-TEST_F(LoggerTestFixture, LOG_appends)
+TEST_F(LoggerTestFixture, LOG_messages_append)
 {
     auto log_file_path{get_log_file_path()};
     Logger::Initialise(log_file_path);
@@ -195,5 +195,29 @@ TEST_F(LoggerTestFixture, LOG_appends)
         {
             ADD_FAILURE() << "First logged message did not match expected: " << lines[1];
         }
+    }
+}
+
+TEST_F(LoggerTestFixture, LOG_appends_to_existing_file)
+{
+    auto log_file_path{get_log_file_path()};
+
+    {
+        std::ofstream ofs{log_file_path};
+        ofs << "Test message 1\n";
+    }
+
+    Logger::Initialise(log_file_path);
+    LOG_INFO("Test message 2");
+
+    auto lines{get_log_lines(log_file_path)};
+    ASSERT_EQ(2, lines.size());
+
+    EXPECT_EQ("Test message 1", lines[0]);
+
+    std::regex re{log_message_prefix_regex + "INF >> Test message 2"};
+    if(!std::regex_match(lines[1], re))
+    {
+        ADD_FAILURE() << "First logged message did not match expected: " << lines[1];
     }
 }
