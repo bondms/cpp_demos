@@ -38,22 +38,30 @@ namespace
         return std::chrono::system_clock::from_time_t(tt) + std::chrono::milliseconds(millisecond);
     }
 
+    const std::string log_message_prefix_regex{R"(\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z \d{7}:\d{15} )"};
+
     class LoggerTestFixture :
         public testing::Test
     {
         void SetUp() override
         {
-            fs::create_directory(temp_test_path);
+            fs::create_directory(temp_test_path_);
         }
         
         void TearDown() override
         {
             // TODO(Will this work on Windows, or will the log file need to be closed?)
-            fs::remove_all(temp_test_path);
+            fs::remove_all(temp_test_path_);
         }
 
     protected:
-        fs::path temp_test_path{fs::temp_directory_path() / OS_TEXT("LoggerTest")};
+        fs::path temp_test_path_{fs::temp_directory_path() / OS_TEXT("LoggerTest")};
+
+        auto get_log_file_path()
+        {
+            std::string test_name{::testing::UnitTest::GetInstance()->current_test_info()->name()};
+            return temp_test_path_ / (test_name + ".log");
+        }
     };
 }
 
@@ -79,8 +87,7 @@ TEST_F(LoggerTestFixture, FileNameTimeStamp)
 
 TEST_F(LoggerTestFixture, Initialise_Simple)
 {
-    std::string test_name{::testing::UnitTest::GetInstance()->current_test_info()->name()};
-    auto log_file_path{temp_test_path / (test_name + ".log")};
+    auto log_file_path{get_log_file_path()};
     EXPECT_FALSE(fs::exists(log_file_path));
     Logger::Initialise(log_file_path);
     EXPECT_TRUE(fs::exists(log_file_path));
@@ -97,19 +104,41 @@ TEST_F(LoggerTestFixture, Initialise_Failure)
 
 TEST_F(LoggerTestFixture, LOG_ERROR_Simple)
 {
-    std::string test_name{::testing::UnitTest::GetInstance()->current_test_info()->name()};
-    auto log_file_path{temp_test_path / (test_name + ".log")};
+    auto log_file_path{get_log_file_path()};
     Logger::Initialise(log_file_path);
     LOG_ERROR("Test message");
     auto logged_message{first_log_line(log_file_path)};
-    std::regex re{R"(\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z \d{7}:\d{15} ERR >> Test message)"};
+    std::regex re{log_message_prefix_regex + "ERR >> Test message"};
     if(!std::regex_match(logged_message, re))
     {
         ADD_FAILURE() << "Logged message did not match expected: " << logged_message;
     }
 }
 
-TEST_F(LoggerTestFixture, TODO)
+TEST_F(LoggerTestFixture, LOG_WARNING_Simple)
 {
-    FAIL() << "TODO: Write more tests";
+    auto log_file_path{get_log_file_path()};
+    Logger::Initialise(log_file_path);
+    LOG_WARNING("Test message");
+    auto logged_message{first_log_line(log_file_path)};
+    std::regex re{log_message_prefix_regex + "WRN >> Test message"};
+    if(!std::regex_match(logged_message, re))
+    {
+        ADD_FAILURE() << "Logged message did not match expected: " << logged_message;
+    }
 }
+
+TEST_F(LoggerTestFixture, LOG_INFO_Simple)
+{
+    auto log_file_path{get_log_file_path()};
+    Logger::Initialise(log_file_path);
+    LOG_INFO("Test message");
+    auto logged_message{first_log_line(log_file_path)};
+    std::regex re{log_message_prefix_regex + "INF >> Test message"};
+    if(!std::regex_match(logged_message, re))
+    {
+        ADD_FAILURE() << "Logged message did not match expected: " << logged_message;
+    }
+}
+
+// TODO(Test that messages get appended)
