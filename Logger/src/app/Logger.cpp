@@ -30,7 +30,7 @@ namespace Logger
 
         void Log(Severity severity, const std::string& msg)
         {
-            // TODO(escaping, rotation, logging of different types).
+            // TODO(escaping, rotation, logging of different types, thread safety).
 #ifndef _DEBUG
             if(severity >= Severity::Debug)
             {
