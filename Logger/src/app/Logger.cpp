@@ -2,7 +2,10 @@
 
 #include <cassert>
 #include <fstream>
+#include <iomanip>
 #include <memory>
+#include <sstream>
+#include <time.h>
 
 namespace Logger
 {
@@ -24,7 +27,7 @@ namespace Logger
 
         void Log(Severity severity, const std::string& msg)
         {
-            // TODO(Timestamp, process & thread ID, escaping msg).
+            // TODO(Timestamp, process & thread ID, escaping msg, rotation, logging of different types).
             ofs_ << AsString(severity) << ": " << msg << std::endl;
         }
     };
@@ -45,6 +48,25 @@ namespace Logger
             return "DBG";
         }
         assert(false);
+    }
+
+    std::string MessageTimeStamp(const std::chrono::system_clock::time_point& time_point)
+    {
+        auto tt{std::chrono::system_clock::to_time_t(time_point)};
+        std::tm gmtime{};
+        gmtime_r(&tt, &gmtime);
+
+        const std::chrono::duration<double> tse = time_point.time_since_epoch();
+        std::chrono::seconds::rep milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(tse).count() % 1000;
+
+        std::ostringstream oss{};
+        oss << std::put_time(&gmtime, "%FT%T.") << std::setfill('0') << std::setw(3) << milliseconds << "Z";
+        return oss.str();
+    }
+
+    std::string FileTimeStamp(const std::chrono::system_clock::time_point& time_point)
+    {
+        return MessageTimeStamp(time_point);
     }
 
     void Initialise(const std::experimental::filesystem::path& path)

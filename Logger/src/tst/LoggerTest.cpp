@@ -74,6 +74,12 @@ TEST_F(LoggerTestFixture, Severity_AsString)
     EXPECT_EQ("DBG", AsString(Logger::Severity::Debug));
 }
 
+TEST_F(LoggerTestFixture, MessageTimeStamp)
+{
+    auto test_time_point{std::chrono::system_clock::now()};
+    EXPECT_EQ("2019-12-14T13:21:12.123Z", Logger::MessageTimeStamp(test_time_point));
+}
+
 TEST_F(LoggerTestFixture, Initialise_Simple)
 {
     std::string test_name{::testing::UnitTest::GetInstance()->current_test_info()->name()};

@@ -1,9 +1,11 @@
 #pragma once
 
+#include <chrono>
 #include <experimental/filesystem>
 
 namespace Logger
 {
+    // TODO(Consider moving elsewhere)
     enum class Severity
     {
         Error,
@@ -12,6 +14,10 @@ namespace Logger
         Debug,
     };
     std::string AsString(Severity severity);
+
+    // TODO(Consider moving elsewhere)
+    std::string MessageTimeStamp(const std::chrono::system_clock::time_point& time_point);
+    std::string FileTimeStamp(const std::chrono::system_clock::time_point& time_point);
 
     void Initialise(const std::experimental::filesystem::path& path);
 
