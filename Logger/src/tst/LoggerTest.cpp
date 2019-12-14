@@ -2,16 +2,21 @@
 
 #include <gtest/gtest.h>
 
+#include <experimental/filesystem>
 #include <functional>
 
-namespace
-{
-    class LoggerTestFixture :
-        public testing::Test
-    {
-    };
-}
+namespace fs = std::experimental::filesystem;
 
+// TODO(Move somewhere else)
+#ifdef __linux__ 
+    #define OS_TEXT(text) text
+#elif _WIN32
+    #define OS_TEXT(text) L##text
+#else
+    static_assert(false, "Unrecognised OS");
+#endif
+
+// TODO(Move somewhere else)
 template<typename ExceptionType>
 void expect_throw_with_callback(std::function<void()> code, std::function<bool(ExceptionType e)> callback)
 {
@@ -30,6 +35,25 @@ void expect_throw_with_callback(std::function<void()> code, std::function<bool(E
     }
 }
 
+namespace
+{
+    class LoggerTestFixture :
+        public testing::Test
+    {
+        fs::path temp_test_path{fs::temp_directory_path() / OS_TEXT("LoggerTest")};
+
+        void SetUp() override
+        {
+            fs::create_directory(temp_test_path);
+        }
+        
+        void TearDown() override
+        {
+            fs::remove_all(temp_test_path);
+        }
+    };
+}
+
 TEST_F(LoggerTestFixture, ThrowsOnLogFileCreationFailure)
 {
     expect_throw_with_callback<std::runtime_error>(
@@ -40,5 +64,5 @@ TEST_F(LoggerTestFixture, ThrowsOnLogFileCreationFailure)
 
 TEST_F(LoggerTestFixture, TODO)
 {
-    FAIL() << "TODO";
+    FAIL() << "TODO: Write more tests";
 }
