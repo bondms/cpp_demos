@@ -141,4 +141,21 @@ TEST_F(LoggerTestFixture, LOG_INFO_Simple)
     }
 }
 
+TEST_F(LoggerTestFixture, LOG_DEBUG_Simple)
+{
+    auto log_file_path{get_log_file_path()};
+    Logger::Initialise(log_file_path);
+    LOG_DEBUG("Test message");
+    auto logged_message{first_log_line(log_file_path)};
+#ifdef _DEBUG
+    std::regex re{log_message_prefix_regex + "DBG >> Test message"};
+    if(!std::regex_match(logged_message, re))
+    {
+        ADD_FAILURE() << "Logged message did not match expected: " << logged_message;
+    }
+#else
+    EXPECT_TRUE(logged_message.empty());
+#endif
+}
+
 // TODO(Test that messages get appended)

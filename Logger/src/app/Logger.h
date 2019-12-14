@@ -29,6 +29,4 @@ namespace Logger
 #define LOG_ERROR(msg) LOG_SEVERITY(Logger::Severity::Error, msg)
 #define LOG_WARNING(msg) LOG_SEVERITY(Logger::Severity::Warning, msg)
 #define LOG_INFO(msg) LOG_SEVERITY(Logger::Severity::Info, msg)
-
-// TODO(Disable for release builds; don't even process the arguments)
 #define LOG_DEBUG(msg) LOG_SEVERITY(Logger::Severity::Debug, msg)
