@@ -1,11 +1,10 @@
 #include "../app/Logger.h"
 
-#include <gtest/gtest.h>
+#include "gtest_helper.h"
 
 #include <chrono>
 #include <experimental/filesystem>
 #include <fstream>
-#include <functional>
 #include <regex>
 #include <string>
 
@@ -24,25 +23,6 @@ namespace fs = std::experimental::filesystem;
 
 namespace
 {
-    // TODO(Move somewhere else)
-    template<typename ExceptionType>
-    void expect_throw_with_callback(std::function<void()> code, std::function<bool(ExceptionType e)> callback)
-    {
-        try
-        {
-            code();
-            ADD_FAILURE() << "Exception not thrown";
-        }
-        catch ( const ExceptionType& e )
-        {
-            EXPECT_TRUE(callback(e));
-        }
-        catch ( ... )
-        {
-            ADD_FAILURE() << "Unexpected exception type thrown";
-        }
-    }
-
     std::string first_log_line(const fs::path& path)
     {
         std::ifstream ifs{path};
@@ -126,7 +106,7 @@ TEST_F(LoggerTestFixture, Initialise_Simple)
 
 TEST_F(LoggerTestFixture, Initialise_Failure)
 {
-    expect_throw_with_callback<std::runtime_error>(
+    GtestHelper::expect_throw_with_callback<std::runtime_error>(
         []{Logger::Initialise("/invalid/path/to/file.txt");},
         [](const std::runtime_error& e){ return std::string{"Failed to open log file: /invalid/path/to/file.txt"} == e.what(); }
         );
