@@ -31,6 +31,21 @@ namespace
         return result;
     }
 
+    auto make_time_point(int year, int month, int day, int hour, int minute, int second, int millisecond)
+    {
+        std::tm tm{};
+        tm.tm_year = year - 1900;
+        tm.tm_mon = month - 1;
+        tm.tm_mday = day;
+        tm.tm_hour = hour;
+        tm.tm_min = minute;
+        tm.tm_sec = second;
+
+        auto tt{std::mktime(&tm)};
+
+        return std::chrono::system_clock::from_time_t(tt) + std::chrono::milliseconds(millisecond);
+    }
+
     class LoggerTestFixture :
         public testing::Test
     {
@@ -60,38 +75,14 @@ TEST_F(LoggerTestFixture, Severity_AsString)
 
 TEST_F(LoggerTestFixture, MessageTimeStamp)
 {
-    std::tm tm{};
-    tm.tm_year = 2019 - 1900;
-    tm.tm_mon = 12 - 1;
-    tm.tm_mday = 14;
-    tm.tm_hour = 13;
-    tm.tm_min = 21;
-    tm.tm_sec = 12;
-
-    auto tt{std::mktime(&tm)};
-
-    auto test_time_point{std::chrono::system_clock::from_time_t(tt)};
-    test_time_point += 123ms;
-
-    EXPECT_EQ("2019-12-14T13:21:12.123Z", Logger::MessageTimeStamp(test_time_point));
+    EXPECT_EQ("2019-12-14T13:21:12.123Z", Logger::MessageTimeStamp(make_time_point(2019, 12, 14, 13, 21, 12, 123)));
+    EXPECT_EQ("2019-01-02T01:02:03.003Z", Logger::MessageTimeStamp(make_time_point(2019, 1, 2, 1, 2, 3, 3)));
 }
 
 TEST_F(LoggerTestFixture, FileNameTimeStamp)
 {
-    std::tm tm{};
-    tm.tm_year = 2019 - 1900;
-    tm.tm_mon = 12 - 1;
-    tm.tm_mday = 14;
-    tm.tm_hour = 13;
-    tm.tm_min = 21;
-    tm.tm_sec = 12;
-
-    auto tt{std::mktime(&tm)};
-
-    auto test_time_point{std::chrono::system_clock::from_time_t(tt)};
-    test_time_point += 123ms;
-
-    EXPECT_EQ("2019-12-14T13:21:12.123Z", Logger::FileNameTimeStamp(test_time_point));
+    EXPECT_EQ("20191214_132112", Logger::FileNameTimeStamp(make_time_point(2019, 12, 14, 13, 21, 12, 123)));
+    EXPECT_EQ("20190102_010203", Logger::FileNameTimeStamp(make_time_point(2019, 1, 2, 1, 2, 3, 3)));
 }
 
 TEST_F(LoggerTestFixture, Initialise_Simple)

@@ -66,7 +66,13 @@ namespace Logger
 
     std::string FileNameTimeStamp(const std::chrono::system_clock::time_point& time_point)
     {
-        return MessageTimeStamp(time_point);
+        auto tt{std::chrono::system_clock::to_time_t(time_point)};
+        std::tm gmtime{};
+        gmtime_r(&tt, &gmtime);
+
+        std::ostringstream oss{};
+        oss << std::put_time(&gmtime, "%Y%m%d_%H%M%S");
+        return oss.str();
     }
 
     void Initialise(const std::experimental::filesystem::path& path)
