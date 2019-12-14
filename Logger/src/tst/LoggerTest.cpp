@@ -8,6 +8,7 @@
 #include <fstream>
 #include <regex>
 #include <string>
+#include <vector>
 
 using namespace std::chrono_literals;
 
@@ -15,11 +16,22 @@ namespace fs = std::experimental::filesystem;
 
 namespace
 {
-    std::string first_log_line(const fs::path& path)
+    auto get_log_lines(const fs::path& path)
     {
         std::ifstream ifs{path};
-        std::string result{};
-        std::getline(ifs, result);
+        ifs.exceptions(std::ifstream::badbit);
+        std::vector<std::string> result{};
+        std::string line{};
+        while(ifs)
+        {
+            std::getline(ifs, line);
+            result.push_back(line);
+        }
+        if(!result.empty())
+        {
+            EXPECT_TRUE(result.back().empty());
+            result.pop_back();
+        }
         return result;
     }
 
@@ -107,11 +119,12 @@ TEST_F(LoggerTestFixture, LOG_ERROR_Simple)
     auto log_file_path{get_log_file_path()};
     Logger::Initialise(log_file_path);
     LOG_ERROR("Test message");
-    auto logged_message{first_log_line(log_file_path)};
+    auto lines{get_log_lines(log_file_path)};
+    ASSERT_EQ(1, lines.size());
     std::regex re{log_message_prefix_regex + "ERR >> Test message"};
-    if(!std::regex_match(logged_message, re))
+    if(!std::regex_match(lines[0], re))
     {
-        ADD_FAILURE() << "Logged message did not match expected: " << logged_message;
+        ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
     }
 }
 
@@ -120,11 +133,12 @@ TEST_F(LoggerTestFixture, LOG_WARNING_Simple)
     auto log_file_path{get_log_file_path()};
     Logger::Initialise(log_file_path);
     LOG_WARNING("Test message");
-    auto logged_message{first_log_line(log_file_path)};
+    auto lines{get_log_lines(log_file_path)};
+    ASSERT_EQ(1, lines.size());
     std::regex re{log_message_prefix_regex + "WRN >> Test message"};
-    if(!std::regex_match(logged_message, re))
+    if(!std::regex_match(lines[0], re))
     {
-        ADD_FAILURE() << "Logged message did not match expected: " << logged_message;
+        ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
     }
 }
 
@@ -133,11 +147,12 @@ TEST_F(LoggerTestFixture, LOG_INFO_Simple)
     auto log_file_path{get_log_file_path()};
     Logger::Initialise(log_file_path);
     LOG_INFO("Test message");
-    auto logged_message{first_log_line(log_file_path)};
+    auto lines{get_log_lines(log_file_path)};
+    ASSERT_EQ(1, lines.size());
     std::regex re{log_message_prefix_regex + "INF >> Test message"};
-    if(!std::regex_match(logged_message, re))
+    if(!std::regex_match(lines[0], re))
     {
-        ADD_FAILURE() << "Logged message did not match expected: " << logged_message;
+        ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
     }
 }
 
@@ -146,16 +161,39 @@ TEST_F(LoggerTestFixture, LOG_DEBUG_Simple)
     auto log_file_path{get_log_file_path()};
     Logger::Initialise(log_file_path);
     LOG_DEBUG("Test message");
-    auto logged_message{first_log_line(log_file_path)};
+    auto lines{get_log_lines(log_file_path)};
 #ifdef _DEBUG
+    ASSERT_EQ(1, lines.size());
     std::regex re{log_message_prefix_regex + "DBG >> Test message"};
-    if(!std::regex_match(logged_message, re))
+    if(!std::regex_match(lines[0], re))
     {
-        ADD_FAILURE() << "Logged message did not match expected: " << logged_message;
+        ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
     }
 #else
-    EXPECT_TRUE(logged_message.empty());
+    EXPECT_TRUE(lines.empty());
 #endif
 }
 
-// TODO(Test that messages get appended)
+TEST_F(LoggerTestFixture, LOG_appends)
+{
+    auto log_file_path{get_log_file_path()};
+    Logger::Initialise(log_file_path);
+    LOG_INFO("Test message 1");
+    LOG_INFO("Test message 2");
+    auto lines{get_log_lines(log_file_path)};
+    ASSERT_EQ(2, lines.size());
+    {
+        std::regex re{log_message_prefix_regex + "INF >> Test message 1"};
+        if(!std::regex_match(lines[0], re))
+        {
+            ADD_FAILURE() << "First logged message did not match expected: " << lines[0];
+        }
+    }
+    {
+        std::regex re{log_message_prefix_regex + "INF >> Test message 2"};
+        if(!std::regex_match(lines[1], re))
+        {
+            ADD_FAILURE() << "First logged message did not match expected: " << lines[1];
+        }
+    }
+}
