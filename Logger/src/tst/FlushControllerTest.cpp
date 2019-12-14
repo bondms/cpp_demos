@@ -13,7 +13,7 @@ namespace
         using duration = std::chrono::steady_clock::duration;
 
     private:
-        static time_point now_{};
+        static time_point now_;
 
     public:
         static time_point now()
@@ -26,6 +26,8 @@ namespace
             now_ += duration;
         }
     };
+
+    MockClock::time_point MockClock::now_{};
 
     class FlushControllerTestFixture :
         public testing::Test
