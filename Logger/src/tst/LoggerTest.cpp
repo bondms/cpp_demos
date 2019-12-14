@@ -61,6 +61,7 @@ namespace
         
         void TearDown() override
         {
+            // TODO(Will this work on Windows, or will the log file need to be closed?)
             fs::remove_all(temp_test_path);
         }
 
