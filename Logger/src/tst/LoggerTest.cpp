@@ -138,7 +138,8 @@ TEST_F(LoggerTestFixture, LOG_ERROR_Simple)
     Logger::Initialise(log_file_path);
     LOG_ERROR("Test message");
     auto logged_message{first_log_line(log_file_path)};
-    EXPECT_EQ("ERR: Test message", logged_message);
+    // TODO(Use regex to match the prefix with the timestamp etc.)
+    EXPECT_EQ("ERR >> Test message", logged_message);
 }
 
 TEST_F(LoggerTestFixture, TODO)

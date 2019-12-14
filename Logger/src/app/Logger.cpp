@@ -27,8 +27,8 @@ namespace Logger
 
         void Log(Severity severity, const std::string& msg)
         {
-            // TODO(Timestamp, process & thread ID, escaping msg, rotation, logging of different types).
-            ofs_ << AsString(severity) << ": " << msg << std::endl;
+            // TODO(Process & thread ID, escaping msg, rotation, logging of different types).
+            ofs_ << MessageTimeStamp(std::chrono::system_clock::now()) << " " << AsString(severity) << " >> " << msg << std::endl;
         }
     };
 
