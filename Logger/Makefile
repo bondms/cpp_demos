@@ -73,7 +73,7 @@ $(TST_OBJ_FILES): $(INT_DIR)/%.o: $(TST_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DI
 	$(CXX) $(CXXFLAGS) -c -o $@ $< -isystem $(GMOCK_SRC_DIR)/include -isystem $(GTEST_SRC_DIR)/include
 
 $(TST_BIN_DIR)/LoggerTest : $(INT_DIR)/LoggerTest.o $(INT_DIR)/Logger.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
-	$(CXX) $(LDFLAGS) -o $@ $^
+	$(CXX) $(LDFLAGS) -o $@ $^ -lstdc++fs
 
 $(TST_RESULTS) : $(INT_DIR)/%.passed: $(TST_BIN_DIR)/%
 	$<
