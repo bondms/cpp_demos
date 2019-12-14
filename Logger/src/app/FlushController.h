@@ -5,10 +5,10 @@
 template<typename Clock>
 class FlushController
 {
-    const Clock::duration duration_;
-    Clock::time_point due_;
+    const typename Clock::duration duration_;
+    typename Clock::time_point due_;
 public:
-    FlushController(const Clock::duration& duration) :
+    FlushController(const typename Clock::duration& duration) :
         duration_{duration},
         due_{Clock::now() + duration}
     {

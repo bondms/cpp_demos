@@ -21,7 +21,7 @@ namespace
             return now_;
         }
 
-        void advance_time(MockClock::duration duration)
+        static void advance_time(MockClock::duration duration)
         {
             now_ += duration;
         }
