@@ -66,6 +66,14 @@ namespace
     };
 }
 
+TEST_F(LoggerTestFixture, Severity_AsString)
+{
+    EXPECT_EQ("Error", AsString(Logger::Severity::Error));
+    EXPECT_EQ("Warning", AsString(Logger::Severity::Warning));
+    EXPECT_EQ("Info", AsString(Logger::Severity::Info));
+    EXPECT_EQ("Debug", AsString(Logger::Severity::Debug));
+}
+
 TEST_F(LoggerTestFixture, Initialise_Simple)
 {
     std::string test_name{::testing::UnitTest::GetInstance()->current_test_info()->name()};

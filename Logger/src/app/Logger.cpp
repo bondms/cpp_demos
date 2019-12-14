@@ -1,5 +1,6 @@
 #include "Logger.h"
 
+#include <cassert>
 #include <fstream>
 #include <memory>
 
@@ -28,6 +29,22 @@ namespace Logger
     };
 
     std::unique_ptr<Impl> singleton_impl{};
+
+    std::string AsString(Severity severity)
+    {
+        switch (severity)
+        {
+        case Severity::Error:
+            return "Error";
+        case Severity::Warning:
+            return "Warning";
+        case Severity::Info:
+            return "Info";
+        case Severity::Debug:
+            return "Debug";
+        }
+        assert(false);
+    }
 
     void Initialise(const std::experimental::filesystem::path& path)
     {

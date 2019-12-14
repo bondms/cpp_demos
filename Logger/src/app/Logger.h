@@ -11,6 +11,7 @@ namespace Logger
         Info,
         Debug,
     };
+    std::string AsString(Severity severity);
 
     void Initialise(const std::experimental::filesystem::path& path);
 
