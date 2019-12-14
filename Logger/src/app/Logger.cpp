@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <memory>
 #include <sstream>
+#include <thread>
 #include <time.h>
 
 namespace Logger
@@ -27,8 +28,14 @@ namespace Logger
 
         void Log(Severity severity, const std::string& msg)
         {
-            // TODO(Process & thread ID, escaping msg, rotation, logging of different types).
-            ofs_ << MessageTimeStamp(std::chrono::system_clock::now()) << " " << AsString(severity) << " >> " << msg << std::endl;
+            // TODO(Process, escaping msg, rotation, logging of different types).
+            ofs_
+                << MessageTimeStamp(std::chrono::system_clock::now())
+                // TODO(Reconsider setw)
+                << " " << std::setw(15) << std::setfill('0') << std::this_thread::get_id()
+                << " " << AsString(severity)
+                << " >> " << msg
+                << std::endl;
         }
     };
 

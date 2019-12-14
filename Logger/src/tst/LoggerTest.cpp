@@ -110,8 +110,12 @@ TEST_F(LoggerTestFixture, LOG_ERROR_Simple)
     Logger::Initialise(log_file_path);
     LOG_ERROR("Test message");
     auto logged_message{first_log_line(log_file_path)};
-    std::regex re{R"(\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z ERR >> Test message)"};
-    EXPECT_TRUE(std::regex_match(logged_message, re));
+    std::regex re{R"(\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z \d{15} ERR >> Test message)"};
+    if(!std::regex_match(logged_message, re))
+    {
+        ADD_FAILURE() << "Logged message did not match expected: " << logged_message;
+    }
+    // EXPECT_TRUE(std::regex_match(logged_message, re));
 }
 
 TEST_F(LoggerTestFixture, TODO)
