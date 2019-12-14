@@ -43,4 +43,3 @@ namespace Logger
         singleton_impl->Log(severity, msg);
     }
 }
-

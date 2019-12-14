@@ -17,9 +17,9 @@ namespace Logger
     void Log(Severity severity, const std::string& msg);
 }
 
-#define LOG_SEVERITY(Severtiy, msg) Logger::Log(Severity, msg)
+#define LOG_SEVERITY(severity, msg) Logger::Log(severity, msg)
 
-#define LOG_ERROR(msg) LOG_SEVERITY(Severity::Error, msg)
-#define LOG_WARNING(msg) LOG_SEVERITY(Severity::Warning, msg)
-#define LOG_INFO(msg) LOG_SEVERITY(Severity::Info, msg)
-#define LOG_DEBUG(msg) LOG_SEVERITY(Severity::Debug, msg)
+#define LOG_ERROR(msg) LOG_SEVERITY(Logger::Severity::Error, msg)
+#define LOG_WARNING(msg) LOG_SEVERITY(Logger::Severity::Warning, msg)
+#define LOG_INFO(msg) LOG_SEVERITY(Logger::Severity::Info, msg)
+#define LOG_DEBUG(msg) LOG_SEVERITY(Logger::Severity::Debug, msg)
