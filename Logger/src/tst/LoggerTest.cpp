@@ -40,8 +40,6 @@ namespace
     class LoggerTestFixture :
         public testing::Test
     {
-        fs::path temp_test_path{fs::temp_directory_path() / OS_TEXT("LoggerTest")};
-
         void SetUp() override
         {
             fs::create_directory(temp_test_path);
@@ -51,6 +49,9 @@ namespace
         {
             fs::remove_all(temp_test_path);
         }
+
+    protected:
+        fs::path temp_test_path{fs::temp_directory_path() / OS_TEXT("LoggerTest")};
     };
 }
 
@@ -60,6 +61,15 @@ TEST_F(LoggerTestFixture, ThrowsOnLogFileCreationFailure)
         []{Logger::Initialise("/invalid/path/to/file.txt");},
         [](const std::runtime_error& e){ return std::string{"Failed to open log file: /invalid/path/to/file.txt"} == e.what(); }
         );
+}
+
+TEST_F(LoggerTestFixture, CreatesLogFile)
+{
+    auto log_file_path{temp_test_path / OS_TEXT("CreatesLogFile.log")};
+    EXPECT_FALSE(fs::exists(log_file_path));
+    Logger::Initialise(log_file_path);
+    EXPECT_TRUE(fs::exists(log_file_path));
+    EXPECT_EQ(0, fs::file_size(log_file_path));
 }
 
 TEST_F(LoggerTestFixture, TODO)
