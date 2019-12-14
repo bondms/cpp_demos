@@ -119,8 +119,8 @@ TEST_F(LoggerTestFixture, LOG_ERROR_Simple)
     Logger::Initialise(log_file_path);
     LOG_ERROR("Test message");
     auto logged_message{first_log_line(log_file_path)};
-    // TODO(Use regex to match the prefix with the timestamp etc.)
-    EXPECT_EQ("ERR >> Test message", logged_message);
+    std::regex re{R"(\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z ERR >> Test message)"};
+    EXPECT_TRUE(std::regex_match(logged_message, re));
 }
 
 TEST_F(LoggerTestFixture, TODO)
