@@ -1,6 +1,7 @@
 #include "../app/Logger.h"
 
 #include "gtest_helper.h"
+#include "os.h"
 
 #include <chrono>
 #include <experimental/filesystem>
@@ -11,15 +12,6 @@
 using namespace std::chrono_literals;
 
 namespace fs = std::experimental::filesystem;
-
-// TODO(Move somewhere else)
-#ifdef __linux__ 
-    #define OS_TEXT(text) text
-#elif defined(_WIN32)
-    #define OS_TEXT(text) L##text
-#else
-    static_assert(false, "Unrecognised OS");
-#endif
 
 namespace
 {
@@ -115,7 +107,6 @@ TEST_F(LoggerTestFixture, LOG_ERROR_Simple)
     {
         ADD_FAILURE() << "Logged message did not match expected: " << logged_message;
     }
-    // EXPECT_TRUE(std::regex_match(logged_message, re));
 }
 
 TEST_F(LoggerTestFixture, TODO)
