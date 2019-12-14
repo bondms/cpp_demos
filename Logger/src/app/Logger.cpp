@@ -5,8 +5,10 @@
 #include <iomanip>
 #include <memory>
 #include <sstream>
+#include <sys/types.h>
 #include <thread>
 #include <time.h>
+#include <unistd.h>
 
 namespace Logger
 {
@@ -31,8 +33,9 @@ namespace Logger
             // TODO(Process, escaping msg, rotation, logging of different types).
             ofs_
                 << MessageTimeStamp(std::chrono::system_clock::now())
+                << " " << std::setw(7) << std::setfill('0') << ::getpid()
                 // TODO(Reconsider setw)
-                << " " << std::setw(15) << std::setfill('0') << std::this_thread::get_id()
+                << ":" << std::setw(15) << std::setfill('0') << std::this_thread::get_id()
                 << " " << AsString(severity)
                 << " >> " << msg
                 << std::endl;
