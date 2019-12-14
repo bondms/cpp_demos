@@ -68,10 +68,10 @@ namespace
 
 TEST_F(LoggerTestFixture, Severity_AsString)
 {
-    EXPECT_EQ("Error", AsString(Logger::Severity::Error));
-    EXPECT_EQ("Warning", AsString(Logger::Severity::Warning));
-    EXPECT_EQ("Info", AsString(Logger::Severity::Info));
-    EXPECT_EQ("Debug", AsString(Logger::Severity::Debug));
+    EXPECT_EQ("ERR", AsString(Logger::Severity::Error));
+    EXPECT_EQ("WRN", AsString(Logger::Severity::Warning));
+    EXPECT_EQ("INF", AsString(Logger::Severity::Info));
+    EXPECT_EQ("DBG", AsString(Logger::Severity::Debug));
 }
 
 TEST_F(LoggerTestFixture, Initialise_Simple)
@@ -99,7 +99,7 @@ TEST_F(LoggerTestFixture, LOG_ERROR_Simple)
     Logger::Initialise(log_file_path);
     LOG_ERROR("Test message");
     auto logged_message{first_log_line(log_file_path)};
-    EXPECT_EQ("xxx", logged_message);
+    EXPECT_EQ("ERR: Test message", logged_message);
 }
 
 TEST_F(LoggerTestFixture, TODO)

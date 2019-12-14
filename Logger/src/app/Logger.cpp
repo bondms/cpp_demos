@@ -22,9 +22,10 @@ namespace Logger
             }
         }
 
-        void Log(Severity /*severity*/, const std::string& /*msg*/)
+        void Log(Severity severity, const std::string& msg)
         {
-            // TODO
+            // TODO(Timestamp, process & thread ID, escaping msg).
+            ofs_ << AsString(severity) << ": " << msg << std::endl;
         }
     };
 
@@ -35,13 +36,13 @@ namespace Logger
         switch (severity)
         {
         case Severity::Error:
-            return "Error";
+            return "ERR";
         case Severity::Warning:
-            return "Warning";
+            return "WRN";
         case Severity::Info:
-            return "Info";
+            return "INF";
         case Severity::Debug:
-            return "Debug";
+            return "DBG";
         }
         assert(false);
     }
