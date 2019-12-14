@@ -30,7 +30,7 @@ namespace Logger
 
         void Log(Severity severity, const std::string& msg)
         {
-            // TODO(Process, escaping msg, rotation, logging of different types).
+            // TODO(escaping, rotation, logging of different types).
 #ifndef _DEBUG
             if(severity >= Severity::Debug)
             {
@@ -44,6 +44,7 @@ namespace Logger
                 << ":" << std::setw(15) << std::setfill('0') << std::this_thread::get_id()
                 << " " << AsString(severity)
                 << " >> " << msg
+                // TODO(Consider flushing less often)
                 << std::endl;
         }
     };
