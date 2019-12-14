@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iomanip>
 #include <memory>
+#include <mutex>
 #include <sstream>
 #include <sys/types.h>
 #include <thread>
@@ -15,6 +16,8 @@ namespace Logger
     class Impl
     {
         const std::experimental::filesystem::path path_;
+
+        std::mutex mutex_{};
         std::ofstream ofs_;
 
     public:
@@ -30,13 +33,14 @@ namespace Logger
 
         void Log(Severity severity, const std::string& msg)
         {
-            // TODO(escaping, rotation, logging of different types, thread safety).
+            // TODO(escaping, rotation, logging of different types).
 #ifndef _DEBUG
             if(severity >= Severity::Debug)
             {
                 return;
             }
 #endif
+            std::lock_guard<decltype(mutex_)> lock{mutex_};
             ofs_
                 << MessageTimeStamp(std::chrono::system_clock::now())
                 << " " << std::setw(7) << std::setfill('0') << ::getpid()

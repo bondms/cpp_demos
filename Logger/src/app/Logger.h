@@ -19,8 +19,10 @@ namespace Logger
     std::string MessageTimeStamp(const std::chrono::system_clock::time_point& time_point);
     std::string FileNameTimeStamp(const std::chrono::system_clock::time_point& time_point);
 
+    // Non thread-safe. Ensure logger is initialised before spawning child threads that log.
     void Initialise(const std::experimental::filesystem::path& path);
 
+    // Thread safe.
     void Log(Severity severity, const std::string& msg);
 }
 
