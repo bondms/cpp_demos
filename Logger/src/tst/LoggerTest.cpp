@@ -2,11 +2,14 @@
 
 #include <gtest/gtest.h>
 
+#include <chrono>
 #include <experimental/filesystem>
 #include <fstream>
 #include <functional>
 #include <regex>
 #include <string>
+
+using namespace std::chrono_literals;
 
 namespace fs = std::experimental::filesystem;
 
@@ -76,7 +79,19 @@ TEST_F(LoggerTestFixture, Severity_AsString)
 
 TEST_F(LoggerTestFixture, MessageTimeStamp)
 {
-    auto test_time_point{std::chrono::system_clock::now()};
+    std::tm tm{};
+    tm.tm_year = 2019 - 1900;
+    tm.tm_mon = 12 - 1;
+    tm.tm_mday = 14;
+    tm.tm_hour = 13;
+    tm.tm_min = 21;
+    tm.tm_sec = 12;
+
+    auto tt{std::mktime(&tm)};
+
+    auto test_time_point{std::chrono::system_clock::from_time_t(tt)};
+    test_time_point += 123ms;
+
     EXPECT_EQ("2019-12-14T13:21:12.123Z", Logger::MessageTimeStamp(test_time_point));
 }
 
