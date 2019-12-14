@@ -95,6 +95,24 @@ TEST_F(LoggerTestFixture, MessageTimeStamp)
     EXPECT_EQ("2019-12-14T13:21:12.123Z", Logger::MessageTimeStamp(test_time_point));
 }
 
+TEST_F(LoggerTestFixture, FileNameTimeStamp)
+{
+    std::tm tm{};
+    tm.tm_year = 2019 - 1900;
+    tm.tm_mon = 12 - 1;
+    tm.tm_mday = 14;
+    tm.tm_hour = 13;
+    tm.tm_min = 21;
+    tm.tm_sec = 12;
+
+    auto tt{std::mktime(&tm)};
+
+    auto test_time_point{std::chrono::system_clock::from_time_t(tt)};
+    test_time_point += 123ms;
+
+    EXPECT_EQ("2019-12-14T13:21:12.123Z", Logger::FileNameTimeStamp(test_time_point));
+}
+
 TEST_F(LoggerTestFixture, Initialise_Simple)
 {
     std::string test_name{::testing::UnitTest::GetInstance()->current_test_info()->name()};

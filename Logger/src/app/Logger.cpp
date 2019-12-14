@@ -64,7 +64,7 @@ namespace Logger
         return oss.str();
     }
 
-    std::string FileTimeStamp(const std::chrono::system_clock::time_point& time_point)
+    std::string FileNameTimeStamp(const std::chrono::system_clock::time_point& time_point)
     {
         return MessageTimeStamp(time_point);
     }
