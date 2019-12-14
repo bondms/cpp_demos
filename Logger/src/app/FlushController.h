@@ -2,11 +2,28 @@
 
 #include <chrono>
 
+template<typename Clock>
 class FlushController
 {
-    const std::chrono::steady_clock::duration duration_;
-    std::chrono::steady_clock::time_point due_;
+    const Clock::duration duration_;
+    Clock::time_point due_;
 public:
-    FlushController(const std::chrono::steady_clock::duration& duration);
-    bool is_due();
+    FlushController(const Clock::duration& duration) :
+        duration_{duration},
+        due_{Clock::now() + duration}
+    {
+    }
+
+    bool is_due()
+    {
+        auto now{Clock::now()};
+
+        if(now <= due_)
+        {
+            return false;
+        }
+
+        due_ = now + duration_;
+        return true;
+    }
 };
