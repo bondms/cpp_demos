@@ -30,7 +30,15 @@ struct TrialResponse {...};
 json TrialHandler(const json& request)
 {
   TrialRequest trial_request = parse_trial(request);
-  TrialResponse trial_response = trial_function(trial_request);
+  TrialResponse trial_response{};
+  try
+  {
+    trial_response = trial_function(trial_request);
+  }
+  catch ( const ProcessingError& e)
+  {
+    trial_response.error_info = extract_info(e);
+  }
   return build_trial_json(trail_response);
 }
 
