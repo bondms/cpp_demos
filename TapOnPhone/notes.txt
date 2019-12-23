@@ -10,6 +10,7 @@ using Handler = std::function<json(const json& request)>;
 
 ===
 
+// Unit test to confirm ordered.
 OrderedHandlers
 {
   {1, "Ping", PingHandler},
@@ -33,16 +34,19 @@ json TrialHandler(const json& request)
   return build_trial_json(trail_response);
 }
 
+// Unit testable.
 TrialRequest parse_trial(const json& request)
 {
   ...
 }
 
+// Unit testable.
 TrialResponse trial_function(const TrialRequest& trial_request)
 {
   ...
 }
 
+// Unit testable.
 json build_trial_json(const TrialResponse& trial_response)
 {
   ...
