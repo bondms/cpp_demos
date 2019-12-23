@@ -1,0 +1,51 @@
+void ProcessRequest(const ThreadData& item)
+{
+  json request = Read(item);
+  Handler handler = SelectHandler(request);
+  json response = handler(request);
+  Send(response);
+}
+
+using Handler = std::function<json(const json& request)>;
+
+===
+
+OrderedHandlers
+{
+  {1, "Ping", PingHandler},
+  {100, "Trial", TrialHandler},
+}
+
+Handler SelectHandler(const json& request)
+{
+  return binary_search(OrderedHandlers, commandId).HandlerFunc;
+}
+
+=== Trial ===
+
+struct TrialRequest {...};
+struct TrialResponse {...};
+
+json TrialHandler(const json& request)
+{
+  TrialRequest trial_request = parse_trial(request);
+  TrialResponse trial_response = trial_function(trial_request);
+  return build_trial_json(trail_response);
+}
+
+TrialRequest parse_trial(const json& request)
+{
+  ...
+}
+
+TrialResponse trial_function(const TrialRequest& trial_request)
+{
+  ...
+}
+
+json build_trial_json(const TrialResponse& trial_response)
+{
+  ...
+}
+
+===
