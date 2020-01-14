@@ -2,4 +2,4 @@
 
 #include <vector>
 
-std::vector<char> Encode(size_t input);
+std::vector<unsigned char> Encode(size_t input);

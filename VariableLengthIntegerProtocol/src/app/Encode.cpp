@@ -1,7 +1,7 @@
 #include "Encode.h"
 
-std::vector<char> Encode(size_t /*input*/)
+std::vector<unsigned char> Encode(size_t /*input*/)
 {
-    std::vector<char> result{};
+    std::vector<unsigned char> result{};
     return result;
 }
