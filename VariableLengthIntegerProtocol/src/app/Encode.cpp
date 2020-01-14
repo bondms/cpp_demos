@@ -24,31 +24,11 @@ std::vector<uint8_t> Encode(size_t input)
 {
     std::vector<uint8_t> result{};
 
-    // size_t mask{ ~(static_cast<size_t>(-1) >> 8) };
-    // int shifts{ 0 };
-
-    // while (mask != 0)
-    // {
-    //     std::cout << "*** " << std::hex << mask << " ***" << std::endl;
-
-    //     if ( (mask & input) != 0 )
-    //     {
-    //         break;
-    //     }
-
-    //     mask = mask >> 8;
-    //     ++shifts;
-    // }
-
-    // while (mask != 0)
-    // {
-    //     std::cout << "*** " << std::hex << mask << " ***" << std::endl;
-
-    //     xxx;
-
-    //     mask = mask >> 8;
-    //     ++shifts;
-    // }
+    if ( 0 == input )
+    {
+        result.push_back(0);
+        return result;
+    }
 
     uint8_t currentByte{ 0 };
 
