@@ -26,27 +26,41 @@ std::vector<uint8_t> Encode(size_t input)
 
     std::vector<uint8_t> result{};
 
-    if ( 0 == input )
-    {
-        result.push_back(0);
-        return result;
-    }
+    // if ( 0 == input )
+    // {
+    //     result.push_back(0);
+    //     return result;
+    // }
 
     uint8_t currentByte{ 0 };
     auto shifts{ 0U };
 
-    while ( (0 == currentByte) && (0 != input) )
+    while ( shifts < uint8sInInput )
     {
         currentByte = shift_left_byte(input);
         ++shifts;
+
+        if ( 0 != currentByte )
+        {
+            break;
+        }
     }
 
-    while ( shifts <= uint8sInInput )
+    auto reservedBits{ uint8sInInput - shifts + 1 };
+    if ( (~(0xFF >> reservedBits) & currentByte) != 0 )
     {
-        result.push_back(currentByte);
+        ++reservedBits;
+    }
+    auto lengthIndicatorBits{ static_cast<uint8_t>(~(0xFF >> (reservedBits - 1))) };
+    currentByte |= lengthIndicatorBits;
+    result.push_back(currentByte);
 
+    while ( shifts < uint8sInInput )
+    {
         currentByte = shift_left_byte(input);
         ++shifts;
+
+        result.push_back(currentByte);
     }
 
     return result;
