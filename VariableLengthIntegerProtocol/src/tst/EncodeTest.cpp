@@ -39,6 +39,8 @@ Parameters parameterValues[] = {
     Parameters(size_t{0x100}, std::vector<uint8_t>{0x81, 0x00}),
     Parameters(size_t{0x101}, std::vector<uint8_t>{0x81, 0x01}),
     Parameters(size_t{0x0200AB}, std::vector<uint8_t>{0xC2, 0x00, 0xAB}),
+    Parameters(size_t{0x02AB00}, std::vector<uint8_t>{0xC2, 0xAB, 0x00}),
+    Parameters(size_t{0x020000}, std::vector<uint8_t>{0xC2, 0x00, 0x00}),
     Parameters(size_t{0x1200AB}, std::vector<uint8_t>{0xD2, 0x00, 0xAB})
 };
 

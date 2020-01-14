@@ -14,7 +14,7 @@ namespace
     auto shift_left_byte(T& v)
     {
         constexpr auto bits_in_t{ sizeof(T) * CHAR_BIT };
-        uint8_t result = v >> (bits_in_t - 8);
+        uint8_t result{ v >> (bits_in_t - 8) };
         v = v << 8;
         return result;
     }
