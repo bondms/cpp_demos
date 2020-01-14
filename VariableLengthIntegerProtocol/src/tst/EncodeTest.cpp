@@ -38,6 +38,4 @@ Parameters parameterValues[] = {
     Parameters(size_t{0xFE0087}, std::vector<unsigned char>{0xFE, 0x00, 0x87})
 };
 
-INSTANTIATE_TEST_SUITE_P(EncodeTestInstantiation,
-                         EncodeTestFixture,
-                         testing::ValuesIn(parameterValues));
+INSTANTIATE_TEST_CASE_P(EncodeTestInstantiation, EncodeTestFixture, testing::ValuesIn(parameterValues));
