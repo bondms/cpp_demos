@@ -38,10 +38,14 @@ Parameters parameterValues[] = {
     Parameters(size_t{0xFF}, std::vector<uint8_t>{0x80, 0xFF}),
     Parameters(size_t{0x100}, std::vector<uint8_t>{0x81, 0x00}),
     Parameters(size_t{0x101}, std::vector<uint8_t>{0x81, 0x01}),
+    Parameters(size_t{0x3FFF}, std::vector<uint8_t>{0xBF, 0xFF}),
+    Parameters(size_t{0x4000}, std::vector<uint8_t>{0xC0, 0x40, 0x00}),
     Parameters(size_t{0x0200AB}, std::vector<uint8_t>{0xC2, 0x00, 0xAB}),
     Parameters(size_t{0x02AB00}, std::vector<uint8_t>{0xC2, 0xAB, 0x00}),
     Parameters(size_t{0x020000}, std::vector<uint8_t>{0xC2, 0x00, 0x00}),
-    Parameters(size_t{0x1200AB}, std::vector<uint8_t>{0xD2, 0x00, 0xAB})
+    Parameters(size_t{0x1200AB}, std::vector<uint8_t>{0xD2, 0x00, 0xAB}),
+    Parameters(size_t{0x1FFFFF}, std::vector<uint8_t>{0xDF, 0xFF, 0xFF}),
+    Parameters(size_t{0x200000}, std::vector<uint8_t>{0xE0, 0x20, 0x00, 0x00})
 };
 
 INSTANTIATE_TEST_CASE_P(EncodeTestInstantiation, EncodeTestFixture, testing::ValuesIn(parameterValues));
