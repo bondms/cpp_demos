@@ -1,9 +1,5 @@
 #include "Encode.h"
 
-// TODO(MarkBond): Just for testing.
-#include <iomanip>
-#include <iostream>
-
 #include <climits>
 
 static_assert(0 == (CHAR_BIT % 8));
@@ -26,12 +22,6 @@ std::vector<uint8_t> Encode(size_t input)
 
     std::vector<uint8_t> result{};
 
-    // if ( 0 == input )
-    // {
-    //     result.push_back(0);
-    //     return result;
-    // }
-
     uint8_t currentByte{ 0 };
     auto shifts{ 0U };
 
@@ -46,13 +36,24 @@ std::vector<uint8_t> Encode(size_t input)
         }
     }
 
-    auto reservedBits{ uint8sInInput - shifts + 1 };
-    if ( (~(0xFF >> reservedBits) & currentByte) != 0 )
+    auto reservedBits{ static_cast<uint8_t>(uint8sInInput - shifts + 1) };
+    auto overlap{ ((~(0xFF >> reservedBits)) & currentByte) != 0 };
+
+    if ( overlap )
     {
         ++reservedBits;
     }
+
     auto lengthIndicatorBits{ static_cast<uint8_t>(~(0xFF >> (reservedBits - 1))) };
-    currentByte |= lengthIndicatorBits;
+
+    if ( overlap )
+    {
+        result.push_back(lengthIndicatorBits);
+    }
+    else
+    {
+        currentByte |= lengthIndicatorBits;
+    }
     result.push_back(currentByte);
 
     while ( shifts < uint8sInInput )
