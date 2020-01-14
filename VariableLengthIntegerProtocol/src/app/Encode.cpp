@@ -32,21 +32,15 @@ std::vector<uint8_t> Encode(size_t input)
 
     uint8_t currentByte{ 0 };
 
-    std::cout << "*** First loop ***" << std::endl;
     while ( (0 == currentByte) && (0 != input) )
     {
         currentByte = shift_left_byte(input);
-        std::cout << "*** currentByte: " << std::hex << int(currentByte) << " ***" << std::endl;
-        std::cout << "*** input: " << std::hex << input << " ***" << std::endl;
     }
 
-    std::cout << "*** Second loop ***" << std::endl;
     while ( (0 != currentByte) || (0 != input) )
     {
         result.push_back(currentByte);
         currentByte = shift_left_byte(input);
-        std::cout << "*** currentByte: " << std::hex << int(currentByte) << " ***" << std::endl;
-        std::cout << "*** input: " << std::hex << input << " ***" << std::endl;
     }
 
     return result;
