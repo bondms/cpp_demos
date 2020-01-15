@@ -12,7 +12,7 @@ mkdir --verbose --parents -- "${HERE}/thirdparty/src" || exit $?
 ### gmock ###
 
 [[ -d "${HERE}/thirdparty/src/googletest" ]] ||
-    git clone --depth 1 --branch release-1.8.1 --verbose -- https://github.com/google/googletest.git "${HERE}/thirdparty/src/googletest" ||
+    git clone --depth 1 --branch release-1.10.0 --verbose -- https://github.com/google/googletest.git "${HERE}/thirdparty/src/googletest" ||
     exit $?
 
 for PROJECT in googletest googlemock

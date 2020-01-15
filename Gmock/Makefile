@@ -41,8 +41,8 @@ LDFLAGS = $(STD_FLAGS) $(WARN_FLAGS)
 GMOCK_SRC_DIR=../thirdparty/src/googletest/googlemock
 GTEST_SRC_DIR=../thirdparty/src/googletest/googletest
 
-GMOCK_BUILD_DIR=../thirdparty/build/googlemock
-GTEST_BUILD_DIR=../thirdparty/build/googletest
+GMOCK_BUILD_DIR=../thirdparty/build/googlemock/lib
+GTEST_BUILD_DIR=../thirdparty/build/googletest/lib
 
 GMOCK_LIB_DIR=$(GMOCK_BUILD_DIR)
 GTEST_LIB_DIR=$(GTEST_BUILD_DIR)

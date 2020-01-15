@@ -44,7 +44,7 @@ namespace
     };
 } // namespace
 
-INSTANTIATE_TEST_CASE_P(simple, TestFixture, ::testing::ValuesIn(test_parameter));
+INSTANTIATE_TEST_SUITE_P(simple, TestFixture, ::testing::ValuesIn(test_parameter));
 
 TEST_P(TestFixture, simple)
 {
