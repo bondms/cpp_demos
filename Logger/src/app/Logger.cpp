@@ -45,10 +45,10 @@ namespace Logger
                 std::lock_guard<decltype(mutex_)> lock{mutex_};
                 ofs_
                     << MessageTimeStamp(std::chrono::system_clock::now())
-                    << " " << std::setw(7) << std::setfill('0') << ::getpid()
+                    << ' ' << std::setw(7) << std::setfill('0') << ::getpid()
                     // TODO(Reconsider setw)
-                    << ":" << std::setw(15) << std::setfill('0') << std::this_thread::get_id()
-                    << " " << AsString(severity)
+                    << ':' << std::setw(15) << std::setfill('0') << std::this_thread::get_id()
+                    << ' ' << AsString(severity)
                     << " >> " << msg
                     // TODO(Consider flushing less often)
                     << std::endl;
