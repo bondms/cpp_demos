@@ -1,6 +1,7 @@
 #include "Logger.h"
 
 #include "FlushController.h"
+#include "scope_exit.h"
 
 #include <cassert>
 #include <fstream>
@@ -63,6 +64,28 @@ namespace Logger
                     ofs_.flush();
                 }
             }
+
+            void Flush(ErrorReporting errorReporting)
+            {
+                auto reset_exceptions = make_scope_exit([&]{
+                    ofs_.exceptions(std::ios::goodbit);
+                });
+
+                if (ErrorReporting::ignoreError != errorReporting)
+                {
+                    ofs_.exceptions(std::ios::badbit | std::ios::failbit);
+                }
+                ofs_.flush();
+            }
+
+            void Close(ErrorReporting errorReporting)
+            {
+                if (ErrorReporting::ignoreError != errorReporting)
+                {
+                    ofs_.exceptions(std::ios::badbit | std::ios::failbit);
+                }
+                ofs_.close();
+            }
         };
 
         std::unique_ptr<Impl> singleton_impl{};
@@ -124,5 +147,24 @@ namespace Logger
             return;
         }
         singleton_impl->Log(severity, msg);
+    }
+
+    void Flush(ErrorReporting errorReporting)
+    {
+        if(!singleton_impl)
+        {
+            return;
+        }
+        singleton_impl->Flush(errorReporting);
+    }
+
+    void Close(ErrorReporting errorReporting)
+    {
+        if(!singleton_impl)
+        {
+            return;
+        }
+        singleton_impl->Close(errorReporting);
+        singleton_impl.reset();
     }
 }

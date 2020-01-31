@@ -62,7 +62,7 @@ namespace
         
         void TearDown() override
         {
-            // TODO(Will this work on Windows, or will the log file need to be closed?)
+            Logger::Close(Logger::ErrorReporting::throwOnError);
             fs::remove_all(temp_test_path_);
         }
 
@@ -102,6 +102,7 @@ TEST_F(LoggerTestFixture, Initialise_Simple)
     auto log_file_path{get_log_file_path()};
     EXPECT_FALSE(fs::exists(log_file_path));
     Logger::Initialise(log_file_path);
+    Logger::Close(Logger::ErrorReporting::throwOnError);
     EXPECT_TRUE(fs::exists(log_file_path));
     EXPECT_EQ(0, fs::file_size(log_file_path));
 }
@@ -119,6 +120,7 @@ TEST_F(LoggerTestFixture, LOG_ERROR_Simple)
     auto log_file_path{get_log_file_path()};
     Logger::Initialise(log_file_path);
     LOG_ERROR("Test message");
+    Logger::Close(Logger::ErrorReporting::throwOnError);
     auto lines{get_log_lines(log_file_path)};
     ASSERT_EQ(1, lines.size());
     std::regex re{log_message_prefix_regex + "ERR >> Test message"};
@@ -133,6 +135,7 @@ TEST_F(LoggerTestFixture, LOG_WARNING_Simple)
     auto log_file_path{get_log_file_path()};
     Logger::Initialise(log_file_path);
     LOG_WARNING("Test message");
+    Logger::Close(Logger::ErrorReporting::throwOnError);
     auto lines{get_log_lines(log_file_path)};
     ASSERT_EQ(1, lines.size());
     std::regex re{log_message_prefix_regex + "WRN >> Test message"};
@@ -147,6 +150,7 @@ TEST_F(LoggerTestFixture, LOG_INFO_Simple)
     auto log_file_path{get_log_file_path()};
     Logger::Initialise(log_file_path);
     LOG_INFO("Test message");
+    Logger::Close(Logger::ErrorReporting::throwOnError);
     auto lines{get_log_lines(log_file_path)};
     ASSERT_EQ(1, lines.size());
     std::regex re{log_message_prefix_regex + "INF >> Test message"};
@@ -161,6 +165,7 @@ TEST_F(LoggerTestFixture, LOG_DEBUG_Simple)
     auto log_file_path{get_log_file_path()};
     Logger::Initialise(log_file_path);
     LOG_DEBUG("Test message");
+    Logger::Close(Logger::ErrorReporting::throwOnError);
     auto lines{get_log_lines(log_file_path)};
 #ifdef _DEBUG
     ASSERT_EQ(1, lines.size());
@@ -180,6 +185,7 @@ TEST_F(LoggerTestFixture, LOG_messages_append)
     Logger::Initialise(log_file_path);
     LOG_INFO("Test message 1");
     LOG_INFO("Test message 2");
+    Logger::Close(Logger::ErrorReporting::throwOnError);
     auto lines{get_log_lines(log_file_path)};
     ASSERT_EQ(2, lines.size());
     {
@@ -209,6 +215,7 @@ TEST_F(LoggerTestFixture, LOG_appends_to_existing_file)
 
     Logger::Initialise(log_file_path);
     LOG_INFO("Test message 2");
+    Logger::Close(Logger::ErrorReporting::throwOnError);
 
     auto lines{get_log_lines(log_file_path)};
     ASSERT_EQ(2, lines.size());
