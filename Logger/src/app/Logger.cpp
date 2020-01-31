@@ -58,7 +58,7 @@ namespace Logger
         std::unique_ptr<Impl> singleton_impl{};
     } // namespace
 
-    std::string AsString(Severity severity)
+    const char* AsString(Severity severity)
     {
         switch (severity)
         {

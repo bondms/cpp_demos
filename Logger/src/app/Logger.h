@@ -13,7 +13,7 @@ namespace Logger
         Info,
         Debug,
     };
-    std::string AsString(Severity severity);
+    const char* AsString(Severity severity);
 
     // TODO(Consider moving elsewhere)
     std::string MessageTimeStamp(const std::chrono::system_clock::time_point& time_point);

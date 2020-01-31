@@ -79,10 +79,10 @@ namespace
 
 TEST_F(LoggerTestFixture, Severity_AsString)
 {
-    EXPECT_EQ("ERR", AsString(Logger::Severity::Error));
-    EXPECT_EQ("WRN", AsString(Logger::Severity::Warning));
-    EXPECT_EQ("INF", AsString(Logger::Severity::Info));
-    EXPECT_EQ("DBG", AsString(Logger::Severity::Debug));
+    EXPECT_STREQ("ERR", AsString(Logger::Severity::Error));
+    EXPECT_STREQ("WRN", AsString(Logger::Severity::Warning));
+    EXPECT_STREQ("INF", AsString(Logger::Severity::Info));
+    EXPECT_STREQ("DBG", AsString(Logger::Severity::Debug));
 }
 
 TEST_F(LoggerTestFixture, MessageTimeStamp)
