@@ -13,47 +13,50 @@
 
 namespace Logger
 {
-    class Impl
+    namespace
     {
-        const std::experimental::filesystem::path path_;
-
-        std::mutex mutex_{};
-        std::ofstream ofs_;
-
-    public:
-        Impl(const std::experimental::filesystem::path& path) :
-            path_{path},
-            ofs_{path, std::ios_base::app}
+        class Impl
         {
-            if(!ofs_.good())
+            const std::experimental::filesystem::path path_;
+
+            std::mutex mutex_{};
+            std::ofstream ofs_;
+
+        public:
+            Impl(const std::experimental::filesystem::path& path) :
+                path_{path},
+                ofs_{path, std::ios_base::app}
             {
-                throw std::runtime_error("Failed to open log file: " + path_.u8string());
+                if(!ofs_.good())
+                {
+                    throw std::runtime_error("Failed to open log file: " + path_.u8string());
+                }
             }
-        }
 
-        void Log(Severity severity, const std::string& msg)
-        {
-            // TODO(escaping, rotation, logging of different types).
+            void Log(Severity severity, const std::string& msg)
+            {
+                // TODO(escaping, rotation, logging of different types).
 #ifndef _DEBUG
-            if(severity >= Severity::Debug)
-            {
-                return;
-            }
+                if(severity >= Severity::Debug)
+                {
+                    return;
+                }
 #endif
-            std::lock_guard<decltype(mutex_)> lock{mutex_};
-            ofs_
-                << MessageTimeStamp(std::chrono::system_clock::now())
-                << " " << std::setw(7) << std::setfill('0') << ::getpid()
-                // TODO(Reconsider setw)
-                << ":" << std::setw(15) << std::setfill('0') << std::this_thread::get_id()
-                << " " << AsString(severity)
-                << " >> " << msg
-                // TODO(Consider flushing less often)
-                << std::endl;
-        }
-    };
+                std::lock_guard<decltype(mutex_)> lock{mutex_};
+                ofs_
+                    << MessageTimeStamp(std::chrono::system_clock::now())
+                    << " " << std::setw(7) << std::setfill('0') << ::getpid()
+                    // TODO(Reconsider setw)
+                    << ":" << std::setw(15) << std::setfill('0') << std::this_thread::get_id()
+                    << " " << AsString(severity)
+                    << " >> " << msg
+                    // TODO(Consider flushing less often)
+                    << std::endl;
+            }
+        };
 
-    std::unique_ptr<Impl> singleton_impl{};
+        std::unique_ptr<Impl> singleton_impl{};
+    } // namespace
 
     std::string AsString(Severity severity)
     {
