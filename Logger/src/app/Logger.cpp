@@ -1,5 +1,7 @@
 #include "Logger.h"
 
+#include "FlushController.h"
+
 #include <cassert>
 #include <fstream>
 #include <iomanip>
@@ -11,6 +13,8 @@
 #include <time.h>
 #include <unistd.h>
 
+using namespace std::chrono_literals;
+
 namespace Logger
 {
     namespace
@@ -21,6 +25,8 @@ namespace Logger
 
             std::mutex mutex_{};
             std::ofstream ofs_;
+
+            FlushController<std::chrono::steady_clock> flush_controller_{5s};
 
         public:
             Impl(const std::experimental::filesystem::path& path) :
@@ -50,8 +56,12 @@ namespace Logger
                     << ':' << std::setw(15) << std::setfill('0') << std::this_thread::get_id()
                     << ' ' << AsString(severity)
                     << " >> " << msg
-                    // TODO(Consider flushing less often)
-                    << std::endl;
+                    << '\n';
+
+                if ( flush_controller_.is_due())
+                {
+                    ofs_.flush();
+                }
             }
         };
 
