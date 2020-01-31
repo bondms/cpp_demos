@@ -13,17 +13,18 @@ namespace Logger
         Info,
         Debug,
     };
-    const char* AsString(Severity severity);
+    const char* AsString(Severity severity) noexcept;
 
     // TODO(Consider moving elsewhere)
-    std::string MessageTimeStamp(const std::chrono::system_clock::time_point& time_point);
+    std::string MessageTimeStamp(const std::chrono::system_clock::time_point& time_point) noexcept;
     std::string FileNameTimeStamp(const std::chrono::system_clock::time_point& time_point);
 
-    // Non thread-safe. Ensure logger is initialised before spawning child threads that log.
+    // Non thread-safe.
+    // Ensure logger is initialised before spawning child threads that log.
     void Initialise(const std::experimental::filesystem::path& path);
 
     // Thread safe.
-    void Log(Severity severity, const std::string& msg);
+    void Log(Severity severity, const std::string& msg) noexcept;
 }
 
 #define LOG_SEVERITY(severity, msg) Logger::Log(severity, msg)

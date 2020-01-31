@@ -33,7 +33,7 @@ namespace Logger
                 }
             }
 
-            void Log(Severity severity, const std::string& msg)
+            void Log(Severity severity, const std::string& msg) noexcept
             {
                 // TODO(escaping, rotation, logging of different types).
 #ifndef _DEBUG
@@ -58,7 +58,7 @@ namespace Logger
         std::unique_ptr<Impl> singleton_impl{};
     } // namespace
 
-    const char* AsString(Severity severity)
+    const char* AsString(Severity severity) noexcept
     {
         switch (severity)
         {
@@ -74,7 +74,8 @@ namespace Logger
         assert(false);
     }
 
-    std::string MessageTimeStamp(const std::chrono::system_clock::time_point& time_point)
+    // TODO(Re-consider error handing. Should client be informed if there was a failure?)
+    std::string MessageTimeStamp(const std::chrono::system_clock::time_point& time_point) noexcept
     {
         auto tt{std::chrono::system_clock::to_time_t(time_point)};
         std::tm gmtime{};
@@ -95,6 +96,7 @@ namespace Logger
         gmtime_r(&tt, &gmtime);
 
         std::ostringstream oss{};
+        oss.exceptions(std::ios::failbit | std::ios::badbit);
         oss << std::put_time(&gmtime, "%Y%m%d_%H%M%S");
         return oss.str();
     }
@@ -104,7 +106,8 @@ namespace Logger
         singleton_impl = std::make_unique<Impl>(path);
     }
 
-    void Log(Severity severity, const std::string& msg)
+    // TODO(Re-consider error handing. Should client be informed if there was a failure?)
+    void Log(Severity severity, const std::string& msg) noexcept
     {
         if(!singleton_impl)
         {
