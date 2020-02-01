@@ -18,7 +18,7 @@ public:
     {
         auto now{Clock::now()};
 
-        if(now <= due_)
+        if (now <= due_)
         {
             return false;
         }

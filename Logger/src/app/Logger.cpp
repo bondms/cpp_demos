@@ -44,7 +44,7 @@ namespace Logger
             {
                 // TODO(escaping, rotation, logging of different types).
 #ifndef _DEBUG
-                if(severity >= Severity::Debug)
+                if (severity >= Severity::Debug)
                 {
                     return;
                 }
@@ -59,7 +59,7 @@ namespace Logger
                     << " >> " << msg
                     << '\n';
 
-                if ( flush_controller_.is_due())
+                if (flush_controller_.is_due())
                 {
                     ofs_.flush();
                 }
@@ -142,7 +142,7 @@ namespace Logger
     // TODO(Re-consider error handing. Should client be informed if there was a failure?)
     void Log(Severity severity, const std::string& msg) noexcept
     {
-        if(!singleton_impl)
+        if (!singleton_impl)
         {
             return;
         }
@@ -151,7 +151,7 @@ namespace Logger
 
     void Flush(ErrorReporting errorReporting)
     {
-        if(!singleton_impl)
+        if (!singleton_impl)
         {
             return;
         }
@@ -160,7 +160,7 @@ namespace Logger
 
     void Close(ErrorReporting errorReporting)
     {
-        if(!singleton_impl)
+        if (!singleton_impl)
         {
             return;
         }
