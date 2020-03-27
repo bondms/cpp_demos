@@ -114,8 +114,8 @@ namespace Logger
         std::tm gmtime{};
         gmtime_r(&tt, &gmtime);
 
-        const std::chrono::duration<double> tse = time_point.time_since_epoch();
-        std::chrono::seconds::rep milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(tse).count() % 1000;
+        const auto tse = time_point.time_since_epoch();
+        const auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(tse).count() % 1000;
 
         std::ostringstream oss{};
         oss << std::put_time(&gmtime, "%FT%T.") << std::setfill('0') << std::setw(3) << milliseconds << "Z";
