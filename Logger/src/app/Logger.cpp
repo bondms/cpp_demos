@@ -26,15 +26,41 @@ namespace Logger
 
             std::mutex mutex_{};
             std::ofstream ofs_;
+            const size_t rotation_size_;
 
             FlushController<std::chrono::steady_clock> flush_controller_{5s};
 
-        public:
-            Impl(const std::experimental::filesystem::path& path) :
-                path_{path},
-                ofs_{path, std::ios_base::app}
+            void Rotate() noexcept
             {
-                if(!ofs_.good())
+                try
+                {
+                    if ( (0 == rotation_size_) ||
+                        (std::experimental::filesystem::file_size(path_) < rotation_size_) )
+                    {
+                        return;
+                    }
+
+                    auto new_path = path_.parent_path() /
+                        (path_.stem().string() + "_" + FileNameTimeStamp(std::chrono::system_clock::now()) + path_.extension().string());
+                    std::experimental::filesystem::rename(path_, new_path);
+
+                    std::ofstream new_ofs{path_, std::ios_base::app};
+                    new_ofs.exceptions(std::ios::badbit | std::ios::failbit);
+
+                    ofs_ = std::move(new_ofs);
+                }
+                catch (const std::exception&)
+                {
+                }
+            }
+
+        public:
+            Impl(const std::experimental::filesystem::path& path, size_t rotation_size) :
+                path_{path},
+                ofs_{path, std::ios_base::app},
+                rotation_size_{rotation_size}
+            {
+                if (!ofs_.good())
                 {
                     throw std::runtime_error("Failed to open log file: " + path_.u8string());
                 }
@@ -49,7 +75,9 @@ namespace Logger
                     return;
                 }
 #endif
+
                 std::lock_guard<decltype(mutex_)> lock{mutex_};
+                Rotate();
                 ofs_
                     << MessageTimeStamp(std::chrono::system_clock::now())
                     << ' ' << std::setw(7) << std::setfill('0') << ::getpid()
@@ -134,9 +162,9 @@ namespace Logger
         return oss.str();
     }
 
-    void Initialise(const std::experimental::filesystem::path& path)
+    void Initialise(const std::experimental::filesystem::path& path, size_t rotation_size)
     {
-        singleton_impl = std::make_unique<Impl>(path);
+        singleton_impl = std::make_unique<Impl>(path, rotation_size);
     }
 
     // TODO(Re-consider error handing. Should client be informed if there was a failure?)
