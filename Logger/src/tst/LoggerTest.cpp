@@ -234,6 +234,7 @@ TEST_F(LoggerTestFixture, Rotate)
     auto log_file_path{get_log_file_path()};
     Logger::Initialise(log_file_path, 5);
     LOG_INFO("123456");
+    Logger::Flush(Logger::ErrorReporting::throwOnError);
     LOG_INFO("123456");
     Logger::Close(Logger::ErrorReporting::throwOnError);
 
@@ -242,10 +243,9 @@ TEST_F(LoggerTestFixture, Rotate)
     std::vector<size_t> file_sizes{};
     for (auto& p: fs::directory_iterator(temp_test_path_))
     {
-        std::cout << "**** " << p << std::endl;
         file_sizes.push_back(std::experimental::filesystem::file_size(p));
     }
 
-    EXPECT_EQ(2, file_sizes.size());
-    EXPECT_EQ(file_sizes.at(0), file_sizes.at(1));
+    ASSERT_EQ(2, file_sizes.size());
+    EXPECT_EQ(file_sizes[0], file_sizes[1]);
 }

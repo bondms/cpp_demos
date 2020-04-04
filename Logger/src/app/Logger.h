@@ -22,7 +22,7 @@ namespace Logger
     // Non thread-safe.
     // Ensure logger is initialised before spawning child threads that log.
     // rotation_size == 0 => No log rotation.
-    // rotation_size > 0 => Log rotated when file size in bytes exceeds rotation_size.
+    // rotation_size > 0 => Log rotated shortly after file size in bytes exceeds rotation_size.
     void Initialise(const std::experimental::filesystem::path& path, size_t rotation_size = 0);
 
     // Thread safe.
