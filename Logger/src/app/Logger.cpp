@@ -68,7 +68,7 @@ namespace Logger
 
             void Log(Severity severity, const std::string& msg) noexcept
             {
-                // TODO(escaping, rotation, logging of different types).
+                // TODO(escaping, logging of different types).
 #ifndef _DEBUG
                 if (severity >= Severity::Debug)
                 {
