@@ -17,7 +17,12 @@ TEST_F(EscaperTestFixture, Simple)
     EXPECT_EQ(R"<<<(abcxyzABCXYZ0123789)<<<", Escaped(R"<<<(abcxyzABCXYZ0123789)<<<"));
 }
 
-TEST_F(EscaperTestFixture, Punctuation)
+TEST_F(EscaperTestFixture, AsciiPunctuation)
+{
+    EXPECT_EQ(R"<<<(`|!"$%^&*()_+-=[]{};'#:@~,./<>?)<<<", Escaped(R"<<<(`|!"$%^&*()_+-=[]{};'#:@~,./<>?)<<<"));
+}
+
+TEST_F(EscaperTestFixture, ExtendedPunctuation)
 {
     EXPECT_EQ(R"<<<(`¬|!"£$%^&*()_+-=[]{};'#:@~,./<>?)<<<", Escaped(R"<<<(`¬|!"£$%^&*()_+-=[]{};'#:@~,./<>?)<<<"));
 }

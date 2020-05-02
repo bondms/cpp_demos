@@ -7,17 +7,27 @@ namespace Escaper
 {
     namespace
     {
-        // Similar to std::iscntrl, except:
+        // Similar to std::isprint, except:
         // * Always uses "C" locale, regardless of the currently installed C locale.
         // * Thread safe with regard to concurrent std::setlocale calls.
         // * Doesn't require casting to unsigned char.
-        bool iscntrl(char ch)
+        bool isprint(char ch)
         {
-            return (ch >= 0x00 && ch <= 0x1F) || (ch == 0x7F);
+            return ch >= 0x20 && ch <= 0x7E;
         }
 
         std::string Escaped(char raw)
         {
+            if ('\\' == raw)
+            {
+                return R"<<<(\\)<<<";
+            }
+
+            if (isprint(raw))
+            {
+                return std::string(1, raw);
+            }
+
             switch (raw)
             {
                 case '\0': return R"<<<(\0)<<<";
@@ -28,19 +38,14 @@ namespace Escaper
                 case '\r': return R"<<<(\r)<<<";
                 case '\t': return R"<<<(\t)<<<";
                 case '\v': return R"<<<(\v)<<<";
-                case '\\': return R"<<<(\\)<<<";
             }
 
-            if (iscntrl(raw))
-            {
-                std::ostringstream oss{};
-                oss
-                    << "\\x"
-                    << std::hex << std::setfill('0') << std::setw(2) << std::uppercase << static_cast<unsigned int>(raw);
-                return oss.str();
-            }
-
-            return std::string(1, raw);
+            std::ostringstream oss{};
+            oss
+                << "\\x"
+                << std::hex << std::setfill('0') << std::setw(2) << std::uppercase
+                << static_cast<unsigned int>(static_cast<unsigned char>(raw));
+            return oss.str();
         }
     } // namespace
 
