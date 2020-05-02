@@ -24,20 +24,20 @@ TEST_F(EscaperTestFixture, Punctuation)
 
 TEST_F(EscaperTestFixture, Null)
 {
-    EXPECT_EQ(std::string(1, '\0'), Escaped(R"<<<(\0)<<<"));
+    EXPECT_EQ(R"<<<(\0)<<<", Escaped(std::string(1, '\0')));
 }
 
 TEST_F(EscaperTestFixture, CommonCtrlChars)
 {
-    EXPECT_EQ("\a\b\f\n\r\t\v", Escaped(R"<<<(\a\b\f\n\r\t\v)<<<"));
+    EXPECT_EQ(R"<<<(\a\b\f\n\r\t\v)<<<", Escaped("\a\b\f\n\r\t\v"));
 }
 
 TEST_F(EscaperTestFixture, Backslash)
 {
-    EXPECT_EQ(R"<<<(\)<<<", Escaped(R"<<<(\\)<<<"));
+    EXPECT_EQ(R"<<<(\\)<<<", Escaped(R"<<<(\)<<<"));
 }
 
 TEST_F(EscaperTestFixture, ExtendedCtrlChars)
 {
-    EXPECT_EQ("\x01\x7F\x80\0xFF", Escaped(R"<<<(\x01\x7F\x80\0xFF)<<<"));
+    EXPECT_EQ(R"<<<(\x01\x7F\x80\0xFF)<<<", Escaped("\x01\x7F\x80\0xFF"));
 }
