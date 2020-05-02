@@ -22,11 +22,6 @@ TEST_F(EscaperTestFixture, AsciiPunctuation)
     EXPECT_EQ(R"<<<(`|!"$%^&*()_+-=[]{};'#:@~,./<>?)<<<", Escaped(R"<<<(`|!"$%^&*()_+-=[]{};'#:@~,./<>?)<<<"));
 }
 
-TEST_F(EscaperTestFixture, ExtendedPunctuation)
-{
-    EXPECT_EQ(R"<<<(`¬|!"£$%^&*()_+-=[]{};'#:@~,./<>?)<<<", Escaped(R"<<<(`¬|!"£$%^&*()_+-=[]{};'#:@~,./<>?)<<<"));
-}
-
 TEST_F(EscaperTestFixture, Null)
 {
     EXPECT_EQ(R"<<<(\0)<<<", Escaped(std::string(1, '\0')));
@@ -44,5 +39,5 @@ TEST_F(EscaperTestFixture, Backslash)
 
 TEST_F(EscaperTestFixture, ExtendedCtrlChars)
 {
-    EXPECT_EQ(R"<<<(\x01\x7F\x80\0xFF)<<<", Escaped("\x01\x7F\x80\0xFF"));
+    EXPECT_EQ(R"<<<(\x01\x7F\x80\xFF)<<<", Escaped("\x01\x7F\x80\xFF"));
 }
