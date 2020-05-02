@@ -12,7 +12,7 @@ namespace ConsumerProducer
     template<typename Item>
     class Consumer
     {
-        const std::function<void(const Item & item) noexcept> process_item_function_{};
+        const std::function<void(const Item & item)> process_item_function_{};
         std::mutex mutex_{};
         std::condition_variable condition_variable_{};
         std::queue<Item> queue_{};
@@ -22,7 +22,7 @@ namespace ConsumerProducer
     public:
         Consumer() = default;
 
-        explicit Consumer(std::function<void(const Item & item) noexcept> process_item_function) :
+        explicit Consumer(std::function<void(const Item & item)> process_item_function) :
             process_item_function_{ std::move(process_item_function) }
         {
             thread_ = std::thread{ static_thread_function, std::ref(*this) };

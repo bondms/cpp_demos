@@ -22,7 +22,7 @@ APP_OBJ_FILES := $(APP_CPP_FILES:$(APP_SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
 APP_DEP_FILES := $(APP_CPP_FILES:$(APP_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
 
 DEP_FLAGS = -MT $@ -MMD -MP -MF $(INT_DIR)/$*.d
-STD_FLAGS = --std=c++14 -pthread -fno-rtti
+STD_FLAGS = --std=c++17 -pthread -fno-rtti
 WARN_FLAGS = -Wall -Werror
 
 CXX = g++
