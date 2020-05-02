@@ -28,7 +28,7 @@ done
 ### jsoncpp ###
 
 [[ -d "${HERE}/thirdparty/src/jsoncpp" ]] ||
-    git clone --depth 1 --branch 0.10.7 --verbose -- https://github.com/open-source-parsers/jsoncpp.git "${HERE}/thirdparty/src/jsoncpp" ||
+    git clone --depth 1 --branch 00.11.0 --verbose -- https://github.com/open-source-parsers/jsoncpp.git "${HERE}/thirdparty/src/jsoncpp" ||
     exit $?
 
 [[ -d "${HERE}/thirdparty/src/jsoncpp/dist" ]] || (
