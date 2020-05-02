@@ -20,6 +20,7 @@ namespace Escaper
         {
             switch (raw)
             {
+                case '\0': return R"<<<(\0)<<<";
                 case '\a': return R"<<<(\a)<<<";
                 case '\b': return R"<<<(\b)<<<";
                 case '\f': return R"<<<(\f)<<<";
@@ -33,7 +34,9 @@ namespace Escaper
             if (iscntrl(raw))
             {
                 std::ostringstream oss{};
-                oss << "\\x" << std::setfill('0') << std::setw(2) << std::uppercase << static_cast<unsigned int>(raw);
+                oss
+                    << "\\x"
+                    << std::hex << std::setfill('0') << std::setw(2) << std::uppercase << static_cast<unsigned int>(raw);
                 return oss.str();
             }
 
