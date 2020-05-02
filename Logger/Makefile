@@ -72,6 +72,9 @@ $(BIN_TARGET): $(APP_OBJ_FILES) | $(BIN_DIR)
 $(TST_OBJ_FILES): $(INT_DIR)/%.o: $(TST_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $< -isystem $(GMOCK_SRC_DIR)/include -isystem $(GTEST_SRC_DIR)/include
 
+$(TST_BIN_DIR)/EscaperTest : $(INT_DIR)/EscaperTest.o $(INT_DIR)/Escaper.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
+	$(CXX) $(LDFLAGS) -o $@ $^
+
 $(TST_BIN_DIR)/FlushControllerTest : $(INT_DIR)/FlushControllerTest.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
