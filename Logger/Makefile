@@ -78,7 +78,7 @@ $(TST_BIN_DIR)/EscaperTest : $(INT_DIR)/EscaperTest.o $(INT_DIR)/Escaper.o $(GTE
 $(TST_BIN_DIR)/FlushControllerTest : $(INT_DIR)/FlushControllerTest.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
-$(TST_BIN_DIR)/LoggerTest : $(INT_DIR)/LoggerTest.o $(INT_DIR)/Logger.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
+$(TST_BIN_DIR)/LoggerTest : $(INT_DIR)/LoggerTest.o $(INT_DIR)/Logger.o $(INT_DIR)/Escaper.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^ -lstdc++fs
 
 $(TST_RESULTS) : $(INT_DIR)/%.passed: $(TST_BIN_DIR)/%

@@ -249,3 +249,18 @@ TEST_F(LoggerTestFixture, Rotate)
     ASSERT_EQ(2, file_sizes.size());
     EXPECT_EQ(file_sizes[0], file_sizes[1]);
 }
+
+TEST_F(LoggerTestFixture, Escaping)
+{
+    auto log_file_path{get_log_file_path()};
+    Logger::Initialise(log_file_path);
+    LOG_INFO("Test message\n");
+    Logger::Close(Logger::ErrorReporting::throwOnError);
+    auto lines{get_log_lines(log_file_path)};
+    ASSERT_EQ(1, lines.size());
+    std::regex re{log_message_prefix_regex + R"<<<(INF >> Test message\\n)<<<"};
+    if(!std::regex_match(lines[0], re))
+    {
+        ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
+    }
+}

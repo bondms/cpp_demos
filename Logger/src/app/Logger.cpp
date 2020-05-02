@@ -1,5 +1,6 @@
 #include "Logger.h"
 
+#include "Escaper.h"
 #include "FlushController.h"
 #include "scope_exit.h"
 
@@ -68,7 +69,7 @@ namespace Logger
 
             void Log(Severity severity, const std::string& msg) noexcept
             {
-                // TODO(escaping, logging of different types).
+                // TODO(logging of different types).
 #ifndef _DEBUG
                 if (severity >= Severity::Debug)
                 {
@@ -84,7 +85,7 @@ namespace Logger
                     // TODO(Reconsider setw)
                     << ':' << std::setw(15) << std::setfill('0') << std::this_thread::get_id()
                     << ' ' << AsString(severity)
-                    << " >> " << msg
+                    << " >> " << Escaper::Escaped(msg)
                     << '\n';
 
                 if (flush_controller_.is_due())
