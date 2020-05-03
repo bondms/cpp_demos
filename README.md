@@ -18,6 +18,9 @@ Example use of jsoncpp library.
 # Logger
 In progress: General purpose file logger with log-file rotation.
 
+# ODBC test
+Thin C++ around ODBC.
+
 # Realign
 Moves a left-aligned string in a buffer to be right-aligned returning an iterator to the new start position of the string.
 Uses a parameterized gtest unit test.
