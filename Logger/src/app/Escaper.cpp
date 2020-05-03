@@ -1,5 +1,6 @@
 #include "Escaper.h"
 
+#include <algorithm>
 #include <iomanip>
 #include <sstream>
 
@@ -16,33 +17,30 @@ namespace Escaper
             return ch >= 0x20 && ch <= 0x7E;
         }
 
+        bool NeedsEscaping(char ch)
+        {
+            if ( '\\' == ch ) return true;
+            return !isprint(ch);
+        }
+
         std::string Escaped(char raw)
         {
-            if ('\\' == raw)
-            {
-                return R"<<<(\\)<<<";
-            }
-
-            if (isprint(raw))
-            {
-                return std::string(1, raw);
-            }
-
             switch (raw)
             {
-                case '\0': return R"<<<(\0)<<<";
-                case '\a': return R"<<<(\a)<<<";
-                case '\b': return R"<<<(\b)<<<";
-                case '\f': return R"<<<(\f)<<<";
-                case '\n': return R"<<<(\n)<<<";
-                case '\r': return R"<<<(\r)<<<";
-                case '\t': return R"<<<(\t)<<<";
-                case '\v': return R"<<<(\v)<<<";
+                case '\0': return R"<<<(0)<<<";
+                case '\a': return R"<<<(a)<<<";
+                case '\b': return R"<<<(b)<<<";
+                case '\f': return R"<<<(f)<<<";
+                case '\n': return R"<<<(n)<<<";
+                case '\r': return R"<<<(r)<<<";
+                case '\t': return R"<<<(t)<<<";
+                case '\v': return R"<<<(v)<<<";
+                case '\\': return R"<<<(\)<<<";
             }
 
             std::ostringstream oss{};
             oss
-                << "\\x"
+                << "x"
                 << std::hex << std::setfill('0') << std::setw(2) << std::uppercase
                 << static_cast<unsigned int>(static_cast<unsigned char>(raw));
             return oss.str();
@@ -51,10 +49,20 @@ namespace Escaper
 
     std::string Escaped(const std::string & raw)
     {
-        std::string result{};
-        for (const auto & ch : raw)
+        std::string result = raw;
+        auto it = result.begin();
+        while ( true )
         {
-            result += Escaped(ch);
+            it = std::find_if(it, result.end(), NeedsEscaping );
+            if ( it == result.end() )
+            {
+                break;
+            }
+            auto escaped = Escaped(*it);
+            *it = '\\';
+            ++it;
+            it = result.insert(it, escaped.begin(), escaped.end());
+            it += escaped.size();
         }
         return result;
     }
