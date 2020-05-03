@@ -2,8 +2,6 @@
 
 #include "gtest_helper.h"
 
-#include <numeric>
-
 using namespace Escaper;
 
 namespace
