@@ -23,6 +23,7 @@ namespace Escaper
             return !isprint(ch);
         }
 
+        // Returns an escaped/printable version of the raw character WITHOUT a leading '\'
         std::string Escaped(char raw)
         {
             switch (raw)
