@@ -10,7 +10,7 @@ namespace Escaper
         // Similar to std::isprint, except:
         // * Always uses "C" locale, regardless of the currently installed C locale.
         // * Thread safe with regard to concurrent std::setlocale calls.
-        // * Doesn't require casting to unsigned char.
+        // * Doesn't require casting to unsigned char, but doesn't accept EOF.
         bool isprint(char ch)
         {
             return ch >= 0x20 && ch <= 0x7E;
