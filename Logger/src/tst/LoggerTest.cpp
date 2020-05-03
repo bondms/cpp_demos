@@ -264,3 +264,13 @@ TEST_F(LoggerTestFixture, Escaping)
         ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
     }
 }
+
+TEST_F(LoggerTestFixture, Benchmark)
+{
+    auto log_file_path{get_log_file_path()};
+    Logger::Initialise(log_file_path);    
+    for ( auto i = 0 ; i < 100000 ; ++i )
+    {
+        LOG_INFO("A typical log message with no escaping required");
+    }
+}

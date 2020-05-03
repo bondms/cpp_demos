@@ -2,6 +2,8 @@
 
 #include "gtest_helper.h"
 
+#include <numeric>
+
 using namespace Escaper;
 
 namespace
@@ -40,4 +42,9 @@ TEST_F(EscaperTestFixture, Backslash)
 TEST_F(EscaperTestFixture, ExtendedCtrlChars)
 {
     EXPECT_EQ(R"<<<(\x01\x7F\x80\xFF)<<<", Escaped("\x01\x7F\x80\xFF"));
+}
+
+TEST_F(EscaperTestFixture, Mixture)
+{
+    EXPECT_EQ(R"<<<(Hello\nworld!\n)<<<", Escaped("Hello\nworld!\n"));
 }
