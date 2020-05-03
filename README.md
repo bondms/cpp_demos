@@ -1,3 +1,5 @@
+![](https://github.com/bondms/CppDemos/workflows/CI/badge.svg)
+
 # BinarySearch
 Example self-implemented binary search with parameterized tests.
 
