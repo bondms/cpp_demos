@@ -51,20 +51,28 @@ namespace Escaper
     std::string Escaped(const std::string & raw)
     {
         std::string result = raw;
+
         auto it = result.begin();
         while ( true )
         {
+            // Find next character that needs escaping.
             it = std::find_if(it, result.end(), NeedsEscaping );
             if ( it == result.end() )
             {
                 break;
             }
+
             auto escaped = Escaped(*it);
+
+            // Replace the non-printable character with a '\' and insert the escaped sequence following the '\'.
             *it = '\\';
             ++it;
             it = result.insert(it, escaped.begin(), escaped.end());
+
+            // Continue from after the instered escaped sequence.
             it += escaped.size();
         }
+
         return result;
     }
 } // Escaper
