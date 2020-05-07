@@ -1,7 +1,7 @@
 #include "../app/Logger.h"
+#include "../app/os.h"
 
 #include "gtest_helper.h"
-#include "os.h"
 
 #include <chrono>
 #include <filesystem>
@@ -91,8 +91,8 @@ TEST_F(LoggerTestFixture, MessageTimeStamp)
 
 TEST_F(LoggerTestFixture, FileNameTimeStamp)
 {
-    EXPECT_EQ("20191214_132112", Logger::FileNameTimeStamp(make_time_point(2019, 12, 14, 13, 21, 12, 123)));
-    EXPECT_EQ("20190102_010203", Logger::FileNameTimeStamp(make_time_point(2019, 1, 2, 1, 2, 3, 3)));
+    EXPECT_EQ(OS_TEXT("20191214_132112"), Logger::FileNameTimeStamp(make_time_point(2019, 12, 14, 13, 21, 12, 123)));
+    EXPECT_EQ(OS_TEXT("20190102_010203"), Logger::FileNameTimeStamp(make_time_point(2019, 1, 2, 1, 2, 3, 3)));
 }
 
 TEST_F(LoggerTestFixture, Initialise_Simple)

@@ -17,7 +17,7 @@ namespace Logger
 
     // TODO(Consider moving elsewhere)
     std::string MessageTimeStamp(const std::chrono::system_clock::time_point& time_point) noexcept;
-    std::string FileNameTimeStamp(const std::chrono::system_clock::time_point& time_point);
+    std::filesystem::path FileNameTimeStamp(const std::chrono::system_clock::time_point& time_point);
 
     // Non thread-safe.
     // Ensure logger is initialised before spawning child threads that log.

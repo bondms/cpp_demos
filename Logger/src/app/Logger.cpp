@@ -2,6 +2,7 @@
 
 #include "Escaper.h"
 #include "FlushController.h"
+#include "os.h"
 #include "scope_exit.h"
 
 #include <cassert>
@@ -48,7 +49,9 @@ namespace Logger
                     }
 
                     auto new_path = path_.parent_path() /
-                        (path_.stem().string() + "_" + FileNameTimeStamp(std::chrono::system_clock::now()) + path_.extension().string());
+                        (path_.stem().os_string() + OS_TEXT("_") +
+                            FileNameTimeStamp(std::chrono::system_clock::now()).os_string() +
+                            path_.extension().os_string());
                     std::filesystem::rename(path_, new_path);
 
                     std::ofstream new_ofs{path_, std::ios_base::app};
@@ -157,13 +160,13 @@ namespace Logger
         return oss.str();
     }
 
-    std::string FileNameTimeStamp(const std::chrono::system_clock::time_point& time_point)
+    std::filesystem::path FileNameTimeStamp(const std::chrono::system_clock::time_point& time_point)
     {
         auto tt{std::chrono::system_clock::to_time_t(time_point)};
         std::tm gmtime{};
         gmtime_r(&tt, &gmtime);
 
-        std::ostringstream oss{};
+        std::os_ostringstream oss{};
         oss.exceptions(std::ios::failbit | std::ios::badbit);
         oss << std::put_time(&gmtime, "%Y%m%d_%H%M%S");
         return oss.str();
