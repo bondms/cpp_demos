@@ -32,7 +32,7 @@ TST_RESULTS = $(TST_CPP_FILES:$(TST_SRC_DIR)/%.cpp=$(INT_DIR)/%.passed)
 
 DEP_FLAGS = -MT $@ -MMD -MP -MF $(INT_DIR)/$*.d
 STD_FLAGS = --std=c++17 -pthread -fno-rtti
-WARN_FLAGS = -Wall -Wextra -Werror -Wno-noexcept-type
+WARN_FLAGS = -Wall -Wextra -Werror
 
 CXX = g++
 CXXFLAGS = $(STD_FLAGS) $(DEP_FLAGS) $(WARN_FLAGS)
