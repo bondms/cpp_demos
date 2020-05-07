@@ -23,7 +23,7 @@ namespace Logger
     {
         class Impl
         {
-            const std::experimental::filesystem::path path_;
+            const std::filesystem::path path_;
 
             std::mutex mutex_{};
             std::ofstream ofs_;
@@ -49,7 +49,7 @@ namespace Logger
 
                     auto new_path = path_.parent_path() /
                         (path_.stem().string() + "_" + FileNameTimeStamp(std::chrono::system_clock::now()) + path_.extension().string());
-                    std::experimental::filesystem::rename(path_, new_path);
+                    std::filesystem::rename(path_, new_path);
 
                     std::ofstream new_ofs{path_, std::ios_base::app};
                     new_ofs.exceptions(std::ios::badbit | std::ios::failbit);
@@ -62,7 +62,7 @@ namespace Logger
             }
 
         public:
-            Impl(const std::experimental::filesystem::path& path, size_t rotation_size) :
+            Impl(const std::filesystem::path& path, size_t rotation_size) :
                 path_{path},
                 ofs_{path, std::ios_base::app},
                 rotation_size_{rotation_size}
@@ -169,7 +169,7 @@ namespace Logger
         return oss.str();
     }
 
-    void Initialise(const std::experimental::filesystem::path& path, size_t rotation_size)
+    void Initialise(const std::filesystem::path& path, size_t rotation_size)
     {
         singleton_impl = std::make_unique<Impl>(path, rotation_size);
     }

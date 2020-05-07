@@ -4,7 +4,7 @@
 #include "os.h"
 
 #include <chrono>
-#include <experimental/filesystem>
+#include <filesystem>
 #include <fstream>
 #include <regex>
 #include <string>
@@ -12,11 +12,9 @@
 
 using namespace std::chrono_literals;
 
-namespace fs = std::experimental::filesystem;
-
 namespace
 {
-    auto get_log_lines(const fs::path& path)
+    auto get_log_lines(const std::filesystem::path& path)
     {
         std::ifstream ifs{path};
         ifs.exceptions(std::ifstream::badbit);
@@ -57,17 +55,17 @@ namespace
     {
         void SetUp() override
         {
-            fs::create_directory(temp_test_path_);
+            std::filesystem::create_directory(temp_test_path_);
         }
         
         void TearDown() override
         {
             Logger::Close(Logger::ErrorReporting::throwOnError);
-            fs::remove_all(temp_test_path_);
+            std::filesystem::remove_all(temp_test_path_);
         }
 
     protected:
-        fs::path temp_test_path_{fs::temp_directory_path() / OS_TEXT("LoggerTest")};
+        std::filesystem::path temp_test_path_{std::filesystem::temp_directory_path() / OS_TEXT("LoggerTest")};
 
         auto get_log_file_path()
         {
@@ -100,11 +98,11 @@ TEST_F(LoggerTestFixture, FileNameTimeStamp)
 TEST_F(LoggerTestFixture, Initialise_Simple)
 {
     auto log_file_path{get_log_file_path()};
-    EXPECT_FALSE(fs::exists(log_file_path));
+    EXPECT_FALSE(std::filesystem::exists(log_file_path));
     Logger::Initialise(log_file_path);
     Logger::Close(Logger::ErrorReporting::throwOnError);
-    EXPECT_TRUE(fs::exists(log_file_path));
-    EXPECT_EQ(0, fs::file_size(log_file_path));
+    EXPECT_TRUE(std::filesystem::exists(log_file_path));
+    EXPECT_EQ(0, std::filesystem::file_size(log_file_path));
 }
 
 TEST_F(LoggerTestFixture, Initialise_Failure)
@@ -238,12 +236,12 @@ TEST_F(LoggerTestFixture, Rotate)
     LOG_INFO("123456");
     Logger::Close(Logger::ErrorReporting::throwOnError);
 
-    EXPECT_TRUE(std::experimental::filesystem::is_regular_file(get_log_file_path()));
+    EXPECT_TRUE(std::filesystem::is_regular_file(get_log_file_path()));
 
     std::vector<size_t> file_sizes{};
-    for (auto& p: fs::directory_iterator(temp_test_path_))
+    for (auto& p: std::filesystem::directory_iterator(temp_test_path_))
     {
-        file_sizes.push_back(std::experimental::filesystem::file_size(p));
+        file_sizes.push_back(std::filesystem::file_size(p));
     }
 
     ASSERT_EQ(2, file_sizes.size());

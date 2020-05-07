@@ -1,7 +1,7 @@
 #pragma once
 
 #include <chrono>
-#include <experimental/filesystem>
+#include <filesystem>
 
 namespace Logger
 {
@@ -23,7 +23,7 @@ namespace Logger
     // Ensure logger is initialised before spawning child threads that log.
     // rotation_size == 0 => No log rotation.
     // rotation_size > 0 => Log rotated shortly after file size in bytes exceeds rotation_size.
-    void Initialise(const std::experimental::filesystem::path& path, size_t rotation_size = 0);
+    void Initialise(const std::filesystem::path& path, size_t rotation_size = 0);
 
     // Thread safe.
     void Log(Severity severity, const std::string& msg) noexcept;
