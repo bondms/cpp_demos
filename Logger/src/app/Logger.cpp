@@ -35,8 +35,14 @@ namespace Logger
             {
                 try
                 {
-                    if ( (0 == rotation_size_) ||
-                        (std::experimental::filesystem::file_size(path_) < rotation_size_) )
+                    if (0 == rotation_size_)
+                    {
+                        // Rotation is disabled.
+                        return;
+                    }
+
+                    auto pos = ofs_.tellp();
+                    if ((pos < 0) || (static_cast<size_t>(pos) < rotation_size_))
                     {
                         return;
                     }
