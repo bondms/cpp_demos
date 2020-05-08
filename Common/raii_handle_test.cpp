@@ -1,4 +1,4 @@
-#include "../app/RaiiHandle.h"
+#include "../app/raii_handle.h"
 
 #include <gtest/gtest.h>
 

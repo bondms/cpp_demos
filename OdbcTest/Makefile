@@ -75,7 +75,7 @@ $(TST_OBJ_FILES): $(INT_DIR)/%.o: $(TST_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DI
 $(TST_BIN_DIR)/OdbcTest : $(INT_DIR)/OdbcTest.o $(INT_DIR)/Odbc.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^ -lodbc
 
-$(TST_BIN_DIR)/RaiiHandleTest : $(INT_DIR)/RaiiHandleTest.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
+$(TST_BIN_DIR)/raii_handle_test : $(INT_DIR)/raii_handle_test.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
 $(TST_RESULTS) : $(INT_DIR)/%.passed: $(TST_BIN_DIR)/%
