@@ -11,11 +11,10 @@ namespace
     {
     };
 
-    template<typename Shuffler>
-    void test(int max)
+    template<int max, typename Shuffler>
+    void test(Shuffler & shuffler)
     {
         std::set<int> s{};
-        Shuffler shuffler(max);
         for(auto i = 0 ; i < (max * 2 + max / 2 + 1) ; ++i)
         {
             if ( 0 == i % (max + 1) )
@@ -29,20 +28,24 @@ namespace
 
 TEST_F(ShuffleTestFixture, Simple_Quick)
 {
-    test<Shuffle::Simple<int>>(9);
+    Shuffle::Simple<int> simple{9};
+    test<9>(simple);
 }
 
 TEST_F(ShuffleTestFixture, LowMem_Quick)
 {
-    test<Shuffle::LowMem<int>>(9);
+    Shuffle::LowMem<int, 9> lowMem{};
+    test<9>(lowMem);
 }
 
 TEST_F(ShuffleTestFixture, Simple_Slow)
 {
-    test<Shuffle::Simple<int>>(999'999);
+    Shuffle::Simple<int> simple{999'999};
+    test<999'999>(simple);
 }
 
 TEST_F(ShuffleTestFixture, LowMem_Slow)
 {
-    test<Shuffle::LowMem<int>>(999'999);
+    Shuffle::LowMem<int, 999'999> lowMem{};
+    test<999'999>(lowMem);
 }

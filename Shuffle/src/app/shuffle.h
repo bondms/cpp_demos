@@ -1,9 +1,10 @@
 #pragma once
 
 #include <algorithm>
-#include <cstdint>
+#include <bitset>
 #include <numeric>
 #include <random>
+#include <vector>
 
 namespace Shuffle
 {
@@ -33,21 +34,18 @@ namespace Shuffle
         }
     };
 
-    template<typename T>
+    template<typename T, std::size_t max>
     class LowMem
     {
         std::random_device rd_{};
-        const int max_;
+        std::bitset<max+1> bitset_{};
         int remaining_;
-        std::vector<std::uint8_t> v_;
         std::mt19937 eng_;
-        std::uniform_int_distribution<int> dist_;
+        std::uniform_int_distribution<T> dist_;
 
     public:
-        LowMem(int max) :
-            max_{max},
+        LowMem() :
             remaining_{max + 1},
-            v_((max+1) / 8 + 1, 0),
             eng_{rd_()},
             dist_{0, max}
         {
@@ -57,22 +55,18 @@ namespace Shuffle
         {
             if ( 0 == remaining_ )
             {
-                remaining_ = max_ + 1;
-                std::fill(v_.begin(), v_.end(), 0);
+                remaining_ = max + 1;
+                bitset_.reset();
             }
             --remaining_;
             while ( true )
             {
                 auto r = dist_(eng_);
-                auto byte_pos = r / 8;
-                auto & byte = v_[byte_pos];
-                auto bit_pos = r % 8;
-                auto bit_mask = 1 << bit_pos;
-                if ( 0 != (byte & bit_mask) )
+                if ( 0 != bitset_[r] )
                 {
                     continue;
                 }
-                byte |= bit_mask;
+                bitset_[r] = true;
                 return r;
             }
         }

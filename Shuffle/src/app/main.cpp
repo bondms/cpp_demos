@@ -6,9 +6,8 @@
 namespace
 {
     template<typename Shuffler>
-    void f()
+    void f(Shuffler & shuffler)
     {
-        Shuffler shuffler(9);
         for(auto i = 0 ; i < 25 ; ++i)
         {
             if ( 0 == i % 10 )
@@ -24,10 +23,12 @@ namespace
 int main()
 {
     std::cout << "Simple: ";
-    f<Shuffle::Simple<int>>();
+    Shuffle::Simple<int> simple{9};
+    f(simple);
 
     std::cout << "LowMem: ";
-    f<Shuffle::LowMem<int>>();
+    Shuffle::LowMem<int, 9> lowMem{};
+    f(lowMem);
 
     return EXIT_SUCCESS;
 }
