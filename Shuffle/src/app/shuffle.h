@@ -38,12 +38,16 @@ template<typename T>
 class LowMem
 {
     std::random_device rd_{};
+    const int max_;
+    int remaining_;
     std::vector<std::uint8_t> v_;
     std::mt19937 eng_;
     std::uniform_int_distribution<int> dist_;
 
 public:
     LowMem(int max) :
+        max_{max},
+        remaining_{max},
         v_(max / 8 + ( 0 == max % 8 ? 0 : 1 ), 0),
         eng_{rd_()},
         dist_{0, max}
@@ -52,6 +56,12 @@ public:
 
     T operator()()
     {
+        if ( 0 == remaining_ )
+        {
+            remaining_ = max_;
+            std::fill(v_.begin(), v_.end(), 0);
+        }
+        --remaining_;
         while ( true )
         {
             auto r = dist_(eng_);
