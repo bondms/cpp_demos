@@ -12,7 +12,30 @@ namespace
     };
 } // namespace
 
-TEST_F(ShuffleTestFixture, simple)
+TEST_F(ShuffleTestFixture, Simple)
 {
-    // FAIL() << "TODO(MarkBond): Implement";
+    std::set<int> s{};
+    Shuffle::Simple<int> simple(9);
+    for(auto i = 0 ; i < 25 ; ++i)
+    {
+        if ( 0 == i % 10 )
+        {
+            s.clear();
+        }
+        EXPECT_TRUE(s.insert(simple()).second);
+    }
+}
+
+TEST_F(ShuffleTestFixture, LowMem)
+{
+    std::set<int> s{};
+    Shuffle::LowMem<int> lowmem(9);
+    for(auto i = 0 ; i < 25 ; ++i)
+    {
+        if ( 0 == i % 10 )
+        {
+            s.clear();
+        }
+        EXPECT_TRUE(s.insert(lowmem()).second);
+    }
 }
