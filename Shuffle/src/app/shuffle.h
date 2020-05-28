@@ -22,7 +22,7 @@ namespace Shuffle
 
         T operator()()
         {
-            if( v_.empty() )
+            if ( v_.empty() )
             {
                 v_.resize(max_+1);
                 std::iota(v_.begin(), v_.end(), 0);
@@ -42,16 +42,14 @@ namespace Shuffle
     template<typename T, std::size_t max_>
     class LowMem
     {
-        std::random_device rd_{};
+        std::mt19937 rand_{std::random_device{}()};
         std::bitset<max_+1> bitset_{};
         int remaining_;
-        std::mt19937 eng_;
         std::uniform_int_distribution<T> dist_;
 
     public:
         LowMem() :
             remaining_{max_ + 1},
-            eng_{rd_()},
             dist_{0, max_}
         {
         }
@@ -66,7 +64,7 @@ namespace Shuffle
             --remaining_;
             while ( true )
             {
-                auto r = dist_(eng_);
+                auto r = dist_(rand_);
                 if ( 0 != bitset_[r] )
                 {
                     continue;
