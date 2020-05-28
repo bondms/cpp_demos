@@ -52,9 +52,24 @@ public:
 
     T operator()()
     {
-        auto r = dist_(eng_);
-        // TODO(MarkBond): Implement.
-        return r;
+        while ( true )
+        {
+            auto r = dist_(eng_);
+            auto byte_pos = r / 8;
+            auto byte = v_[byte_pos];
+            if ( 0xFF == byte )
+            {
+                continue;
+            }
+            auto bit_pos = r % 8;
+            if ( byte & (1 << bit_pos) )
+            {
+                continue;
+            }
+            byte |= (1 << bit_pos);
+            v_[byte_pos] = byte;
+            return r;
+        }
     }
 };
 
