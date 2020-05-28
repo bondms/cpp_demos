@@ -10,60 +10,39 @@ namespace
         public ::testing::Test
     {
     };
+
+    template<typename Shuffler>
+    void test(int max)
+    {
+        std::set<int> s{};
+        Shuffler shuffler(max);
+        for(auto i = 0 ; i < (max * 2 + max / 2 + 1) ; ++i)
+        {
+            if ( 0 == i % (max + 1) )
+            {
+                s.clear();
+            }
+            EXPECT_TRUE(s.insert(shuffler()).second);
+        }
+    }
 } // namespace
 
 TEST_F(ShuffleTestFixture, Simple_Quick)
 {
-    std::set<int> s{};
-    Shuffle::Simple<int> simple(9);
-    for(auto i = 0 ; i < 25 ; ++i)
-    {
-        if ( 0 == i % 10 )
-        {
-            s.clear();
-        }
-        EXPECT_TRUE(s.insert(simple()).second);
-    }
+    test<Shuffle::Simple<int>>(9);
 }
 
 TEST_F(ShuffleTestFixture, LowMem_Quick)
 {
-    std::set<int> s{};
-    Shuffle::LowMem<int> lowmem(9);
-    for(auto i = 0 ; i < 25 ; ++i)
-    {
-        if ( 0 == i % 10 )
-        {
-            s.clear();
-        }
-        EXPECT_TRUE(s.insert(lowmem()).second);
-    }
+    test<Shuffle::LowMem<int>>(9);
 }
 
 TEST_F(ShuffleTestFixture, Simple_Slow)
 {
-    std::set<int> s{};
-    Shuffle::Simple<int> simple(99'999);
-    for(auto i = 0 ; i < 250'000 ; ++i)
-    {
-        if ( 0 == i % 100'000 )
-        {
-            s.clear();
-        }
-        EXPECT_TRUE(s.insert(simple()).second);
-    }
+    test<Shuffle::Simple<int>>(99'999);
 }
 
 TEST_F(ShuffleTestFixture, LowMem_Slow)
 {
-    std::set<int> s{};
-    Shuffle::LowMem<int> lowmem(99'999);
-    for(auto i = 0 ; i < 250'000 ; ++i)
-    {
-        if ( 0 == i % 100'000 )
-        {
-            s.clear();
-        }
-        EXPECT_TRUE(s.insert(lowmem()).second);
-    }
+    test<Shuffle::LowMem<int>>(99'999);
 }
