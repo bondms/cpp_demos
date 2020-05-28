@@ -66,18 +66,18 @@ public:
         {
             auto r = dist_(eng_);
             auto byte_pos = r / 8;
-            auto byte = v_[byte_pos];
+            auto & byte = v_[byte_pos];
             if ( 0xFF == byte )
             {
                 continue;
             }
             auto bit_pos = r % 8;
-            if ( byte & (1 << bit_pos) )
+            auto bit_mask = 1 << bit_pos;
+            if ( byte & bit_mask )
             {
                 continue;
             }
-            byte |= (1 << bit_pos);
-            v_[byte_pos] = byte;
+            byte |= bit_mask;
             return r;
         }
     }
