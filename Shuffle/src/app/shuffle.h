@@ -12,10 +12,10 @@ namespace Shuffle
     class Simple
     {
         std::vector<T> v_{};
-        const std::size_t max_;
+        const T max_;
 
     public:
-        Simple(std::size_t max) :
+        Simple(T max) :
             max_{max}
         {
         }
@@ -32,22 +32,27 @@ namespace Shuffle
             v_.pop_back();
             return result;
         }
+
+        T max() const
+        {
+            return max_;
+        }
     };
 
-    template<typename T, std::size_t max>
+    template<typename T, std::size_t max_>
     class LowMem
     {
         std::random_device rd_{};
-        std::bitset<max+1> bitset_{};
+        std::bitset<max_+1> bitset_{};
         int remaining_;
         std::mt19937 eng_;
         std::uniform_int_distribution<T> dist_;
 
     public:
         LowMem() :
-            remaining_{max + 1},
+            remaining_{max_ + 1},
             eng_{rd_()},
-            dist_{0, max}
+            dist_{0, max_}
         {
         }
 
@@ -55,7 +60,7 @@ namespace Shuffle
         {
             if ( 0 == remaining_ )
             {
-                remaining_ = max + 1;
+                remaining_ = max_ + 1;
                 bitset_.reset();
             }
             --remaining_;
@@ -69,6 +74,11 @@ namespace Shuffle
                 bitset_[r] = true;
                 return r;
             }
+        }
+
+        constexpr T max() const
+        {
+            return max_;
         }
     };
 } // namespace Shuffle

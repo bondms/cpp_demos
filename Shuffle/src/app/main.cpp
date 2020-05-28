@@ -8,9 +8,10 @@ namespace
     template<typename Shuffler>
     void f(Shuffler & shuffler)
     {
-        for(auto i = 0 ; i < 25 ; ++i)
+        auto max = shuffler.max();
+        for(auto i = 0 ; i < (max * 2 + max / 2 + 1) ; ++i)
         {
-            if ( 0 == i % 10 )
+            if ( 0 == i % (max + 1) )
             {
                 std::cout << '\n';
             }
