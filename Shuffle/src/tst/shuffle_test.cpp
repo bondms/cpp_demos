@@ -26,25 +26,13 @@ namespace
     }
 } // namespace
 
-TEST_F(ShuffleTestFixture, Simple_Quick)
-{
-    Shuffle::Simple<int> simple{9};
-    test<9>(simple);
-}
-
-TEST_F(ShuffleTestFixture, LowMem_Quick)
-{
-    Shuffle::LowMem<int, 9> lowMem{};
-    test<9>(lowMem);
-}
-
-TEST_F(ShuffleTestFixture, Simple_Slow)
+TEST_F(ShuffleTestFixture, Simple)
 {
     Shuffle::Simple<int> simple{999'999};
     test<999'999>(simple);
 }
 
-TEST_F(ShuffleTestFixture, LowMem_Slow)
+TEST_F(ShuffleTestFixture, LowMem)
 {
     Shuffle::LowMem<int, 999'999> lowMem{};
     test<999'999>(lowMem);
