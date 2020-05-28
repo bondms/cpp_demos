@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cstdint>
 #include <numeric>
 #include <random>
 
@@ -17,10 +18,6 @@ public:
     Simple(std::size_t max) :
         max_{max}
     {
-        if(0 == max_)
-        {
-            throw std::runtime_error{"Invalid size"};
-        }
     }
 
     T operator()()
@@ -34,6 +31,25 @@ public:
         auto result = v_.back();
         v_.pop_back();
         return result;
+    }
+};
+
+template<typename T>
+class LowMem
+{
+    const std::size_t max_;
+    std::vector<std::uint8_t> v_{};
+
+public:
+    LowMem(std::size_t max) :
+        max_{max}
+    {
+    }
+
+    T operator()()
+    {
+        // TODO(MarkBond): Implement.
+        return 0;
     }
 };
 

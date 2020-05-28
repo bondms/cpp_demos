@@ -9,13 +9,25 @@ int main()
     Shuffle::Simple<int> simple(9);
     for(auto i = 0 ; i < 25 ; ++i)
     {
-        if (0==i%10)
+        if ( 0 == i % 10 )
         {
-            std::cout << std::endl;
+            std::cout << '\n';
         }
         std::cout << simple() << ", ";
     }
-    std::cout << std::endl;
+    std::cout << "\n\n";
+
+    std::cout << "LowMem: ";
+    Shuffle::LowMem<int> lowmem(9);
+    for(auto i = 0 ; i < 25 ; ++i)
+    {
+        if ( 0 == i % 10 )
+        {
+            std::cout << '\n';
+        }
+        std::cout << lowmem() << ", ";
+    }
+    std::cout << "\n\n";
 
     return EXIT_SUCCESS;
 }
