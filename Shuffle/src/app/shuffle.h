@@ -58,7 +58,7 @@ public:
     {
         if ( 0 == remaining_ )
         {
-            remaining_ = max_;
+            remaining_ = max_ + 1;
             std::fill(v_.begin(), v_.end(), 0);
         }
         --remaining_;
