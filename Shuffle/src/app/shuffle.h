@@ -11,8 +11,8 @@ namespace Shuffle
 template<typename T>
 class Simple
 {
-    const std::size_t max_;
     std::vector<T> v_{};
+    const std::size_t max_;
 
 public:
     Simple(std::size_t max) :
@@ -37,19 +37,24 @@ public:
 template<typename T>
 class LowMem
 {
-    const std::size_t max_;
-    std::vector<std::uint8_t> v_{};
+    std::random_device rd_{};
+    std::vector<std::uint8_t> v_;
+    std::mt19937 eng_;
+    std::uniform_int_distribution<int> dist_;
 
 public:
-    LowMem(std::size_t max) :
-        max_{max}
+    LowMem(int max) :
+        v_(max / 8 + ( 0 == max % 8 ? 0 : 1 ), 0),
+        eng_{rd_()},
+        dist_{0, max}
     {
     }
 
     T operator()()
     {
+        auto r = dist_(eng_);
         // TODO(MarkBond): Implement.
-        return 0;
+        return r;
     }
 };
 
