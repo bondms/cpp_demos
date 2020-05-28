@@ -5,7 +5,6 @@
 
 namespace
 {
-
     template<typename Shuffler>
     void f()
     {
@@ -20,7 +19,6 @@ namespace
         }
         std::cout << "\n\n";
     }
-
 } // namespace
 
 int main()

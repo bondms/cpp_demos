@@ -7,76 +7,74 @@
 
 namespace Shuffle
 {
-
-template<typename T>
-class Simple
-{
-    std::vector<T> v_{};
-    const std::size_t max_;
-
-public:
-    Simple(std::size_t max) :
-        max_{max}
+    template<typename T>
+    class Simple
     {
-    }
+        std::vector<T> v_{};
+        const std::size_t max_;
 
-    T operator()()
-    {
-        if( v_.empty() )
+    public:
+        Simple(std::size_t max) :
+            max_{max}
         {
-            v_.resize(max_+1);
-            std::iota(v_.begin(), v_.end(), 0);
-            std::random_shuffle(v_.begin(), v_.end());
         }
-        auto result = v_.back();
-        v_.pop_back();
-        return result;
-    }
-};
 
-template<typename T>
-class LowMem
-{
-    std::random_device rd_{};
-    const int max_;
-    int remaining_;
-    std::vector<std::uint8_t> v_;
-    std::mt19937 eng_;
-    std::uniform_int_distribution<int> dist_;
-
-public:
-    LowMem(int max) :
-        max_{max},
-        remaining_{max + 1},
-        v_((max+1) / 8 + 1, 0),
-        eng_{rd_()},
-        dist_{0, max}
-    {
-    }
-
-    T operator()()
-    {
-        if ( 0 == remaining_ )
+        T operator()()
         {
-            remaining_ = max_ + 1;
-            std::fill(v_.begin(), v_.end(), 0);
-        }
-        --remaining_;
-        while ( true )
-        {
-            auto r = dist_(eng_);
-            auto byte_pos = r / 8;
-            auto & byte = v_[byte_pos];
-            auto bit_pos = r % 8;
-            auto bit_mask = 1 << bit_pos;
-            if ( 0 != (byte & bit_mask) )
+            if( v_.empty() )
             {
-                continue;
+                v_.resize(max_+1);
+                std::iota(v_.begin(), v_.end(), 0);
+                std::random_shuffle(v_.begin(), v_.end());
             }
-            byte |= bit_mask;
-            return r;
+            auto result = v_.back();
+            v_.pop_back();
+            return result;
         }
-    }
-};
+    };
 
+    template<typename T>
+    class LowMem
+    {
+        std::random_device rd_{};
+        const int max_;
+        int remaining_;
+        std::vector<std::uint8_t> v_;
+        std::mt19937 eng_;
+        std::uniform_int_distribution<int> dist_;
+
+    public:
+        LowMem(int max) :
+            max_{max},
+            remaining_{max + 1},
+            v_((max+1) / 8 + 1, 0),
+            eng_{rd_()},
+            dist_{0, max}
+        {
+        }
+
+        T operator()()
+        {
+            if ( 0 == remaining_ )
+            {
+                remaining_ = max_ + 1;
+                std::fill(v_.begin(), v_.end(), 0);
+            }
+            --remaining_;
+            while ( true )
+            {
+                auto r = dist_(eng_);
+                auto byte_pos = r / 8;
+                auto & byte = v_[byte_pos];
+                auto bit_pos = r % 8;
+                auto bit_mask = 1 << bit_pos;
+                if ( 0 != (byte & bit_mask) )
+                {
+                    continue;
+                }
+                byte |= bit_mask;
+                return r;
+            }
+        }
+    };
 } // namespace Shuffle

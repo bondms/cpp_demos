@@ -39,10 +39,10 @@ TEST_F(ShuffleTestFixture, LowMem_Quick)
 
 TEST_F(ShuffleTestFixture, Simple_Slow)
 {
-    test<Shuffle::Simple<int>>(99'999);
+    test<Shuffle::Simple<int>>(999'999);
 }
 
 TEST_F(ShuffleTestFixture, LowMem_Slow)
 {
-    test<Shuffle::LowMem<int>>(99'999);
+    test<Shuffle::LowMem<int>>(999'999);
 }
