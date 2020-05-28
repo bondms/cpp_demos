@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <bitset>
+#include <limits>
 #include <numeric>
 #include <random>
 #include <vector>
@@ -39,12 +40,13 @@ namespace Shuffle
         }
     };
 
-    template<typename T, std::size_t max_>
+    template<typename T, T max_>
     class LowMem
     {
+        static_assert(max_ < std::numeric_limits<decltype(max_)>::max());
         std::mt19937 rand_{std::random_device{}()};
         std::bitset<max_+1> bitset_{};
-        int remaining_;
+        T remaining_;
         std::uniform_int_distribution<T> dist_;
 
     public:
