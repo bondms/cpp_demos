@@ -47,7 +47,7 @@ class LowMem
 public:
     LowMem(int max) :
         max_{max},
-        remaining_{max},
+        remaining_{max + 1},
         v_(max / 8 + 1, 0),
         eng_{rd_()},
         dist_{0, max}
@@ -69,7 +69,7 @@ public:
             auto & byte = v_[byte_pos];
             auto bit_pos = r % 8;
             auto bit_mask = 1 << bit_pos;
-            if ( 0 != byte & bit_mask )
+            if ( 0 != (byte & bit_mask) )
             {
                 continue;
             }
