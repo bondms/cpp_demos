@@ -48,7 +48,7 @@ public:
     LowMem(int max) :
         max_{max},
         remaining_{max},
-        v_(max / 8 + ( 0 == max % 8 ? 0 : 1 ), 0),
+        v_(max / 8 + 1, 0),
         eng_{rd_()},
         dist_{0, max}
     {
@@ -67,13 +67,9 @@ public:
             auto r = dist_(eng_);
             auto byte_pos = r / 8;
             auto & byte = v_[byte_pos];
-            if ( 0xFF == byte )
-            {
-                continue;
-            }
             auto bit_pos = r % 8;
             auto bit_mask = 1 << bit_pos;
-            if ( byte & bit_mask )
+            if ( 0 != byte & bit_mask )
             {
                 continue;
             }
