@@ -48,7 +48,7 @@ public:
     LowMem(int max) :
         max_{max},
         remaining_{max + 1},
-        v_(max / 8 + 1, 0),
+        v_((max+1) / 8 + 1, 0),
         eng_{rd_()},
         dist_{0, max}
     {
