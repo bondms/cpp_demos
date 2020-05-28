@@ -28,6 +28,9 @@ Uses a parameterized gtest unit test.
 # SharedPtr
 Example usage of C++ std::shared_ptr.
 
+# Shuffle
+Non-repeating pseudo-random-number generation.
+
 # VariableLengthIntegerProtocol
 Variable-length integer protocol with leading bit indicators for length (number of bytes).
 Uses a parameterized gtest unit test.
