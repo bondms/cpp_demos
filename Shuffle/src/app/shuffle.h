@@ -23,7 +23,7 @@ namespace Shuffle
         {
             if ( (max < 0) || (max >= std::numeric_limits<size_type>::max()) )
             {
-                throw std::logic_error{"Negative max"};
+                throw std::logic_error{"Invalid max"};
             }
         }
 
