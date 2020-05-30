@@ -19,6 +19,10 @@ namespace Shuffle
         Simple(T max) :
             max_{max}
         {
+            if ( max < 0 )
+            {
+                throw std::logic_error{"Negative max"};
+            }
         }
 
         T operator()()

@@ -31,9 +31,5 @@ int main()
     Shuffle::LowMem<int, 9> lowMem{};
     f(lowMem);
 
-    std::cout << "LowMemZero: ";
-    Shuffle::LowMem<int, 0> lowMemZero{};
-    f(lowMemZero);
-
     return EXIT_SUCCESS;
 }
