@@ -16,7 +16,7 @@ namespace
     {
         auto max = shuffler.max();
         std::set<int> s{};
-        for(auto i = 0 ; i < (max * 2 + max / 2 + 1) ; ++i)
+        for ( auto i = 0 ; i < (max * 2 + max / 2 + 1) ; ++i )
         {
             if ( 0 == i % (max + 1) )
             {

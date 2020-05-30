@@ -9,7 +9,7 @@ namespace
     void f(Shuffler & shuffler)
     {
         auto max = shuffler.max();
-        for(auto i = 0 ; i < (max * 2 + max / 2 + 1) ; ++i)
+        for ( auto i = 0 ; i < (max * 2 + max / 2 + 1) ; ++i )
         {
             if ( 0 == i % (max + 1) )
             {
