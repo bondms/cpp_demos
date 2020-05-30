@@ -43,8 +43,7 @@ namespace Shuffle
     template<typename T, T N>
     class LowMem
     {
-        static_assert(N < std::numeric_limits<std::size_t>::max());
-        static_assert(N >= 0);
+        static_assert((N >= 0) && (N < std::numeric_limits<std::size_t>::max()));
         std::mt19937 rand_{std::random_device{}()};
         std::bitset<N + 1> bitset_{};
         std::size_t remaining_;
