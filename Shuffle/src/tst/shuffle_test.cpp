@@ -27,14 +27,20 @@ namespace
     }
 } // namespace
 
-TEST_F(ShuffleTestFixture, Simple)
+TEST_F(ShuffleTestFixture, Simple_ShuffleMillion)
 {
     Shuffle::Simple<int> simple{999'999};
     test(simple);
 }
 
-TEST_F(ShuffleTestFixture, LowMem)
+TEST_F(ShuffleTestFixture, LowMem_ShuffleMillion)
 {
     Shuffle::LowMem<int, 999'999> lowMem{};
+    test(lowMem);
+}
+
+TEST_F(ShuffleTestFixture, LowMem_FullRangeOfType)
+{
+    Shuffle::LowMem<std::uint8_t, std::numeric_limits<std::uint8_t>::max()> lowMem{};
     test(lowMem);
 }
