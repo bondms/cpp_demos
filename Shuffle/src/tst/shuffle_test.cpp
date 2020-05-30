@@ -33,6 +33,12 @@ TEST_F(ShuffleTestFixture, Simple_ShuffleMillion)
     test(shuffler);
 }
 
+TEST_F(ShuffleTestFixture, Simple_FullRangeOfType)
+{
+    Shuffle::Simple<std::uint8_t> shuffler{std::numeric_limits<std::uint8_t>::max()};
+    test(shuffler);
+}
+
 TEST_F(ShuffleTestFixture, Simple_Zero)
 {
     Shuffle::Simple<int> shuffler{0};
@@ -42,7 +48,13 @@ TEST_F(ShuffleTestFixture, Simple_Zero)
 
 TEST_F(ShuffleTestFixture, Simple_Negative)
 {
-    EXPECT_THROW(Shuffle::Simple<int>{-1}, std::logic_error);
+    EXPECT_THROW(Shuffle::Simple<int>{static_cast<std::vector<int>::size_type>(-1)}, std::logic_error);
+}
+
+TEST_F(ShuffleTestFixture, Simple_MaxLimit)
+{
+    EXPECT_THROW(Shuffle::Simple<std::size_t>{std::numeric_limits<std::size_t>::max()}, std::logic_error);
+    EXPECT_NO_THROW(Shuffle::Simple<std::size_t>{std::numeric_limits<std::size_t>::max() - 1});
 }
 
 TEST_F(ShuffleTestFixture, LowMem_ShuffleMillion)
@@ -62,4 +74,9 @@ TEST_F(ShuffleTestFixture, LowMem_Zero)
     Shuffle::LowMem<int, 0> shuffler{};
     EXPECT_EQ(0, shuffler());
     EXPECT_EQ(0, shuffler());
+}
+
+TEST_F(ShuffleTestFixture, LowMem_MaxLimit)
+{
+    EXPECT_NO_THROW(Shuffle::Simple<std::size_t>{std::numeric_limits<std::size_t>::max() - 1});
 }

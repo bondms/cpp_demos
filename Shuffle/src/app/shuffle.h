@@ -12,14 +12,16 @@ namespace Shuffle
     template<typename T>
     class Simple
     {
-        std::vector<T> v_{};
-        const T max_;
+        using vec = std::vector<T>;
+        using size_type = typename vec::size_type;
+        vec v_{};
+        const size_type max_;
 
     public:
-        Simple(T max) :
+        Simple(typename std::vector<T>::size_type max) :
             max_{max}
         {
-            if ( max < 0 )
+            if ( (max < 0) || (max >= std::numeric_limits<size_type>::max()) )
             {
                 throw std::logic_error{"Negative max"};
             }
@@ -29,7 +31,7 @@ namespace Shuffle
         {
             if ( v_.empty() )
             {
-                v_.resize(max_+1);
+                v_.resize(max_ + 1);
                 std::iota(v_.begin(), v_.end(), 0);
                 std::random_shuffle(v_.begin(), v_.end());
             }
