@@ -40,19 +40,19 @@ namespace Shuffle
         }
     };
 
-    template<typename T, T max_>
+    template<typename T, T N>
     class LowMem
     {
-        static_assert(max_ < std::numeric_limits<decltype(max_)>::max());
+        static_assert(N < std::numeric_limits<std::size_t>::max());
         std::mt19937 rand_{std::random_device{}()};
-        std::bitset<max_+1> bitset_{};
-        T remaining_;
+        std::bitset<N + 1> bitset_{};
+        std::size_t remaining_;
         std::uniform_int_distribution<T> dist_;
 
     public:
         LowMem() :
-            remaining_{max_ + 1},
-            dist_{0, max_}
+            remaining_{N + 1},
+            dist_{0, N}
         {
         }
 
@@ -60,7 +60,7 @@ namespace Shuffle
         {
             if ( 0 == remaining_ )
             {
-                remaining_ = max_ + 1;
+                remaining_ = N + 1;
                 bitset_.reset();
             }
             --remaining_;
@@ -78,7 +78,7 @@ namespace Shuffle
 
         constexpr T max() const
         {
-            return max_;
+            return N;
         }
     };
 } // namespace Shuffle
