@@ -36,3 +36,8 @@ done
     python -- "${HERE}/thirdparty/src/jsoncpp/amalgamate.py" || exit $?
     popd || exit $?
 )
+
+
+### ODBC ###
+
+[[ -e /usr/include/sql.h ]] || sudo apt install unixodbc-dev || exit $?
