@@ -18,7 +18,7 @@ Example use of jsoncpp library.
 # Logger
 In progress: General purpose file logger with log-file rotation.
 
-# ODBC test
+# OdbcTest
 Thin C++ around ODBC.
 
 # Realign
