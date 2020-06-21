@@ -13,10 +13,10 @@ jobs:
 
     steps:
     - name: Checkout
-    - uses: actions/checkout@v2
+      uses: actions/checkout@v2
 
     - name: Prepare third-party dependencies
-    - run: ./thirdparty.sh
+      run: ./thirdparty.sh
 
     - name: Build and test
-    - run: ./build_all.sh
+      run: ./build_all.sh
