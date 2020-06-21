@@ -1,5 +1,5 @@
 ![CI](https://github.com/bondms/CppDemos/workflows/CI/badge.svg)
-![Lint Code Base](https://github.com/bondms/CppDemos/workflows/Lint%20Code%20Base/badge.svg)
+![Super-Linter](https://github.com/bondms/CppDemos/workflows/Super-Linter/badge.svg)
 
 # BinarySearch
 Example self-implemented binary search with parameterized tests.

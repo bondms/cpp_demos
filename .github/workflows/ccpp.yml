@@ -12,8 +12,11 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+    - name: Checkout
     - uses: actions/checkout@v2
-    - name: prep_third_party
-      run: ./thirdparty.sh
-    - name: build_and_test
-      run: ./build_all.sh
+
+    - name: Prepare third-party dependencies
+    - run: ./thirdparty.sh
+
+    - name: Build and test
+    - run: ./build_all.sh
