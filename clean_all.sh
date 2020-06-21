@@ -9,7 +9,7 @@ set -u
 HERE="$(readlink -f "$(dirname "$0")")"
 [[ -d "${HERE}" ]] || exit $?
 
-find "${HERE}" -maxdepth 2 -mindepth 2 -name Makefile -type f -print0 | bash -c "
+find ${HERE} -maxdepth 2 -mindepth 2 -name Makefile -type f -print0 | bash -c "
     while read -r -d $'\0' F
     do
       echo Processing Makefile \"\$F\"
