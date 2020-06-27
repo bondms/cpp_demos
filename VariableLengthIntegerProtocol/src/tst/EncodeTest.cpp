@@ -6,9 +6,9 @@ namespace
 {
     struct Parameters
     {
-        Parameters(size_t input, std::vector<uint8_t> expected) :
-            input{input},
-            expected{expected}
+        Parameters(size_t _input, std::vector<uint8_t> _expected) :
+            input{_input},
+            expected{_expected}
         {
         }
 
