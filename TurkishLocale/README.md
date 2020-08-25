@@ -9,3 +9,6 @@ Care is required for case conversion. Normally, converting "C:\Windows" to upper
 
 ## Determine which locales are available
 `locale -a`
+
+## Reference(s)
+https://www.thomas-krenn.com/en/wiki/Configure_Locales_in_Ubuntu
