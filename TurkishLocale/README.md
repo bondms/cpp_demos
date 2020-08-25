@@ -6,3 +6,6 @@ Care is required for case conversion. Normally, converting "C:\Windows" to upper
 
 ## Install the Turkish language pack
 `sudo apt install language-pack-tr`
+
+## Determine which locales are available
+`locale -a`

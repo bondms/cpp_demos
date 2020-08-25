@@ -44,6 +44,7 @@ namespace
     constexpr const char* locale_names[]
     {
         "C",
+        "en_GB.utf8",
         "tr_TR.utf8",
     };
 }
