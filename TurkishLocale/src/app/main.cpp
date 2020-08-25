@@ -53,9 +53,33 @@ int main()
 {
     try
     {
+        std::cout << "Current C locale\n";
+        for (const auto from : test_characters)
+        {
+            const auto to{ std::towupper(from) };
+            std::cout
+                << "From " << as_string(from)
+                << " to " << as_string(to)
+                << '\n';
+        }
+
         for (const auto& locale_name : locale_names)
         {
-            std::cout << "Locale: " << locale_name << '\n';
+            std::cout << "Locale set globally: " << locale_name << '\n';
+            std::setlocale(LC_ALL, locale_name);
+            for (const auto from : test_characters)
+            {
+                const auto to{ std::towupper(from) };
+                std::cout
+                    << "From " << as_string(from)
+                    << " to " << as_string(to)
+                    << '\n';
+            }
+        }
+
+        for (const auto& locale_name : locale_names)
+        {
+            std::cout << "Locale specified in toupper: " << locale_name << '\n';
             std::locale locale{ locale_name };
 
             for (const auto from : test_characters)
