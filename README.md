@@ -36,6 +36,9 @@ Example usage of C++ std::shared_ptr.
 ## Shuffle
 Non-repeating pseudo-random-number generation.
 
+## TurkishLocale
+Investigate the infamouse Turkish 'i' case conversion issue.
+
 ## VariableLengthIntegerProtocol
 Variable-length integer protocol with leading bit indicators for length (number of bytes).
 Uses a parameterized gtest unit test.
