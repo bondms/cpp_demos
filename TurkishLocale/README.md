@@ -10,5 +10,12 @@ Care is required for case conversion. Normally, converting "C:\Windows" to upper
 ## Determine which locales are available
 `locale -a`
 
+## Environment
+From https://en.cppreference.com/w/cpp/locale/setlocale
+
+> During program startup, the equivalent of std::setlocale(LC_ALL, "C"); is executed before any user code is run.
+
+So, the locale of the environment should not affect program behaviour.
+
 ## Reference(s)
 https://www.thomas-krenn.com/en/wiki/Configure_Locales_in_Ubuntu
