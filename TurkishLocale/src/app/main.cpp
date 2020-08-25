@@ -4,6 +4,9 @@
 
 namespace
 {
+    // Cannot use non-wide characters since toupper works on single characters
+    // and UTF-8 requires two chars to represent a single character for the
+    // special characters.
     constexpr auto dotted_lowercase{ 'i' };
     // constexpr auto dotted_uppercase{ '\xc4\xb0' };
     // constexpr auto dotless_lowercase{ '\xc4\xb1' };
@@ -13,17 +16,55 @@ namespace
     constexpr auto dotted_uppercase_w{ L'\u0130' };
     constexpr auto dotless_lowercase_w{ L'\u0131' };
     constexpr auto dotless_uppercase_w{ L'I' };
+
+    auto as_string(wchar_t ch)
+    {
+        switch(ch)
+        {
+            case dotted_lowercase_w:
+                return "Dotted lowercase";
+            case dotted_uppercase_w:
+                return "Dotted uppercase";
+            case dotless_lowercase_w:
+                return "Dotless lowercase";
+            case dotless_uppercase_w:
+                return "Dotless uppercase";
+        }
+        return "Unrecognised";
+    }
+
+    constexpr wchar_t test_characters[]
+    {
+        dotted_lowercase_w,
+        dotted_uppercase_w,
+        dotless_lowercase_w,
+        dotless_uppercase_w,
+    };
+
+    constexpr const char* locale_names[]
+    {
+        "C",
+        "tr_TR.utf8",
+    };
 }
 
 int main()
 {
     try
     {
-        const auto from{ dotless_lowercase_w };
-        const auto to{ std::toupper(from, std::locale("tr_TR.utf8")) };
-        if (dotless_uppercase_w != to)
+        for (const auto& locale_name : locale_names)
         {
-            throw std::runtime_error{ "Unexpected result" };
+            std::cout << "Locale: " << locale_name << '\n';
+            std::locale locale{ locale_name };
+
+            for (const auto from : test_characters)
+            {
+                const auto to{ std::toupper(from, locale) };
+                std::cout
+                    << "From " << as_string(from)
+                    << " to " << as_string(to)
+                    << '\n';
+            }
         }
 
         std::cout << "Success" << std::endl;
