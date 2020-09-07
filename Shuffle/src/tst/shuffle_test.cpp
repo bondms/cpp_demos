@@ -9,7 +9,7 @@ namespace
     template<typename Shuffler>
     void test(Shuffler & shuffler)
     {
-        auto max = shuffler.max();
+        const auto max = shuffler.max();
         std::set<std::int32_t> s{};
         for ( auto i = 0 ; i < (max * 2 + max / 2 + 1) ; ++i )
         {

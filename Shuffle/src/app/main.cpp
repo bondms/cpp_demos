@@ -8,7 +8,7 @@ namespace
     template<typename Shuffler>
     void f(Shuffler & shuffler)
     {
-        auto max = shuffler.max();
+        const auto max = shuffler.max();
         for ( auto i = 0 ; i < (max * 2 + max / 2 + 1) ; ++i )
         {
             if ( 0 == i % (max + 1) )
