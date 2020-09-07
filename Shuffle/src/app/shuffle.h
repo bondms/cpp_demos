@@ -52,16 +52,10 @@ namespace Shuffle
         static_assert((N >= 0) && (N < std::numeric_limits<std::size_t>::max()));
         std::mt19937 rand_{std::random_device{}()};
         std::bitset<N + 1> bitset_{};
-        std::size_t remaining_;
-        std::uniform_int_distribution<T> dist_;
+        std::size_t remaining_{N + 1};
+        std::uniform_int_distribution<T> dist_{0, N};
 
     public:
-        LowMem() :
-            remaining_{N + 1},
-            dist_{0, N}
-        {
-        }
-
         T operator()()
         {
             if ( 0 == remaining_ )
