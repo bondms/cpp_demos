@@ -10,7 +10,7 @@ namespace
     void test(Shuffler & shuffler)
     {
         const auto max = shuffler.max();
-        std::set<std::int32_t> s{};
+        std::set<std::int_least32_t> s{};
         for ( std::int_fast32_t i = 0 ; i < (max * 2 + max / 2 + 1) ; ++i )
         {
             if ( 0 == i % (max + 1) )
@@ -24,7 +24,7 @@ namespace
 
 TEST(ShuffleTest, Simple_ShuffleMillion)
 {
-    Shuffle::Simple<std::int32_t> shuffler{999'999};
+    Shuffle::Simple<std::int_least32_t> shuffler{999'999};
     test(shuffler);
 }
 
@@ -54,7 +54,7 @@ TEST(ShuffleTest, Simple_MaxLimit)
 
 TEST(ShuffleTest, LowMem_ShuffleMillion)
 {
-    Shuffle::LowMem<std::int32_t, 999'999> shuffler{};
+    Shuffle::LowMem<std::int_least32_t, 999'999> shuffler{};
     test(shuffler);
 }
 
