@@ -9,6 +9,7 @@ set -u
 HERE="$(readlink -f "$(dirname "$0")")"
 [[ -d "${HERE}" ]] || exit $?
 
+# Build Makefile project(s_.
 find "${HERE}" -maxdepth 2 -mindepth 2 -name Makefile -type f -print0 | bash -c "
     while read -r -d $'\0' F
     do
@@ -18,4 +19,8 @@ find "${HERE}" -maxdepth 2 -mindepth 2 -name Makefile -type f -print0 | bash -c 
       pwd
       make || exit \$?
       popd > /dev/null || exit \$?
-    done"
+    done" || exit $?
+
+# Build Bazel project(s).
+bazel build //... || exit $?
+bazel test //... || exit $?
