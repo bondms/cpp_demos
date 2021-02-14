@@ -1,4 +1,4 @@
-#include "notifier.h"
+#include "lib/notifier.h"
 
 Notifier::Notifier(std::ostream & os) :
     os_{os}

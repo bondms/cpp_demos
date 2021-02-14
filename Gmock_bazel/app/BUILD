@@ -7,5 +7,6 @@ cc_binary(
     ],
     deps = [
         "//Gmock_bazel/lib:account",
+        "//Gmock_bazel/lib:notifier",
     ],
 )
