@@ -11,6 +11,7 @@ Example self-implemented binary search with parameterized tests.
 
 Supported build system(s):
 * Makefile
+* Bazel
 
 ## ConsumerProducer
 
