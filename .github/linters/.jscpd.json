@@ -5,8 +5,8 @@
     ],
     "ignore": [
       "**/__snapshots__/**",
-      "*_test.cpp",
-      "*Test.cpp"
+      "**/*_test.cpp",
+      "**/*Test.cpp"
     ],
     "absolute": true
   }
