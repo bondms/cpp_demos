@@ -17,6 +17,9 @@ Example implementation of an Event synchronisation object using C++ std::conditi
 ## Gmock
 Example use of Google's gmock framework.
 
+## Gmock_bazel
+As per Gmock, but using Bazel build system rather than Makefile.
+
 ## Jsoncpp
 Example use of jsoncpp library.
 
