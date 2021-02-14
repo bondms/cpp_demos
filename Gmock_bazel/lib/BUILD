@@ -9,7 +9,7 @@ cc_library(
         "account.h",
         "notifier_interface.h",
     ],
-    visibility = ["//Gmock_bazel:__subpackages__"],
+    visibility = ["//:__subpackages__"],
 )
 
 cc_library(
@@ -21,5 +21,5 @@ cc_library(
     hdrs = [
         "notifier.h",
     ],
-    visibility = ["//Gmock_bazel:__subpackages__"],
+    visibility = ["//:__subpackages__"],
 )
