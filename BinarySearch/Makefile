@@ -8,9 +8,8 @@
 %: s.%
 %: SCCS/s.%
 
-SRC_DIR = src
-APP_SRC_DIR = $(SRC_DIR)/app
-TST_SRC_DIR = $(SRC_DIR)/tst
+APP_SRC_DIR = app
+TST_SRC_DIR = tst
 
 INT_DIR = int
 
@@ -30,7 +29,7 @@ TST_DEP_FILES := $(TST_CPP_FILES:$(TST_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
 TST_BIN_TARGETS = $(TST_CPP_FILES:$(TST_SRC_DIR)/%.cpp=$(TST_BIN_DIR)/%)
 TST_RESULTS = $(TST_CPP_FILES:$(TST_SRC_DIR)/%.cpp=$(INT_DIR)/%.passed)
 
-DEP_FLAGS = -MT $@ -MMD -MP -MF $(INT_DIR)/$*.d
+DEP_FLAGS = -MT $@ -MMD -MP -MF $(INT_DIR)/$*.d -iquote "."
 STD_FLAGS = --std=c++17 -pthread -fno-rtti
 WARN_FLAGS = -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wpedantic -Werror
 

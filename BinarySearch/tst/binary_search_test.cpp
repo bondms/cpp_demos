@@ -1,4 +1,4 @@
-#include "../app/binary_search.h"
+#include "lib/binary_search.h"
 
 #include <gtest/gtest.h>
 

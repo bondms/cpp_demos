@@ -1,4 +1,4 @@
-#include "binary_search.h"
+#include "lib/binary_search.h"
 
 #include <cstdlib>
 #include <iostream>
