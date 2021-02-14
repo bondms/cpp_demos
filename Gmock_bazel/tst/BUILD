@@ -5,9 +5,9 @@ cc_test(
     srcs = [
         "account_test.cpp",
     ],
-    # copts = ["-Iexternal/gtest/include"],
+    copts = ["-Iexternal/gmock/include"],
     deps = [
-        # "@gtest//:main",
+        "@googletest//:gtest_main",
         "//lib:account",
     ],
 )
@@ -17,9 +17,9 @@ cc_test(
     srcs = [
         "notifier_test.cpp",
     ],
-    # copts = ["-Iexternal/gtest/include"],
+    copts = ["-Iexternal/gmock/include"],
     deps = [
-        # "@gtest//:main",
+        "@googletest//:gtest_main",
         "//lib:notifier",
     ],
 )
