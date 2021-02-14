@@ -6,7 +6,7 @@ cc_binary(
         "application.cpp",
     ],
     deps = [
-        "//Gmock_bazel/lib:account",
-        "//Gmock_bazel/lib:notifier",
+        "//lib:account",
+        "//lib:notifier",
     ],
 )

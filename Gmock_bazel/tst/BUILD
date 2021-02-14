@@ -8,7 +8,7 @@ cc_test(
     # copts = ["-Iexternal/gtest/include"],
     deps = [
         # "@gtest//:main",
-        "//Gmock_bazel/lib:account",
+        "//lib:account",
     ],
 )
 
@@ -20,6 +20,6 @@ cc_test(
     # copts = ["-Iexternal/gtest/include"],
     deps = [
         # "@gtest//:main",
-        "//Gmock_bazel/lib:notifier",
+        "//lib:notifier",
     ],
 )
