@@ -74,7 +74,7 @@ $(APP_OBJ_FILES): $(INT_DIR)/%.o: $(APP_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DI
 $(LIB_OBJ_FILES): $(INT_DIR)/%.o: $(LIB_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(BIN_TARGET): $(APP_OBJ_FILES) | $(BIN_DIR)
+$(BIN_TARGET): $(APP_OBJ_FILES) $(LIB_OBJ_FILES) | $(BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
 $(TST_OBJ_FILES): $(INT_DIR)/%.o: $(TST_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
