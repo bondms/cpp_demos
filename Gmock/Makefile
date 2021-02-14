@@ -9,6 +9,7 @@
 %: SCCS/s.%
 
 APP_SRC_DIR = app
+LIB_SRC_DIR = lib
 TST_SRC_DIR = tst
 
 INT_DIR = int
@@ -20,6 +21,10 @@ BIN_TARGET = $(BIN_DIR)/$(TARGET)
 APP_CPP_FILES := $(shell find $(APP_SRC_DIR) -name '*.cpp')
 APP_OBJ_FILES := $(APP_CPP_FILES:$(APP_SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
 APP_DEP_FILES := $(APP_CPP_FILES:$(APP_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
+
+LIB_CPP_FILES := $(shell find $(LIB_SRC_DIR) -name '*.cpp')
+LIB_OBJ_FILES := $(LIB_CPP_FILES:$(LIB_SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
+LIB_DEP_FILES := $(LIB_CPP_FILES:$(LIB_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
 
 TST_BIN_DIR = $(BIN_DIR)/tst
 
@@ -66,6 +71,9 @@ run_tests: $(TST_RESULTS)
 $(APP_OBJ_FILES): $(INT_DIR)/%.o: $(APP_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
+$(LIB_OBJ_FILES): $(INT_DIR)/%.o: $(LIB_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
 $(BIN_TARGET): $(APP_OBJ_FILES) | $(BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
@@ -84,9 +92,11 @@ $(TST_RESULTS) : $(INT_DIR)/%.passed: $(TST_BIN_DIR)/%
 	date > $@
 
 $(APP_DEP_FILES): $(INT_DIR)/%.d: ;
+$(LIB_DEP_FILES): $(INT_FIR)/%.d: ;
 $(TST_DEP_FILES): $(INT_DIR)/%.d: ;
 
 -include $(APP_DEP_FILES)
+-include $(LIB_DEP_FILES)
 -include $(TST_DEP_FILES)
 
 $(INT_DIR):
