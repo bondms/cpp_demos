@@ -8,9 +8,8 @@
 %: s.%
 %: SCCS/s.%
 
-SRC_DIR = src
-APP_SRC_DIR = $(SRC_DIR)/app
-TST_SRC_DIR = $(SRC_DIR)/tst
+APP_SRC_DIR = app
+TST_SRC_DIR = tst
 
 INT_DIR = int
 
@@ -35,7 +34,7 @@ STD_FLAGS = --std=c++17 -pthread -fno-rtti
 WARN_FLAGS = -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wpedantic -Werror
 
 CXX = g++
-CXXFLAGS = $(STD_FLAGS) $(DEP_FLAGS) $(WARN_FLAGS)
+CXXFLAGS = $(STD_FLAGS) $(DEP_FLAGS) $(WARN_FLAGS) -iquote "."
 LDFLAGS = $(STD_FLAGS) $(WARN_FLAGS)
 
 GMOCK_SRC_DIR=../thirdparty/src/googletest/googlemock
