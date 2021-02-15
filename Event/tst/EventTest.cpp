@@ -1,4 +1,4 @@
-#include "../app/Event.h"
+#include "lib/Event.h"
 
 #include <gtest/gtest.h>
 

@@ -27,6 +27,7 @@ Example implementation of an Event synchronisation object using C++ std::conditi
 
 Supported build system(s):
 * Makefile
+* Bazel
 
 ## Gmock
 

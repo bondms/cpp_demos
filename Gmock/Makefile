@@ -82,7 +82,6 @@ $(TST_OBJ_FILES): $(INT_DIR)/%.o: $(TST_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DI
 
 $(TST_BIN_DIR)/notifier_test : $(INT_DIR)/notifier_test.o $(INT_DIR)/notifier.o $(GTEST_LIB_DIR)/libgtest.a $(GMOCK_LIB_DIR)/libgmock.a $(GTEST_LIB_DIR)/libgtest_main.a  | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
-	$@
 
 $(TST_BIN_DIR)/account_test : $(INT_DIR)/account_test.o $(INT_DIR)/account.o $(GTEST_LIB_DIR)/libgtest.a $(GMOCK_LIB_DIR)/libgmock.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
@@ -92,7 +91,7 @@ $(TST_RESULTS) : $(INT_DIR)/%.passed: $(TST_BIN_DIR)/%
 	date > $@
 
 $(APP_DEP_FILES): $(INT_DIR)/%.d: ;
-$(LIB_DEP_FILES): $(INT_FIR)/%.d: ;
+$(LIB_DEP_FILES): $(INT_DIR)/%.d: ;
 $(TST_DEP_FILES): $(INT_DIR)/%.d: ;
 
 -include $(APP_DEP_FILES)
