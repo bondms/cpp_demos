@@ -1,6 +1,5 @@
-#include "SharedPtr.h"
-
-#include "Event.h"
+#include "lib/Event.h"
+#include "lib/SharedPtr.h"
 
 #include <thread>
 #include <utility>

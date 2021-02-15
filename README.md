@@ -73,6 +73,7 @@ Example usage of C++ std::shared_ptr.
 
 Supported build system(s):
 * Makefile
+* Bazel
 
 ## Shuffle
 

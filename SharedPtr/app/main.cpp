@@ -1,4 +1,4 @@
-#include "SharedPtr.h"
+#include "lib/SharedPtr.h"
 
 #include <cstdlib>
 #include <iostream>
