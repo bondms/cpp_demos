@@ -1,4 +1,4 @@
-#include "Event.h"
+#include "lib/Event.h"
 
 Event::Event(Mode mode, State initialState) :
     mode_{ mode },
@@ -27,7 +27,7 @@ void Event::Signal()
         std::lock_guard<std::mutex> lock{ mutex_ };
         state_ = State::signalled;
     }
-    
+
     if ( Mode::autoReset == mode_ )
     {
         condition_variable_.notify_one();

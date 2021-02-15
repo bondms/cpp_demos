@@ -19,6 +19,7 @@ Example use of C++ threading primitives.
 
 Supported build system(s):
 * Makefile
+* Bazel
 
 ## Event
 

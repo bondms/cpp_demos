@@ -1,5 +1,5 @@
-#include "../app/Consumer.h"
-#include "../app/Event.h"
+#include "lib/Consumer.h"
+#include "lib/Event.h"
 
 #include <gmock/gmock.h>
 
@@ -27,7 +27,7 @@ TEST(ConsumerTest, Simple)
 {
     unsigned int true_count{ 0 };
     unsigned int false_count{ 0 };
-    
+
     Event event{Event::Mode::manualReset, Event::State::nonSignalled};
 
     Consumer<bool> consumer{ [&](bool b) {
