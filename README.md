@@ -13,17 +13,22 @@ Supported build system(s):
 * Makefile
 * Bazel
 
-## ConsumerProducer
+## Common
 
-Example use of C++ threading primitives.
+Libraries shared between other projects, including:
+* Example implementation of an Event synchronisation object using C++ std::condition_variable.
+* gtest helper for testing details of thrown exceptions.
+* Operating-system specific string helpers.
+* RAII handle.
+* Scope exit.
 
 Supported build system(s):
 * Makefile
 * Bazel
 
-## Event
+## ConsumerProducer
 
-Example implementation of an Event synchronisation object using C++ std::condition_variable.
+Example use of C++ threading primitives.
 
 Supported build system(s):
 * Makefile
