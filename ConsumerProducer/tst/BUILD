@@ -5,10 +5,12 @@ cc_test(
     srcs = [
         "consumer_test.cpp",
     ],
-    copts = ["-Iexternal/gmock/include"],
+    copts = [
+        "-Iexternal/gmock/include"
+    ],
     deps = [
-        "@googletest//:gtest_main",
         "//lib:consumer",
         "//lib:event",
+        "@googletest//:gtest_main",
     ],
 )

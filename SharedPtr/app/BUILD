@@ -7,6 +7,6 @@ cc_binary(
     ],
     deps = [
         "//lib:event",
-        "//lib:SharedPtr",
+        "//lib:shared_ptr",
     ],
 )

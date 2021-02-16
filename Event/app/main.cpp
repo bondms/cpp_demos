@@ -1,4 +1,4 @@
-#include "lib/Event.h"
+#include "lib/event.h"
 
 #include <cstdlib>
 #include <iostream>

@@ -1,4 +1,4 @@
-#include "lib/Event.h"
+#include "lib/event.h"
 
 Event::Event(Mode mode, State initialState) :
     mode_{ mode },

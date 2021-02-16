@@ -5,9 +5,11 @@ cc_test(
     srcs = [
         "binary_search_test.cpp",
     ],
-    copts = ["-Iexternal/gmock/include"],
+    copts = [
+        "-Iexternal/gmock/include"
+    ],
     deps = [
-        "@googletest//:gtest_main",
         "//lib:binary_search",
+        "@googletest//:gtest_main",
     ],
 )

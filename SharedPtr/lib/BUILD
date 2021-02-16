@@ -3,21 +3,21 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 cc_library(
     name = "event",
     srcs = [
-        "Event.cpp",
+        "event.cpp",
     ],
     hdrs = [
-        "Event.h",
+        "event.h",
     ],
     visibility = ["//:__subpackages__"],
 )
 
 cc_library(
-    name = "SharedPtr",
+    name = "shared_ptr",
     srcs = [
-        "SharedPtr.cpp",
+        "shared_ptr.cpp",
     ],
     hdrs = [
-        "SharedPtr.h",
+        "shared_ptr.h",
     ],
     deps = [
         ":event",

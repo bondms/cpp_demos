@@ -1,13 +1,15 @@
 load("@rules_cc//cc:defs.bzl", "cc_test")
 
 cc_test(
-    name = "EventTest",
+    name = "event_test",
     srcs = [
-        "EventTest.cpp",
+        "event_test.cpp",
     ],
-    copts = ["-Iexternal/gmock/include"],
+    copts = [
+        "-Iexternal/gmock/include"
+    ],
     deps = [
-        "@googletest//:gtest_main",
         "//lib:event",
+        "@googletest//:gtest_main",
     ],
 )

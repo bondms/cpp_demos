@@ -1,4 +1,4 @@
-#include "lib/SharedPtr.h"
+#include "lib/shared_ptr.h"
 
 #include <gtest/gtest.h>
 

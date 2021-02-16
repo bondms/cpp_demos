@@ -1,9 +1,9 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary")
 
 cc_binary(
-    name = "application",
+    name = "main",
     srcs = [
-        "application.cpp",
+        "main.cpp",
     ],
     deps = [
         "//lib:account",

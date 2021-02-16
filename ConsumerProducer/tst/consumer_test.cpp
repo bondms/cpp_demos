@@ -1,5 +1,5 @@
-#include "lib/Consumer.h"
-#include "lib/Event.h"
+#include "lib/consumer.h"
+#include "lib/event.h"
 
 #include <gmock/gmock.h>
 

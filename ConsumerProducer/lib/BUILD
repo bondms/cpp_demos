@@ -5,7 +5,7 @@ cc_library(
     srcs = [
     ],
     hdrs = [
-        "Consumer.h",
+        "consumer.h",
     ],
     visibility = ["//:__subpackages__"],
 )
@@ -13,10 +13,10 @@ cc_library(
 cc_library(
     name = "event",
     srcs = [
-        "Event.cpp",
+        "event.cpp",
     ],
     hdrs = [
-        "Event.h",
+        "event.h",
     ],
     visibility = ["//:__subpackages__"],
 )
