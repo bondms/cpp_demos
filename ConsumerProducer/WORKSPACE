@@ -5,3 +5,8 @@ git_repository(
     remote = "https://github.com/google/googletest",
     tag = "release-1.10.0",
 )
+
+local_repository(
+    name = "event",
+    path = "../Event",
+)

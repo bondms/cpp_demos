@@ -10,7 +10,7 @@ cc_test(
     ],
     deps = [
         "//lib:consumer",
-        "//lib:event",
+        "@event//lib:event",
         "@googletest//:gtest_main",
     ],
 )

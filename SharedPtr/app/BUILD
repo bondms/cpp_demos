@@ -6,7 +6,7 @@ cc_binary(
         "main.cpp",
     ],
     deps = [
-        "//lib:event",
         "//lib:shared_ptr",
+        "@event//lib:event",
     ],
 )
