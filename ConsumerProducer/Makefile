@@ -11,7 +11,7 @@
 APP_SRC_DIR = app
 LIB_SRC_DIR = lib
 TST_SRC_DIR = tst
-EVENT_SRC_DIR = ../Event/lib
+COMMON_SRC_DIR = ../Common/lib
 
 INT_DIR = int
 
@@ -27,9 +27,9 @@ LIB_CPP_FILES := $(shell find $(LIB_SRC_DIR) -name '*.cpp')
 LIB_OBJ_FILES := $(LIB_CPP_FILES:$(LIB_SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
 LIB_DEP_FILES := $(LIB_CPP_FILES:$(LIB_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
 
-EVENT_CPP_FILES := $(shell find $(EVENT_SRC_DIR) -name '*.cpp')
-EVENT_OBJ_FILES := $(EVENT_CPP_FILES:$(EVENT_SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
-EVENT_DEP_FILES := $(EVENT_CPP_FILES:$(EVENT_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
+COMMON_CPP_FILES := $(shell find $(COMMON_SRC_DIR) -name '*.cpp')
+COMMON_OBJ_FILES := $(COMMON_CPP_FILES:$(COMMON_SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
+COMMON_DEP_FILES := $(COMMON_CPP_FILES:$(COMMON_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
 
 TST_BIN_DIR = $(BIN_DIR)/tst
 
@@ -79,10 +79,10 @@ $(APP_OBJ_FILES): $(INT_DIR)/%.o: $(APP_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DI
 $(LIB_OBJ_FILES): $(INT_DIR)/%.o: $(LIB_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(EVENT_OBJ_FILES): $(INT_DIR)/%.o: $(EVENT_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
+$(COMMON_OBJ_FILES): $(INT_DIR)/%.o: $(COMMON_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(BIN_TARGET): $(APP_OBJ_FILES) $(LIB_OBJ_FILES) $(EVENT_OBJ_FILES) | $(BIN_DIR)
+$(BIN_TARGET): $(APP_OBJ_FILES) $(LIB_OBJ_FILES) $(COMMON_OBJ_FILES) | $(BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
 $(TST_OBJ_FILES): $(INT_DIR)/%.o: $(TST_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
@@ -97,12 +97,12 @@ $(TST_RESULTS) : $(INT_DIR)/%.passed: $(TST_BIN_DIR)/%
 
 $(APP_DEP_FILES): $(INT_DIR)/%.d: ;
 $(LIB_DEP_FILES): $(INT_DIR)/%.d: ;
-$(EVENT_DEP_FILES): $(INT_DIR)/%.d: ;
+$(COMMON_DEP_FILES): $(INT_DIR)/%.d: ;
 $(TST_DEP_FILES): $(INT_DIR)/%.d: ;
 
 -include $(APP_DEP_FILES)
 -include $(LIB_DEP_FILES)
--include $(EVENT_DEP_FILES)
+-include $(COMMON_DEP_FILES)
 -include $(TST_DEP_FILES)
 
 $(INT_DIR):
