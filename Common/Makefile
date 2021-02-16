@@ -13,6 +13,8 @@ TST_SRC_DIR = tst
 
 INT_DIR = int
 
+BIN_DIR = bin
+
 LIB_CPP_FILES := $(shell find $(LIB_SRC_DIR) -name '*.cpp')
 LIB_OBJ_FILES := $(LIB_CPP_FILES:$(LIB_SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
 LIB_DEP_FILES := $(LIB_CPP_FILES:$(LIB_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
