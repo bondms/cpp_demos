@@ -8,5 +8,5 @@ cc_library(
     hdrs = [
         "event.h",
     ],
-    visibility = ["//:__subpackages__"],
+    visibility = ["//visibility:public"],
 )
