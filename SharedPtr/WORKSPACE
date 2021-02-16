@@ -7,6 +7,6 @@ git_repository(
 )
 
 local_repository(
-    name = "event",
-    path = "../Event",
+    name = "common",
+    path = "../Common",
 )
