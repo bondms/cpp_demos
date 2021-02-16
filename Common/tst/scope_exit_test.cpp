@@ -1,6 +1,6 @@
 #include "lib/scope_exit.h"
 
-#include "gtest_helper.h"
+#include "lib/gtest_helper.h"
 
 namespace
 {
