@@ -66,6 +66,12 @@ $(TST_OBJ_FILES): $(INT_DIR)/%.o: $(TST_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DI
 $(TST_BIN_DIR)/event_test : $(INT_DIR)/event_test.o $(INT_DIR)/event.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
+$(TST_BIN_DIR)/raii_handle_test : $(INT_DIR)/raii_handle_test.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
+	$(CXX) $(LDFLAGS) -o $@ $^
+
+$(TST_BIN_DIR)/scope_exit_test : $(INT_DIR)/scope_exit_test.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
+	$(CXX) $(LDFLAGS) -o $@ $^
+
 $(TST_RESULTS) : $(INT_DIR)/%.passed: $(TST_BIN_DIR)/%
 	$<
 	date > $@
