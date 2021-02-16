@@ -19,3 +19,14 @@ find "${HERE}" -maxdepth 2 -mindepth 2 -name Makefile -type f -print0 | bash -c 
       make clean || exit \$?
       popd > /dev/null || exit \$?
     done"
+
+find "${HERE}" -maxdepth 2 -mindepth 2 -name WORKSPACE -type f -print0 | bash -c "
+    while read -r -d $'\0' F
+    do
+      echo Processing WORKSPACE \"\$F\"
+      DIR=\$(dirname \"\$F\")
+      pushd \"\${DIR}\" > /dev/null || exit \$?
+      pwd
+      bazel clean --expunge || exit \$?
+      popd > /dev/null || exit \$?
+    done"

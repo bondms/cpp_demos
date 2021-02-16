@@ -6,6 +6,6 @@ cc_binary(
         "main.cpp",
     ],
     deps = [
-        "//lib:event",
+        "//lib:logger",
     ],
 )

@@ -1,9 +1,10 @@
-#include "Logger.h"
+#include "logger.h"
 
-#include "Escaper.h"
-#include "FlushController.h"
-#include "os.h"
-#include "scope_exit.h"
+#include "lib/escaper.h"
+#include "lib/flush_controller.h"
+
+#include "lib/os.h"
+#include "lib/scope_exit.h"
 
 #include <cassert>
 #include <fstream>

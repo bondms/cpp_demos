@@ -1,4 +1,4 @@
-#include "../app/raii_handle.h"
+#include "lib/raii_handle.h"
 
 #include <gtest/gtest.h>
 
@@ -152,7 +152,7 @@ TEST_F(RaiiHandleTestFixture, Free)
     mockRaiiHandle.free();
     EXPECT_FALSE(mockRaiiHandle.isValid());
     EXPECT_EQ(nullptr, mockRaiiHandle.handle());
-    EXPECT_TRUE(mockClass.freed());   
+    EXPECT_TRUE(mockClass.freed());
 }
 
 TEST_F(RaiiHandleTestFixture, FreeOnInvalid)
