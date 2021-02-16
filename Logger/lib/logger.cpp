@@ -1,7 +1,8 @@
-#include "lib/logger.h"
+#include "logger.h"
 
 #include "lib/escaper.h"
 #include "lib/flush_controller.h"
+
 #include "lib/os.h"
 #include "lib/scope_exit.h"
 

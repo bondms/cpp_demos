@@ -1,6 +1,6 @@
 #include "lib/escaper.h"
 
-#include "gtest_helper.h"
+#include <gtest/gtest.h>
 
 using namespace Escaper;
 

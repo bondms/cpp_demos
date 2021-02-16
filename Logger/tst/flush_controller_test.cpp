@@ -1,6 +1,6 @@
 #include "lib/flush_controller.h"
 
-#include "gtest_helper.h"
+#include <gtest/gtest.h>
 
 using namespace std::chrono_literals;
 
