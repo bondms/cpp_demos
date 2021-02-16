@@ -1,5 +1,5 @@
-#include "../app/Logger.h"
-#include "../app/os.h"
+#include "lib/logger.h"
+#include "lib/os.h"
 
 #include "gtest_helper.h"
 
@@ -57,7 +57,7 @@ namespace
         {
             std::filesystem::create_directory(temp_test_path_);
         }
-        
+
         void TearDown() override
         {
             Logger::Close(Logger::ErrorReporting::throwOnError);
@@ -266,7 +266,7 @@ TEST_F(LoggerTestFixture, Escaping)
 TEST_F(LoggerTestFixture, Benchmark)
 {
     auto log_file_path{get_log_file_path()};
-    Logger::Initialise(log_file_path);    
+    Logger::Initialise(log_file_path);
     for ( auto i = 0 ; i < 100000 ; ++i )
     {
         LOG_INFO("A typical log message with no escaping required");

@@ -50,6 +50,7 @@ In progress: General purpose file logger with log-file rotation.
 
 Supported build system(s):
 * Makefile
+* Bazel
 
 ## OdbcTest
 

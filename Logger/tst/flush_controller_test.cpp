@@ -1,4 +1,4 @@
-#include "../app/FlushController.h"
+#include "lib/flush_controller.h"
 
 #include "gtest_helper.h"
 

@@ -1,4 +1,4 @@
-#include "../app/scope_exit.h"
+#include "lib/scope_exit.h"
 
 #include "gtest_helper.h"
 
