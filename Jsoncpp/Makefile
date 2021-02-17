@@ -8,8 +8,8 @@
 %: s.%
 %: SCCS/s.%
 
-SRC_DIR = src
-APP_SRC_DIR = $(SRC_DIR)/app
+APP_SRC_DIR = app
+LIB_SRC_DIR = lib
 
 INT_DIR = int
 
@@ -21,7 +21,11 @@ APP_CPP_FILES := $(shell find $(APP_SRC_DIR) -name '*.cpp')
 APP_OBJ_FILES := $(APP_CPP_FILES:$(APP_SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
 APP_DEP_FILES := $(APP_CPP_FILES:$(APP_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
 
-DEP_FLAGS = -MT $@ -MMD -MP -MF $(INT_DIR)/$*.d
+LIB_CPP_FILES := $(shell find $(LIB_SRC_DIR) -name '*.cpp')
+LIB_OBJ_FILES := $(LIB_CPP_FILES:$(LIB_SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
+LIB_DEP_FILES := $(LIB_CPP_FILES:$(LIB_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
+
+DEP_FLAGS = -MT $@ -MMD -MP -MF $(INT_DIR)/$*.d -iquote . -isystem $(JSONCPP_DIST_DIR)
 STD_FLAGS = --std=c++17 -pthread -fno-rtti
 WARN_FLAGS = -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wpedantic -Werror
 
@@ -46,14 +50,19 @@ clean:
 	rm --force --recursive $(BIN_DIR) $(INT_DIR)
 
 $(APP_OBJ_FILES): $(INT_DIR)/%.o: $(APP_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
-	$(CXX) $(CXXFLAGS) -c -o $@ $< -isystem $(JSONCPP_DIST_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(BIN_TARGET): $(APP_OBJ_FILES) $(JSONCPP_OBJ_FILE) | $(BIN_DIR)
+$(LIB_OBJ_FILES): $(INT_DIR)/%.o: $(LIB_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(BIN_TARGET): $(APP_OBJ_FILES) $(LIB_OBJ_FILES) | $(BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
 $(APP_DEP_FILES): $(INT_DIR)/%.d: ;
+$(LIB_DEP_FILES): $(INT_DIR)/%.d: ;
 
 -include $(APP_DEP_FILES)
+-include $(LIB_DEP_FILES)
 
 $(INT_DIR):
 	mkdir --parents -- $@
