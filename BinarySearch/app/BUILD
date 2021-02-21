@@ -8,4 +8,5 @@ cc_binary(
     deps = [
         "//lib:binary_search",
     ],
+    visibility = ["//visibility:public"],
 )

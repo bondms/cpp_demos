@@ -14,5 +14,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Build and test
-      run: ./build_bazel.sh
+    - name: Build
+      run: bazel build ...
+      working-directory: BazelCollate
+
+    - name: Test
+      run: bazel test ...
+      working-directory: BazelCollate

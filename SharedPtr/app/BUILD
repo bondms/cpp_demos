@@ -9,4 +9,5 @@ cc_binary(
         "//lib:shared_ptr",
         "@common//lib:event",
     ],
+    visibility = ["//visibility:public"],
 )
