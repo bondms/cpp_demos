@@ -1,27 +1,27 @@
 filegroup(
     name = "all_applications",
     srcs = [
-        "@binary_search//app:main",
-        "@consumer_producer//app:main",
-        "@gmock//app:main",
-        "@logger//app:main",
-        "@shared_ptr//app:main",
+        "@BinarySearch//app:main",
+        "@ConsumerProducer//app:main",
+        "@Gmock//app:main",
+        "@Logger//app:main",
+        "@SharedPtr//app:main",
     ],
 )
 
 test_suite(
     name = "all_tests",
     tests = [
-        "@binary_search//tst:binary_search_test",
-        "@common//tst:event_test",
-        "@common//tst:raii_handle_test",
-        "@common//tst:scope_exit_test",
-        "@consumer_producer//tst:consumer_test",
-        "@gmock//tst:account_test",
-        "@gmock//tst:notifier_test",
-        "@logger//tst:escaper_test",
-        "@logger//tst:flush_controller_test",
-        "@logger//tst:logger_test",
-        "@shared_ptr//tst:shared_ptr_test",
+        "@BinarySearch//tst:binary_search_test",
+        "@Common//tst:event_test",
+        "@Common//tst:raii_handle_test",
+        "@Common//tst:scope_exit_test",
+        "@ConsumerProducer//tst:consumer_test",
+        "@Gmock//tst:account_test",
+        "@Gmock//tst:notifier_test",
+        "@Logger//tst:escaper_test",
+        "@Logger//tst:flush_controller_test",
+        "@Logger//tst:logger_test",
+        "@SharedPtr//tst:shared_ptr_test",
     ],
 )

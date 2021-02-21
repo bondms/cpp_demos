@@ -7,7 +7,7 @@ cc_binary(
     ],
     deps = [
         "//lib:shared_ptr",
-        "@common//lib:event",
+        "@Common//lib:event",
     ],
     visibility = ["//visibility:public"],
 )

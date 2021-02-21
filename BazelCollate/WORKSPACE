@@ -8,31 +8,31 @@ http_archive(
 )
 
 local_repository(
-    name = "binary_search",
+    name = "BinarySearch",
     path = "../BinarySearch",
 )
 
 local_repository(
-    name = "common",
+    name = "Common",
     path = "../Common",
 )
 
 local_repository(
-    name = "consumer_producer",
+    name = "ConsumerProducer",
     path = "../ConsumerProducer",
 )
 
 local_repository(
-    name = "gmock",
+    name = "Gmock",
     path = "../Gmock",
 )
 
 local_repository(
-    name = "logger",
+    name = "Logger",
     path = "../Logger",
 )
 
 local_repository(
-    name = "shared_ptr",
+    name = "SharedPtr",
     path = "../SharedPtr",
 )

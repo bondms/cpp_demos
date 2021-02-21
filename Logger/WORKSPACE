@@ -8,6 +8,6 @@ http_archive(
 )
 
 local_repository(
-    name = "common",
+    name = "Common",
     path = "../Common",
 )

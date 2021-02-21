@@ -9,7 +9,7 @@ cc_library(
         "shared_ptr.h",
     ],
     deps = [
-        "@common//lib:event",
+        "@Common//lib:event",
     ],
     visibility = ["//:__subpackages__"],
 )
