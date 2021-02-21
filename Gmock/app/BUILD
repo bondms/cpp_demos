@@ -9,4 +9,5 @@ cc_binary(
         "//lib:account",
         "//lib:notifier",
     ],
+    visibility = ["//visibility:public"],
 )
