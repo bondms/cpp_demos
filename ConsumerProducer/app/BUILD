@@ -8,4 +8,5 @@ cc_binary(
     deps = [
         "//lib:consumer",
     ],
+    visibility = ["//visibility:public"],
 )
