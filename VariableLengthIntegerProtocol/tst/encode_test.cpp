@@ -1,4 +1,4 @@
-#include "../app/Encode.h"
+#include "lib/encode.h"
 
 #include <gtest/gtest.h>
 
