@@ -9,6 +9,7 @@ filegroup(
         "@Realign//app:main",
         "@SharedPtr//app:main",
         "@Shuffle//app:main",
+        "@TurkishLocale//app:main",
     ],
 )
 

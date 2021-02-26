@@ -51,3 +51,8 @@ local_repository(
     name = "Shuffle",
     path = "../Shuffle",
 )
+
+local_repository(
+    name = "TurkishLocale",
+    path = "../TurkishLocale",
+)

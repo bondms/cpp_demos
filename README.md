@@ -97,6 +97,7 @@ Investigate the infamouse Turkish 'i' case conversion issue.
 
 Supported build system(s):
 * Makefile
+* Bazel
 
 ## VariableLengthIntegerProtocol
 
