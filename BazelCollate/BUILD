@@ -10,6 +10,7 @@ filegroup(
         "@SharedPtr//app:main",
         "@Shuffle//app:main",
         "@TurkishLocale//app:main",
+        "@VariableLengthIntegerProtocol//app:main",
     ],
 )
 
@@ -30,5 +31,6 @@ test_suite(
         "@Realign//tst:realign_test",
         "@SharedPtr//tst:shared_ptr_test",
         "@Shuffle//tst:shuffle_test",
+        "@VariableLengthIntegerProtocol//tst:encode_test",
     ],
 )

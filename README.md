@@ -107,3 +107,4 @@ Uses a parameterized gtest unit test.
 
 Supported build system(s):
 * Makefile
+* Bazel
