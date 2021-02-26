@@ -1,4 +1,4 @@
-#include "../app/shuffle.h"
+#include "lib/shuffle.h"
 
 #include <gtest/gtest.h>
 

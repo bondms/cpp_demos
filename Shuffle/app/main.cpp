@@ -1,4 +1,4 @@
-#include "shuffle.h"
+#include "lib/shuffle.h"
 
 #include <cstdlib>
 #include <iostream>
