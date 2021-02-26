@@ -1,4 +1,4 @@
-#include "../app/realign.h"
+#include "lib/realign.h"
 
 #include <gtest/gtest.h>
 

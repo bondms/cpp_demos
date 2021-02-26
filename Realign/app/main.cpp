@@ -1,4 +1,4 @@
-#include "realign.h"
+#include "lib/realign.h"
 
 #include <cstdlib>
 #include <iostream>
