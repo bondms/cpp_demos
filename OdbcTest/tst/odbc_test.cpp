@@ -1,4 +1,4 @@
-#include "../app/Odbc.h"
+#include "lib/odbc.h"
 
 #include <gtest/gtest.h>
 
