@@ -89,9 +89,6 @@ $(TST_BIN_DIR)/flush_controller_test : $(INT_DIR)/flush_controller_test.o $(GTES
 $(TST_BIN_DIR)/logger_test : $(INT_DIR)/logger_test.o $(INT_DIR)/logger.o $(INT_DIR)/escaper.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^ -lstdc++fs
 
-$(TST_BIN_DIR)/scope_exit_test : $(INT_DIR)/scope_exit_test.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
-	$(CXX) $(LDFLAGS) -o $@ $^
-
 $(TST_RESULTS) : $(INT_DIR)/%.passed: $(TST_BIN_DIR)/%
 	$<
 	date > $@
