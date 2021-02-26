@@ -57,12 +57,13 @@ Supported build system(s):
 * Makefile
 * Bazel
 
-## OdbcTest
+## Odbc
 
 Thin C++ around ODBC.
 
 Supported build system(s):
 * Makefile
+* Bazel
 
 ## Realign
 

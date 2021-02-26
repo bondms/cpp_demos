@@ -6,7 +6,7 @@ cc_test(
         "escaper_test.cpp",
     ],
     copts = [
-        "-Iexternal/gmock/include"
+        "-Iexternal/gmock/include",
     ],
     deps = [
         "//lib:escaper",
@@ -20,7 +20,7 @@ cc_test(
         "flush_controller_test.cpp",
     ],
     copts = [
-        "-Iexternal/gmock/include"
+        "-Iexternal/gmock/include",
     ],
     deps = [
         "//lib:flush_controller",
@@ -34,7 +34,7 @@ cc_test(
         "logger_test.cpp",
     ],
     copts = [
-        "-Iexternal/gmock/include"
+        "-Iexternal/gmock/include",
     ],
     deps = [
         "//lib:logger",

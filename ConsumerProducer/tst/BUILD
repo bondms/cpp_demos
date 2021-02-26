@@ -6,7 +6,7 @@ cc_test(
         "consumer_test.cpp",
     ],
     copts = [
-        "-Iexternal/gmock/include"
+        "-Iexternal/gmock/include",
     ],
     deps = [
         "//lib:consumer",

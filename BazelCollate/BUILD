@@ -5,6 +5,7 @@ filegroup(
         "@ConsumerProducer//app:main",
         "@Gmock//app:main",
         "@Logger//app:main",
+        "@Odbc//app:main",
         "@SharedPtr//app:main",
     ],
 )
@@ -22,6 +23,7 @@ test_suite(
         "@Logger//tst:escaper_test",
         "@Logger//tst:flush_controller_test",
         "@Logger//tst:logger_test",
+        "@Odbc//tst:odbc_test",
         "@SharedPtr//tst:shared_ptr_test",
     ],
 )

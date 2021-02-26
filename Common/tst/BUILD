@@ -6,7 +6,7 @@ cc_test(
         "event_test.cpp",
     ],
     copts = [
-        "-Iexternal/gmock/include"
+        "-Iexternal/gmock/include",
     ],
     deps = [
         "//lib:event",
@@ -20,7 +20,7 @@ cc_test(
         "raii_handle_test.cpp",
     ],
     copts = [
-        "-Iexternal/gmock/include"
+        "-Iexternal/gmock/include",
     ],
     deps = [
         "//lib:raii_handle",
@@ -34,7 +34,7 @@ cc_test(
         "scope_exit_test.cpp",
     ],
     copts = [
-        "-Iexternal/gmock/include"
+        "-Iexternal/gmock/include",
     ],
     deps = [
         "//lib:gtest_helper",

@@ -6,7 +6,7 @@ cc_test(
         "account_test.cpp",
     ],
     copts = [
-        "-Iexternal/gmock/include"
+        "-Iexternal/gmock/include",
     ],
     deps = [
         "//lib:account",
@@ -20,7 +20,7 @@ cc_test(
         "notifier_test.cpp",
     ],
     copts = [
-        "-Iexternal/gmock/include"
+        "-Iexternal/gmock/include",
     ],
     deps = [
         "//lib:notifier",

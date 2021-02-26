@@ -33,6 +33,11 @@ local_repository(
 )
 
 local_repository(
+    name = "Odbc",
+    path = "../Odbc",
+)
+
+local_repository(
     name = "SharedPtr",
     path = "../SharedPtr",
 )

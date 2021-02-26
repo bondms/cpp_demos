@@ -6,7 +6,7 @@ cc_test(
         "binary_search_test.cpp",
     ],
     copts = [
-        "-Iexternal/gmock/include"
+        "-Iexternal/gmock/include",
     ],
     deps = [
         "//lib:binary_search",
