@@ -8,8 +8,7 @@
 %: s.%
 %: SCCS/s.%
 
-SRC_DIR = src
-APP_SRC_DIR = $(SRC_DIR)/app
+APP_SRC_DIR = app
 
 INT_DIR = int
 
@@ -21,7 +20,7 @@ APP_CPP_FILES := $(shell find $(APP_SRC_DIR) -name '*.cpp')
 APP_OBJ_FILES := $(APP_CPP_FILES:$(APP_SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
 APP_DEP_FILES := $(APP_CPP_FILES:$(APP_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
 
-DEP_FLAGS = -MT $@ -MMD -MP -MF $(INT_DIR)/$*.d
+DEP_FLAGS = -MT $@ -MMD -MP -MF $(INT_DIR)/$*.d -iquote . -iquote ../Common
 STD_FLAGS = --std=c++17 -pthread -fno-rtti
 WARN_FLAGS = -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wpedantic -Werror
 
