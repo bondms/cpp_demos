@@ -6,6 +6,7 @@ filegroup(
         "@Gmock//app:main",
         "@Logger//app:main",
         "@Odbc//app:main",
+        "@Realign//app:main",
         "@SharedPtr//app:main",
     ],
 )
@@ -24,6 +25,7 @@ test_suite(
         "@Logger//tst:flush_controller_test",
         "@Logger//tst:logger_test",
         "@Odbc//tst:odbc_test",
+        "@Realign//tst:realign_test",
         "@SharedPtr//tst:shared_ptr_test",
     ],
 )

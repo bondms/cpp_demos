@@ -38,6 +38,11 @@ local_repository(
 )
 
 local_repository(
+    name = "Realign",
+    path = "../Realign",
+)
+
+local_repository(
     name = "SharedPtr",
     path = "../SharedPtr",
 )
