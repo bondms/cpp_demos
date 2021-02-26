@@ -89,6 +89,7 @@ Non-repeating pseudo-random-number generation.
 
 Supported build system(s):
 * Makefile
+* Bazel
 
 ## TurkishLocale
 

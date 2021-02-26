@@ -46,3 +46,8 @@ local_repository(
     name = "SharedPtr",
     path = "../SharedPtr",
 )
+
+local_repository(
+    name = "Shuffle",
+    path = "../Shuffle",
+)

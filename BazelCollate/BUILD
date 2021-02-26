@@ -8,6 +8,7 @@ filegroup(
         "@Odbc//app:main",
         "@Realign//app:main",
         "@SharedPtr//app:main",
+        "@Shuffle//app:main",
     ],
 )
 
@@ -27,5 +28,6 @@ test_suite(
         "@Odbc//tst:odbc_test",
         "@Realign//tst:realign_test",
         "@SharedPtr//tst:shared_ptr_test",
+        "@Shuffle//tst:shuffle_test",
     ],
 )
