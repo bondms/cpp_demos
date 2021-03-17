@@ -14,6 +14,8 @@ namespace Shuffle
     {
         using vec = std::vector<T>;
         using size_type = typename vec::size_type;
+        // TODO: Consider allowing seed to be passed in to constructor for deterministic/repeatable tests.
+        std::mt19937 rand_{std::random_device{}()};
         vec v_{};
         const size_type max_;
 
@@ -33,9 +35,7 @@ namespace Shuffle
             {
                 v_.resize(max_ + 1);
                 std::iota(v_.begin(), v_.end(), 0);
-                // TODO: Need to seed random_shuffle?
-                // TODO: random_shuffle is removed in C++17, replace with shuffle.
-                std::random_shuffle(v_.begin(), v_.end());
+                std::shuffle(v_.begin(), v_.end(), rand_);
             }
             auto result = v_.back();
             v_.pop_back();
@@ -52,6 +52,7 @@ namespace Shuffle
     class LowMem
     {
         static_assert((N >= 0) && (N < std::numeric_limits<std::size_t>::max()));
+        // TODO: Consider allowing seed to be passed in to constructor for deterministic/repeatable tests.
         std::mt19937 rand_{std::random_device{}()};
         std::bitset<N + 1> bitset_{};
         std::size_t remaining_{N + 1};
