@@ -54,6 +54,7 @@ TEST(ShuffleTest, Simple_MaxLimit)
 
 TEST(ShuffleTest, LowMem_ShuffleMillion)
 {
+    // TODO: Reconsider whether int_least32_t is the best choice here.
     Shuffle::LowMem<std::int_least32_t, 999'999> shuffler{};
     test(shuffler);
 }
