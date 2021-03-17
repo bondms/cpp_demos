@@ -1,7 +1,7 @@
 #include "lib/logger.h"
-#include "lib/os.h"
 
 #include "lib/gtest_helper.h"
+#include "lib/os.h"
 
 #include <chrono>
 #include <filesystem>
