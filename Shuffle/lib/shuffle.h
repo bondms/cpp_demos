@@ -33,6 +33,7 @@ namespace Shuffle
             {
                 v_.resize(max_ + 1);
                 std::iota(v_.begin(), v_.end(), 0);
+                // TODO: Need to seed random_shuffle?
                 std::random_shuffle(v_.begin(), v_.end());
             }
             auto result = v_.back();
