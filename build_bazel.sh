@@ -16,7 +16,6 @@ find "${HERE}" -maxdepth 2 -mindepth 2 -name WORKSPACE -type f -print0 | bash -c
       DIR=\$(dirname \"\$F\")
       pushd \"\${DIR}\" > /dev/null || exit \$?
       pwd
-      bazel build ... || exit \$?
       bazel test ... || exit \$?
       popd > /dev/null || exit \$?
     done" || exit $?
