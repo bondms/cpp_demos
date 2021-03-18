@@ -79,7 +79,7 @@ namespace Logger
 
             void Log(Severity severity, const std::string& msg) noexcept
             {
-                // TODO(logging of different types).
+                // TODO: Logging of different types.
 #ifndef _DEBUG
                 if (severity >= Severity::Debug)
                 {
@@ -92,7 +92,7 @@ namespace Logger
                 ofs_
                     << MessageTimeStamp(std::chrono::system_clock::now())
                     << ' ' << std::setw(7) << std::setfill('0') << ::getpid()
-                    // TODO(Reconsider setw)
+                    // TODO: Reconsider setw.
                     << ':' << std::setw(15) << std::setfill('0') << std::this_thread::get_id()
                     << ' ' << AsString(severity)
                     << " >> " << Escaper::Escaped(msg)
@@ -146,7 +146,7 @@ namespace Logger
         assert(false);
     }
 
-    // TODO(Re-consider error handing. Should client be informed if there was a failure?)
+    // TODO: Re-consider error handing. Should client be informed if there was a failure?
     std::string MessageTimeStamp(const std::chrono::system_clock::time_point& time_point) noexcept
     {
         auto tt{std::chrono::system_clock::to_time_t(time_point)};
@@ -178,7 +178,7 @@ namespace Logger
         singleton_impl = std::make_unique<Impl>(path, rotation_size);
     }
 
-    // TODO(Re-consider error handing. Should client be informed if there was a failure?)
+    // TODO: Re-consider error handing. Should client be informed if there was a failure?
     void Log(Severity severity, const std::string& msg) noexcept
     {
         if (!singleton_impl)

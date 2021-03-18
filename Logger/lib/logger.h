@@ -5,7 +5,7 @@
 
 namespace Logger
 {
-    // TODO(Consider moving elsewhere)
+    // TODO: Consider moving elsewhere.
     enum class Severity
     {
         Error,
@@ -15,7 +15,7 @@ namespace Logger
     };
     const char* AsString(Severity severity) noexcept;
 
-    // TODO(Consider moving elsewhere)
+    // TODO: Consider moving elsewhere.
     std::string MessageTimeStamp(const std::chrono::system_clock::time_point& time_point) noexcept;
     std::filesystem::path FileNameTimeStamp(const std::chrono::system_clock::time_point& time_point);
 
