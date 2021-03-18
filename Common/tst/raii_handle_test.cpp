@@ -246,7 +246,6 @@ TEST_F(RaiiHandleTestFixture, UseInNonAssociativeContainers)
 TEST_F(RaiiHandleTestFixture, UseInAssociativeContainers)
 {
     MockRaiiHandle mockRaiiHandle{};
-    // TODO: Implement < for associative containers.
-    // std::set<MockRaiiHandle> s{};
-    // s.insert(std::move(mockRaiiHandle));
+    std::set<MockRaiiHandle> s{};
+    s.insert(std::move(mockRaiiHandle));
 }

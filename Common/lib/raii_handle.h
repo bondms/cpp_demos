@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 namespace utilities
 {
     template<typename HandleType, void (*freeFunction)(HandleType) noexcept, HandleType invalidValue = nullptr>
@@ -10,7 +12,7 @@ namespace utilities
         RaiiHandle() noexcept = default;
         explicit RaiiHandle(HandleType handle) noexcept :
             handle_{ handle }
-        {            
+        {
         }
 
         ~RaiiHandle()
@@ -65,6 +67,11 @@ namespace utilities
         HandleType & getHandleReference() noexcept
         {
             return handle_;
+        }
+
+        bool operator<(const RaiiHandle & other) const noexcept
+        {
+            return this < std::addressof(other);
         }
     };
 } // namespace utilities
