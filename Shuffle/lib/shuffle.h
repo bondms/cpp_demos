@@ -14,7 +14,6 @@ namespace Shuffle
     {
         using vec = std::vector<T>;
         using size_type = typename vec::size_type;
-        // TODO: Consider allowing seed to be passed in to constructor for deterministic/repeatable tests.
         std::mt19937 rand_{std::random_device{}()};
         vec v_{};
         const size_type max_;
@@ -52,7 +51,6 @@ namespace Shuffle
     class LowMem
     {
         static_assert((N >= 0) && (N < std::numeric_limits<std::size_t>::max()));
-        // TODO: Consider allowing seed to be passed in to constructor for deterministic/repeatable tests.
         std::mt19937 rand_{std::random_device{}()};
         std::bitset<N + 1> bitset_{};
         std::size_t remaining_{N + 1};
