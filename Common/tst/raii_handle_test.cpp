@@ -3,7 +3,9 @@
 #include <gmock/gmock.h>
 
 #include <cassert>
+#include <set>
 #include <utility>
+#include <vector>
 
 using namespace testing;
 
@@ -234,4 +236,17 @@ TEST_F(RaiiHandleTestFixture, NonDefaultInvalidValue)
     EXPECT_THAT(int_mock_free_calls, ElementsAre(0, 1, 2));
 }
 
-// TODO: Consider implementing comparison operators (e.g. < to enable use in std::set).
+TEST_F(RaiiHandleTestFixture, UseInNonAssociativeContainers)
+{
+    MockRaiiHandle mockRaiiHandle{};
+    std::vector<MockRaiiHandle> v{};
+    v.push_back(std::move(mockRaiiHandle));
+}
+
+TEST_F(RaiiHandleTestFixture, UseInAssociativeContainers)
+{
+    MockRaiiHandle mockRaiiHandle{};
+    // TODO: Implement < for associative containers.
+    // std::set<MockRaiiHandle> s{};
+    // s.insert(std::move(mockRaiiHandle));
+}
