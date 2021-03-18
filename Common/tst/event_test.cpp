@@ -1,6 +1,6 @@
 #include "lib/event.h"
 
-#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include <atomic>
 #include <thread>

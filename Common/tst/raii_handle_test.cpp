@@ -1,9 +1,11 @@
 #include "lib/raii_handle.h"
 
-#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include <cassert>
 #include <utility>
+
+using namespace testing;
 
 namespace
 {
@@ -53,6 +55,12 @@ namespace
         }
     };
 
+    std::vector<int> int_mock_free_calls{};
+    void intMockFree(int mockHandle) noexcept
+    {
+        int_mock_free_calls.push_back(mockHandle);
+    };
+    using IntMockRaiiHandle = utilities::RaiiHandle<int, intMockFree, -1>;
 } // namespace
 
 TEST_F(RaiiHandleTestFixture, DefaultConstructable)
@@ -208,5 +216,22 @@ TEST_F(RaiiHandleTestFixture, GetRef)
     EXPECT_EQ(&mockClass_, mockRaiiHandle.handle());
 }
 
-// TODO: Test with different template arguments, e.g. invalidValue something other than nullptr.
+TEST_F(RaiiHandleTestFixture, NonDefaultInvalidValue)
+{
+    int_mock_free_calls.clear();
+
+    {
+        IntMockRaiiHandle intMockRaiiHandle{-1};
+        EXPECT_FALSE(intMockRaiiHandle.isValid());
+    }
+    EXPECT_TRUE(int_mock_free_calls.empty());
+
+    for(auto i = 0 ; i < 3 ; ++i)
+    {
+        IntMockRaiiHandle intMockRaiiHandle{i};
+        EXPECT_TRUE(intMockRaiiHandle.isValid());
+    }
+    EXPECT_THAT(int_mock_free_calls, ElementsAre(0, 1, 2));
+}
+
 // TODO: Consider implementing comparison operators (e.g. < to enable use in std::set).

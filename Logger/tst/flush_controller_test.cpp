@@ -1,6 +1,6 @@
 #include "lib/flush_controller.h"
 
-#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 using namespace std::chrono_literals;
 

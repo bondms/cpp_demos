@@ -1,6 +1,6 @@
 #include "lib/shuffle.h"
 
-#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include <cstdlib>
 

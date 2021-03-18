@@ -1,6 +1,6 @@
 #include "lib/binary_search.h"
 
-#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include <algorithm>
 #include <array>
