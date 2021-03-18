@@ -59,7 +59,7 @@ namespace
     void intMockFree(int mockHandle) noexcept
     {
         int_mock_free_calls.push_back(mockHandle);
-    };
+    }
     using IntMockRaiiHandle = utilities::RaiiHandle<int, intMockFree, -1>;
 } // namespace
 
