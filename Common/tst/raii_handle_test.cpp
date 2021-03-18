@@ -208,5 +208,5 @@ TEST_F(RaiiHandleTestFixture, GetRef)
     EXPECT_EQ(&mockClass_, mockRaiiHandle.handle());
 }
 
-// TODO(MarkBond): Test with different template arguments, e.g. invalidValue something other than nullptr.
-// TODO(MarkBond): Consider implementing comparison operators (e.g. < to enable use in std::set).
+// TODO: Test with different template arguments, e.g. invalidValue something other than nullptr.
+// TODO: Consider implementing comparison operators (e.g. < to enable use in std::set).
