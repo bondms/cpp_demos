@@ -4,6 +4,7 @@ filegroup(
         "@BinarySearch//app:main",
         "@ConsumerProducer//app:main",
         "@Gmock//app:main",
+        "@Jsoncpp//app:main",
         "@Logger//app:main",
         "@Odbc//app:main",
         "@Realign//app:main",
