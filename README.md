@@ -48,6 +48,7 @@ Example use of jsoncpp library.
 
 Supported build system(s):
 * Makefile
+* Bazel
 
 ## Logger
 
