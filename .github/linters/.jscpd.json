@@ -6,9 +6,7 @@
     "ignore": [
       "**/__snapshots__/**",
       "**/*_test.cpp",
-      "**/*Test.cpp",
-      "**/.bazelrc",
-      "**/jsoncpp.BUILD"
+      "**/*Test.cpp"
     ],
     "absolute": true
   }
