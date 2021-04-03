@@ -19,7 +19,7 @@ for PROJECT in googletest googlemock
 do
     mkdir --verbose --parents -- "${HERE}/thirdparty/build/${PROJECT}" || exit $?
     pushd -- "${HERE}/thirdparty/build/${PROJECT}" || exit $?
-    cmake -- "${HERE}/thirdparty/src/googletest/${PROJECT}" || exit $?
+    cmake "${HERE}/thirdparty/src/googletest/${PROJECT}" || exit $?
     make || exit $?
     popd || exit $?
 done
