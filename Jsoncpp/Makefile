@@ -26,7 +26,7 @@ LIB_OBJ_FILES := $(LIB_CPP_FILES:$(LIB_SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
 LIB_DEP_FILES := $(LIB_CPP_FILES:$(LIB_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
 
 DEP_FLAGS = -MT $@ -MMD -MP -MF $(INT_DIR)/$*.d -iquote . -isystem $(JSONCPP_DIST_DIR)
-STD_FLAGS = --std=c++17 -pthread -fno-rtti
+STD_FLAGS = -std=c++17 -pthread -fno-rtti
 WARN_FLAGS = -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wpedantic -Werror
 
 CXX = g++
