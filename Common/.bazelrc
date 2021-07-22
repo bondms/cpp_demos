@@ -1,3 +1,4 @@
 build --cxxopt='-std=c++17'
 build --cxxopt='-lpthread'
+build --cxxopt='-pthread'
 build --cxxopt='-DASIO_STANDALONE'
