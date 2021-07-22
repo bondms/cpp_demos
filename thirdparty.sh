@@ -41,3 +41,10 @@ done
 ### ODBC ###
 
 [[ -e /usr/include/sql.h ]] || sudo apt install unixodbc-dev || exit $?
+
+
+### ASIO ###
+
+[[ -d "${HERE}/thirdparty/asio" ]] ||
+    git clone --depth 1 --branch asio-1-18-2 --verbose -- https://github.com/chriskohlhoff/asio.git "${HERE}/thirdparty/src/asio" ||
+    exit $?

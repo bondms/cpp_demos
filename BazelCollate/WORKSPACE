@@ -15,6 +15,13 @@ http_archive(
     sha256 = "6da6cdc026fe042599d9fce7b06ff2c128e8dd6b8b751fca91eb022bce310880",
 )
 
+http_archive(
+    name = "asio",
+    url = "https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-18-2.zip",
+    strip_prefix = "asio-asio-1-18-2",
+    sha256 = "9071370beb50f4e974042a2a8604e761397cc34a2021a49b5712571b5e1536d7",
+)
+
 local_repository(
     name = "BinarySearch",
     path = "../BinarySearch",
