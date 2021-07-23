@@ -1,3 +1,5 @@
+// Copyright 2021 Mark Bond
+
 #include "lib/realign.h"
 
 #include <gmock/gmock.h>

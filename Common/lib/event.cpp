@@ -1,3 +1,5 @@
+// Copyright 2021 Mark Bond
+
 #include "lib/event.h"
 
 Event::Event(Mode mode, State initialState) :

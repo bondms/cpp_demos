@@ -1,3 +1,5 @@
+// Copyright 2021 Mark Bond
+
 #include "lib/scope_exit.h"
 
 #include "lib/gtest_helper.h"

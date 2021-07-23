@@ -1,3 +1,5 @@
+// Copyright 2021 Mark Bond
+
 #include "lib/logger.h"
 
 #include <cstdlib>

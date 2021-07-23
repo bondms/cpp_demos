@@ -1,3 +1,5 @@
+// Copyright 2021 Mark Bond
+
 #include "lib/consumer.h"
 #include "lib/event.h"
 

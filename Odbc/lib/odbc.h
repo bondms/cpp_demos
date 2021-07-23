@@ -1,3 +1,5 @@
+// Copyright 2021 Mark Bond
+
 #pragma once
 
 #include "lib/raii_handle.h"

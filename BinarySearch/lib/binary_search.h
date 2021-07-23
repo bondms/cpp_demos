@@ -1,7 +1,6 @@
 // Copyright 2021 Mark Bond
 
-#ifndef BINARYSEARCH_LIB_BINARY_SEARCH_H_
-#define BINARYSEARCH_LIB_BINARY_SEARCH_H_
+#pragma once
 
 #include <iterator>
 
@@ -29,5 +28,3 @@ InputIt binary_search(InputIt first, InputIt last, const ElementType & item) {
         }
     }
 }
-
-#endif  // BINARYSEARCH_LIB_BINARY_SEARCH_H_

@@ -1,3 +1,5 @@
+// Copyright 2021 Mark Bond
+
 #include "logger.h"
 
 #include "lib/escaper.h"

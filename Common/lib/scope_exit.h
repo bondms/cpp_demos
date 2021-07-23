@@ -1,3 +1,4 @@
+// Copyright 2021 Mark Bond
 // Based on scope_exit from https://bajamircea.github.io/coding/cpp/2018/04/12/scope-guard.html
 
 #pragma once
