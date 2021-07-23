@@ -6,17 +6,14 @@
 #include <condition_variable>
 #include <mutex>
 
-class Event
-{
+class Event {
 public:
-    enum class State
-    {
+    enum class State {
         nonSignalled,
         signalled
     };
 
-    enum class Mode
-    {
+    enum class Mode {
         manualReset,
         autoReset
     };
@@ -40,15 +37,13 @@ public:
     void Wait();
 
     template<class Rep, class Period>
-    bool WaitFor(const std::chrono::duration<Rep, Period> & relTime)
-    {
+    bool WaitFor(const std::chrono::duration<Rep, Period> & relTime) {
         std::unique_lock<std::mutex> lock{ mutex_ };
         return condition_variable_.wait_for(lock, relTime, [&]{ return WaitPredicate(); });
     }
 
     template<class Clock, class Duration>
-    bool WaitUntil(const std::chrono::time_point<Clock, Duration> & timeoutTime)
-    {
+    bool WaitUntil(const std::chrono::time_point<Clock, Duration> & timeoutTime) {
         std::unique_lock<std::mutex> lock{ mutex_ };
         return condition_variable_.wait_until(lock, timeoutTime, [&]{ return WaitPredicate(); });
     }

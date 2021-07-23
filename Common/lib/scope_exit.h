@@ -7,8 +7,7 @@
 #include <utility>
 
 template<typename F>
-class ScopeExit
-{
+class ScopeExit {
     F f_;
 
 public:
@@ -22,8 +21,7 @@ public:
     {
     }
 
-    ~ScopeExit()
-    {
+    ~ScopeExit() {
         f_();
     }
 
@@ -35,7 +33,6 @@ public:
 };
 
 template<typename F>
-auto make_scope_exit(F&& f)
-{
+auto make_scope_exit(F&& f) {
     return ScopeExit<std::remove_reference_t<F>>(std::forward<F>(f));
 }

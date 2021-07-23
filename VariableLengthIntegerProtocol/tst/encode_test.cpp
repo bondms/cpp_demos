@@ -6,26 +6,26 @@
 
 namespace
 {
-    struct Parameters
-    {
-        Parameters(size_t _input, std::vector<uint8_t> _expected) :
-            input{_input},
-            expected{_expected}
-        {
-        }
 
-        size_t input;
-        std::vector<uint8_t> expected;
-    };
-
-    class EncodeTestFixture :
-        public testing::TestWithParam<Parameters>
+struct Parameters {
+    Parameters(size_t _input, std::vector<uint8_t> _expected) :
+        input{_input},
+        expected{_expected}
     {
-    };
+    }
+
+    size_t input;
+    std::vector<uint8_t> expected;
+};
+
+class EncodeTestFixture :
+    public testing::TestWithParam<Parameters>
+{
+};
+
 } // namespace
 
-TEST_P(EncodeTestFixture, Simple)
-{
+TEST_P(EncodeTestFixture, Simple) {
     auto param{ GetParam() };
     EXPECT_EQ(param.expected, Encode(param.input));
 }

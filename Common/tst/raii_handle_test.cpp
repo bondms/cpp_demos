@@ -11,71 +11,63 @@
 
 using namespace testing;
 
-namespace
+namespace {
+
+class MockClass
 {
-    class MockClass
-    {
-        bool freed_{ false };
-    public:
-        void free() noexcept
-        {
-            freed_ = true;
-        };
-
-        bool freed() const noexcept
-        {
-            return freed_;
-        }
-
-        void reset() noexcept
-        {
-            freed_ = false;
-        }
+    bool freed_{ false };
+public:
+    void free() noexcept {
+        freed_ = true;
     };
 
-    using MockHandle = MockClass*;
-
-    void mockFree(MockHandle mockHandle) noexcept
-    {
-        assert(nullptr != mockHandle);
-        EXPECT_FALSE(mockHandle->freed()) << "Double free";
-        mockHandle->free();
+    bool freed() const noexcept {
+        return freed_;
     }
 
-    using MockRaiiHandle = utilities::RaiiHandle<MockHandle, mockFree>;
-
-    class RaiiHandleTestFixture :
-        public testing::Test
-    {
-    public:
-        MockClass mockClass_{};
-        void SetUp() override
-        {
-            mockClass_.reset();
-        }
-        void mockAllocate(MockHandle * pMockHandle)
-        {
-            *pMockHandle = &mockClass_;
-        }
-    };
-
-    std::vector<int> int_mock_free_calls{};
-    void intMockFree(int mockHandle) noexcept
-    {
-        int_mock_free_calls.push_back(mockHandle);
+    void reset() noexcept {
+        freed_ = false;
     }
-    using IntMockRaiiHandle = utilities::RaiiHandle<int, intMockFree, -1>;
+};
+
+using MockHandle = MockClass*;
+
+void mockFree(MockHandle mockHandle) noexcept {
+    assert(nullptr != mockHandle);
+    EXPECT_FALSE(mockHandle->freed()) << "Double free";
+    mockHandle->free();
+}
+
+using MockRaiiHandle = utilities::RaiiHandle<MockHandle, mockFree>;
+
+class RaiiHandleTestFixture :
+    public testing::Test
+{
+public:
+    MockClass mockClass_{};
+    void SetUp() override {
+        mockClass_.reset();
+    }
+    void mockAllocate(MockHandle * pMockHandle) {
+        *pMockHandle = &mockClass_;
+    }
+};
+
+std::vector<int> int_mock_free_calls{};
+void intMockFree(int mockHandle) noexcept {
+    int_mock_free_calls.push_back(mockHandle);
+}
+using IntMockRaiiHandle = utilities::RaiiHandle<int, intMockFree, -1>;
+
 } // namespace
 
-TEST_F(RaiiHandleTestFixture, DefaultConstructable)
-{
+TEST_F(RaiiHandleTestFixture, DefaultConstructable) {
     MockRaiiHandle mockRaiiHandle{};
     EXPECT_FALSE(mockRaiiHandle.isValid());
     EXPECT_EQ(nullptr, mockRaiiHandle.handle());
 }
 
-TEST_F(RaiiHandleTestFixture, Simple)
-{
+TEST_F(RaiiHandleTestFixture, Simple) {
     MockClass mockClass{};
     EXPECT_FALSE(mockClass.freed());
     {
@@ -87,8 +79,7 @@ TEST_F(RaiiHandleTestFixture, Simple)
     EXPECT_TRUE(mockClass.freed());
 }
 
-TEST_F(RaiiHandleTestFixture, MoveAssignment)
-{
+TEST_F(RaiiHandleTestFixture, MoveAssignment) {
     MockClass mockClass{};
     {
         MockRaiiHandle mockRaiiHandle1{&mockClass};
@@ -111,8 +102,7 @@ TEST_F(RaiiHandleTestFixture, MoveAssignment)
     EXPECT_TRUE(mockClass.freed());
 }
 
-TEST_F(RaiiHandleTestFixture, MoveAssignmentFromSelf)
-{
+TEST_F(RaiiHandleTestFixture, MoveAssignmentFromSelf) {
     MockClass mockClass{};
     {
         MockRaiiHandle mockRaiiHandle1{&mockClass};
@@ -130,8 +120,7 @@ TEST_F(RaiiHandleTestFixture, MoveAssignmentFromSelf)
     EXPECT_TRUE(mockClass.freed());
 }
 
-TEST_F(RaiiHandleTestFixture, MoveConstruction)
-{
+TEST_F(RaiiHandleTestFixture, MoveConstruction) {
     MockClass mockClass{};
     {
         MockRaiiHandle mockRaiiHandle1{&mockClass};
@@ -151,8 +140,7 @@ TEST_F(RaiiHandleTestFixture, MoveConstruction)
     EXPECT_TRUE(mockClass.freed());
 }
 
-TEST_F(RaiiHandleTestFixture, Free)
-{
+TEST_F(RaiiHandleTestFixture, Free) {
     MockClass mockClass{};
     EXPECT_FALSE(mockClass.freed());
 
@@ -167,8 +155,7 @@ TEST_F(RaiiHandleTestFixture, Free)
     EXPECT_TRUE(mockClass.freed());
 }
 
-TEST_F(RaiiHandleTestFixture, FreeOnInvalid)
-{
+TEST_F(RaiiHandleTestFixture, FreeOnInvalid) {
     MockRaiiHandle mockRaiiHandle{};
     EXPECT_FALSE(mockRaiiHandle.isValid());
     EXPECT_EQ(nullptr, mockRaiiHandle.handle());
@@ -178,8 +165,7 @@ TEST_F(RaiiHandleTestFixture, FreeOnInvalid)
     EXPECT_EQ(nullptr, mockRaiiHandle.handle());
 }
 
-TEST_F(RaiiHandleTestFixture, Detach)
-{
+TEST_F(RaiiHandleTestFixture, Detach) {
     MockClass mockClass{};
     EXPECT_FALSE(mockClass.freed());
 
@@ -198,8 +184,7 @@ TEST_F(RaiiHandleTestFixture, Detach)
     EXPECT_TRUE(mockClass.freed());
 }
 
-TEST_F(RaiiHandleTestFixture, DetachOnInvalid)
-{
+TEST_F(RaiiHandleTestFixture, DetachOnInvalid) {
     MockRaiiHandle mockRaiiHandle{};
     EXPECT_FALSE(mockRaiiHandle.isValid());
     EXPECT_EQ(nullptr, mockRaiiHandle.handle());
@@ -209,8 +194,7 @@ TEST_F(RaiiHandleTestFixture, DetachOnInvalid)
     EXPECT_EQ(nullptr, mockRaiiHandle.handle());
 }
 
-TEST_F(RaiiHandleTestFixture, GetRef)
-{
+TEST_F(RaiiHandleTestFixture, GetRef) {
     MockRaiiHandle mockRaiiHandle{};
     EXPECT_FALSE(mockRaiiHandle.isValid());
     EXPECT_EQ(nullptr, mockRaiiHandle.handle());
@@ -220,8 +204,7 @@ TEST_F(RaiiHandleTestFixture, GetRef)
     EXPECT_EQ(&mockClass_, mockRaiiHandle.handle());
 }
 
-TEST_F(RaiiHandleTestFixture, NonDefaultInvalidValue)
-{
+TEST_F(RaiiHandleTestFixture, NonDefaultInvalidValue) {
     int_mock_free_calls.clear();
 
     {
@@ -230,23 +213,20 @@ TEST_F(RaiiHandleTestFixture, NonDefaultInvalidValue)
     }
     EXPECT_TRUE(int_mock_free_calls.empty());
 
-    for(auto i = 0 ; i < 3 ; ++i)
-    {
+    for(auto i = 0 ; i < 3 ; ++i) {
         IntMockRaiiHandle intMockRaiiHandle{i};
         EXPECT_TRUE(intMockRaiiHandle.isValid());
     }
     EXPECT_THAT(int_mock_free_calls, ElementsAre(0, 1, 2));
 }
 
-TEST_F(RaiiHandleTestFixture, UseInNonAssociativeContainers)
-{
+TEST_F(RaiiHandleTestFixture, UseInNonAssociativeContainers) {
     MockRaiiHandle mockRaiiHandle{};
     std::vector<MockRaiiHandle> v{};
     v.push_back(std::move(mockRaiiHandle));
 }
 
-TEST_F(RaiiHandleTestFixture, UseInAssociativeContainers)
-{
+TEST_F(RaiiHandleTestFixture, UseInAssociativeContainers) {
     MockRaiiHandle mockRaiiHandle{};
     std::set<MockRaiiHandle> s{};
     s.insert(std::move(mockRaiiHandle));
