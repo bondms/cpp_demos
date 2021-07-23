@@ -15,8 +15,7 @@ struct TestParameter {
     const int item{};
 };
 
-TestParameter test_parameter[] =
-{
+TestParameter test_parameter[] = {
     {
         { 1, 2, 3, },
         0,
@@ -40,19 +39,25 @@ TestParameter test_parameter[] =
 };
 
 class TestFixture :
-    public ::testing::TestWithParam<TestParameter>
-{
+    public ::testing::TestWithParam<TestParameter> {
 };
 
-} // namespace
+}  // namespace
 
-INSTANTIATE_TEST_SUITE_P(simple, TestFixture, ::testing::ValuesIn(test_parameter));
+INSTANTIATE_TEST_SUITE_P(
+    simple, TestFixture, ::testing::ValuesIn(test_parameter));
 
 TEST_P(TestFixture, simple) {
     const auto & param{ GetParam() };
 
-    const auto actual{ binary_search(std::cbegin(param.data), std::cend(param.data), param.item) };
-    const auto expected { std::lower_bound(std::cbegin(param.data), std::cend(param.data), param.item) };
+    const auto actual{
+        binary_search(
+            std::cbegin(param.data), std::cend(param.data),
+            param.item) };
+    const auto expected {
+        std::lower_bound(
+            std::cbegin(param.data),
+            std::cend(param.data), param.item) };
 
     EXPECT_EQ(expected, actual);
 }
