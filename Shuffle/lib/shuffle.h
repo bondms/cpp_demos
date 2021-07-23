@@ -84,4 +84,4 @@ namespace Shuffle
             return N;
         }
     };
-} // namespace Shuffle
+}  // namespace Shuffle

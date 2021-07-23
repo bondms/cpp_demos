@@ -21,7 +21,7 @@ void test(Shuffler & shuffler) {
     }
 }
 
-} // namespace
+}  // namespace
 
 TEST(ShuffleTest, Simple_ShuffleMillion) {
     Shuffle::Simple<std::int_fast32_t> shuffler{999'999};

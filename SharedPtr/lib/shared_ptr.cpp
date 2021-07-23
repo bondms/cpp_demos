@@ -65,4 +65,4 @@ namespace SharedPtr
             return std::move(dataPtr->result_);
         }
     }
-} // namespace SharedPtr
+}  // namespace SharedPtr

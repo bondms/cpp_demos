@@ -17,7 +17,7 @@ auto shift_left_byte(T& v)
     return result;
 }
 
-} // namespace
+}  // namespace
 
 std::vector<uint8_t> Encode(size_t input) {
     constexpr auto uint8sInInput{ (sizeof(input) * CHAR_BIT) / 8 };

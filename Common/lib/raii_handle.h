@@ -6,11 +6,13 @@
 
 namespace utilities {
 
-template<typename HandleType, void (*freeFunction)(HandleType) noexcept, HandleType invalidValue = nullptr>
-class RaiiHandle
-{
+template<
+    typename HandleType,
+    void (*freeFunction)(HandleType) noexcept,
+    HandleType invalidValue = nullptr>
+class RaiiHandle {
     HandleType handle_{ invalidValue };
-public:
+ public:
     RaiiHandle() noexcept = default;
     explicit RaiiHandle(HandleType handle) noexcept :
         handle_{ handle }
@@ -69,4 +71,4 @@ public:
     }
 };
 
-} // namespace utilities
+}  // namespace utilities

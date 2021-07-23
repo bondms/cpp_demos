@@ -48,7 +48,7 @@ namespace Escaper
                 << static_cast<unsigned int>(static_cast<unsigned char>(raw));
             return oss.str();
         }
-    } // namespace
+    }  // namespace
 
     std::string Escaped(const std::string & raw)
     {

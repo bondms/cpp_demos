@@ -11,7 +11,7 @@ class ScopeExitTestFixture :
 {
 };
 
-} // namespace
+}  // namespace
 
 TEST_F(ScopeExitTestFixture, ScopeExitsCleanly) {
     bool b = false;

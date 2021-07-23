@@ -10,7 +10,7 @@ template<typename F>
 class ScopeExit {
     F f_;
 
-public:
+ public:
     explicit ScopeExit(const F& f) :
         f_{f}
     {

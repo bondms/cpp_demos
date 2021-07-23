@@ -23,7 +23,7 @@ class EncodeTestFixture :
 {
 };
 
-} // namespace
+}  // namespace
 
 TEST_P(EncodeTestFixture, Simple) {
     auto param{ GetParam() };

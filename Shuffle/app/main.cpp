@@ -21,7 +21,7 @@ namespace
         }
         std::cout << "\n\n";
     }
-} // namespace
+}  // namespace
 
 int main()
 {

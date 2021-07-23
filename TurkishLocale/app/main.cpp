@@ -46,7 +46,7 @@ constexpr const char* locale_names[] {
     "tr_TR.utf8",
 };
 
-} // namespace
+}  // namespace
 
 int main() {
     try {

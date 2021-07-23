@@ -68,7 +68,7 @@ namespace
         public ::testing::TestWithParam<TestParameter>
     {
     };
-} // namespace
+}  // namespace
 
 INSTANTIATE_TEST_SUITE_P(simple, TestFixture, ::testing::ValuesIn(test_parameters));
 

@@ -9,7 +9,9 @@
 namespace GtestHelper {
 
 template<typename ExceptionType>
-void expect_throw_with_callback(std::function<void()> code, std::function<bool(ExceptionType e)> callback) {
+void expect_throw_with_callback(
+        std::function<void()> code,
+        std::function<bool(ExceptionType e)> callback) {
     try {
         code();
         ADD_FAILURE() << "Exception not thrown";
@@ -22,4 +24,4 @@ void expect_throw_with_callback(std::function<void()> code, std::function<bool(E
     }
 }
 
-} // namespace GtestHelper
+}  // namespace GtestHelper

@@ -15,7 +15,7 @@ namespace
     {
     };
 
-} // namespace
+}  // namespace
 
 TEST_F(SharedPtrTestFixture, BadWithLongEnoughWait)
 {

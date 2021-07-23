@@ -59,7 +59,7 @@ void intMockFree(int mockHandle) noexcept {
 }
 using IntMockRaiiHandle = utilities::RaiiHandle<int, intMockFree, -1>;
 
-} // namespace
+}  // namespace
 
 TEST_F(RaiiHandleTestFixture, DefaultConstructable) {
     MockRaiiHandle mockRaiiHandle{};

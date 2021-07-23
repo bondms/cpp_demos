@@ -7,16 +7,15 @@
 #include <atomic>
 #include <thread>
 
-using namespace std::chrono_literals;
+using std::chrono_literals::s;
 
 namespace {
 
 class EventTestFixture :
-    public testing::Test
-{
+    public testing::Test {
 };
 
-} // namespace
+}  // namespace
 
 TEST_F(EventTestFixture, signalAndWait_Quick) {
     Event e1{ Event::Mode::manualReset, Event::State::nonSignalled };
