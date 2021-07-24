@@ -26,7 +26,7 @@ class Consumer {
     explicit Consumer(
             std::function<void(const Item & item)> process_item_function) :
         process_item_function_{ std::move(process_item_function) } {
-        thread_ = std::thread{ static_thread_function, std::ref(*this) };
+        thread_ = std::thread{ &Consumer::thread_function, this };
     }
 
     Consumer(const Consumer &) = delete;
@@ -59,10 +59,6 @@ class Consumer {
     }
 
  private:
-    static void static_thread_function(Consumer & consumer) noexcept {
-        consumer.thread_function();
-    }
-
     void thread_function() noexcept {
         while ( true ) {
             Item item{};
