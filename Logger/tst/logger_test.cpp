@@ -120,12 +120,10 @@ TEST_F(LoggerTestFixture, Initialise_Failure) {
     GtestHelper::expect_throw_with_callback<std::runtime_error>(
         []{ Logger::Initialise("/invalid/path/to/file.txt"); },
         [](const std::runtime_error& e){
-            return
-                std::string{
+            return std::string {
                     "Failed to open log file: /invalid/path/to/file.txt"
                 } == e.what();
-        }
-    );
+        });
 }
 
 TEST_F(LoggerTestFixture, LOG_ERROR_Simple) {
@@ -175,7 +173,7 @@ TEST_F(LoggerTestFixture, LOG_DEBUG_Simple) {
     auto lines{ get_log_lines(log_file_path) };
 #ifdef _DEBUG
     ASSERT_EQ(1, lines.size());
-    std::regex re{log_message_prefix_regex + "DBG >> Test message"s};
+    std::regex re{ log_message_prefix_regex + "DBG >> Test message"s };
     if ( !std::regex_match(lines[0], re) ){
         ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
     }
@@ -243,8 +241,7 @@ TEST_F(LoggerTestFixture, Rotate) {
     EXPECT_TRUE(std::filesystem::is_regular_file(get_log_file_path()));
 
     std::vector<size_t> file_sizes{};
-    for ( auto& p: std::filesystem::directory_iterator(temp_test_path_) )
-    {
+    for ( auto& p : std::filesystem::directory_iterator(temp_test_path_) ) {
         file_sizes.push_back(std::filesystem::file_size(p));
     }
 
