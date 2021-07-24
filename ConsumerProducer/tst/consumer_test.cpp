@@ -1,13 +1,13 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/consumer.h"
-#include "lib/event.h"
-
 #include <gmock/gmock.h>
 
 #include <stdexcept>
 
-using namespace ConsumerProducer;
+#include "lib/consumer.h"
+#include "lib/event.h"
+
+using ConsumerProducer::Consumer;
 
 TEST(ConsumerTest, DefaultConstructed)
 {
