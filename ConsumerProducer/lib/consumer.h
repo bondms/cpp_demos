@@ -35,9 +35,8 @@ class Consumer {
     Consumer(Consumer &&) = delete;
     Consumer & operator=( Consumer &&) = delete;
 
-    ~Consumer()
-    {
-        if ( ! thread_.joinable() ) {
+    ~Consumer() {
+        if ( !thread_.joinable() ) {
             return;
         }
 
