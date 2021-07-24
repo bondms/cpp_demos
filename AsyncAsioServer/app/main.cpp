@@ -26,12 +26,19 @@ std::string make_daytime_string()
 class tcp_connection
   : public std::enable_shared_from_this<tcp_connection>
 {
+  struct PrivateConstruction{};
+
 public:
+  tcp_connection(PrivateConstruction, asio::io_context& io_context)
+    : socket_(io_context)
+  {
+  }
+
   typedef std::shared_ptr<tcp_connection> pointer;
 
   static pointer create(asio::io_context& io_context)
   {
-    return pointer(new tcp_connection(io_context));
+    return std::make_shared<tcp_connection>(PrivateConstruction{}, io_context);
   }
 
   tcp::socket& socket()
@@ -51,11 +58,6 @@ public:
   }
 
 private:
-  tcp_connection(asio::io_context& io_context)
-    : socket_(io_context)
-  {
-  }
-
   void handle_write(const asio::error_code& /*error*/,
       size_t /*bytes_transferred*/)
   {
