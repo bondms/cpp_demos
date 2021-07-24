@@ -12,7 +12,7 @@
 #include "lib/gtest_helper.h"
 #include "lib/os.h"
 
-using namespace std::chrono_literals::operator""s;
+using std::chrono_literals::operator""s;
 
 namespace
 {

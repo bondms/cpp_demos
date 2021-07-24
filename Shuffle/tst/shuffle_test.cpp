@@ -1,10 +1,10 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/shuffle.h"
-
 #include <gmock/gmock.h>
 
 #include <cstdlib>
+
+#include "lib/shuffle.h"
 
 namespace
 {
@@ -24,28 +24,38 @@ void test(Shuffler & shuffler) {
 }  // namespace
 
 TEST(ShuffleTest, Simple_ShuffleMillion) {
-    Shuffle::Simple<std::int_fast32_t> shuffler{999'999};
+    Shuffle::Simple<std::int_fast32_t> shuffler{ 999'999 };
     test(shuffler);
 }
 
 TEST(ShuffleTest, Simple_FullRangeOfType) {
-    Shuffle::Simple<std::uint8_t> shuffler{std::numeric_limits<std::uint8_t>::max()};
+    Shuffle::Simple<std::uint8_t> shuffler{
+        std::numeric_limits<std::uint8_t>::max()
+    };
     test(shuffler);
 }
 
 TEST(ShuffleTest, Simple_Zero) {
-    Shuffle::Simple<int> shuffler{0};
+    Shuffle::Simple<int> shuffler{ 0 };
     EXPECT_EQ(0, shuffler());
     EXPECT_EQ(0, shuffler());
 }
 
 TEST(ShuffleTest, Simple_Negative) {
-    EXPECT_THROW(Shuffle::Simple<int>{static_cast<std::vector<int>::size_type>(-1)}, std::logic_error);
+    EXPECT_THROW(
+        Shuffle::Simple<int>{ static_cast<std::vector<int>::size_type>(-1) },
+        std::logic_error);
 }
 
 TEST(ShuffleTest, Simple_MaxLimit) {
-    EXPECT_THROW(Shuffle::Simple<std::size_t>{std::numeric_limits<std::size_t>::max()}, std::logic_error);
-    EXPECT_NO_THROW(Shuffle::Simple<std::size_t>{std::numeric_limits<std::size_t>::max() - 1});
+    EXPECT_THROW(
+        Shuffle::Simple<std::size_t>{ std::numeric_limits<std::size_t>::max() },
+        std::logic_error);
+    EXPECT_NO_THROW(
+        Shuffle::Simple<std::size_t>{
+            std::numeric_limits<std::size_t>::max() - 1
+        }
+    );
 }
 
 TEST(ShuffleTest, LowMem_ShuffleMillion) {
@@ -54,7 +64,9 @@ TEST(ShuffleTest, LowMem_ShuffleMillion) {
 }
 
 TEST(ShuffleTest, LowMem_FullRangeOfType) {
-    Shuffle::LowMem<std::uint8_t, std::numeric_limits<std::uint8_t>::max()> shuffler{};
+    Shuffle::LowMem<
+        std::uint8_t, std::numeric_limits<std::uint8_t>::max()
+    > shuffler{};
     test(shuffler);
 }
 
@@ -65,5 +77,9 @@ TEST(ShuffleTest, LowMem_Zero) {
 }
 
 TEST(ShuffleTest, LowMem_MaxLimit) {
-    EXPECT_NO_THROW(Shuffle::Simple<std::size_t>{std::numeric_limits<std::size_t>::max() - 1});
+    EXPECT_NO_THROW(
+        Shuffle::Simple<
+            std::size_t
+        >{std::numeric_limits<std::size_t>::max() - 1}
+    );
 }
