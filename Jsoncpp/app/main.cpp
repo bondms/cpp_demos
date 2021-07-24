@@ -1,12 +1,11 @@
 // Copyright 2021 Mark Bond
 
+#include <json/json.h>
+
 #include <iostream>
 #include <sstream>
 
-#include <json/json.h>
-
-void create()
-{
+void create() {
     Json::Value root{};
     root["method"] = "authentication";
     root["server_password"] = "admin";
@@ -15,8 +14,7 @@ void create()
     std::cout << root << std::endl;
 }
 
-void parse()
-{
+void parse() {
     constexpr auto raw{
         R"(
             {
@@ -30,7 +28,7 @@ void parse()
         )"
     };
 
-    std::istringstream iss{raw};
+    std::istringstream iss{ raw };
 
     Json::Value root{};
     iss >> root;
@@ -61,8 +59,7 @@ void parse()
         << std::endl;
 }
 
-int main()
-{
+int main() {
     std::cout << "--- Create ---" << std::endl;
     create();
 

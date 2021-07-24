@@ -4,7 +4,6 @@
 
 #include <string>
 
-namespace Escaper
-{
+namespace Escaper {
     std::string Escaped(const std::string & raw);
-} // Escaper
+}  // namespace Escaper

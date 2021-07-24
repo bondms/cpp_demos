@@ -1,10 +1,10 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/escaper.h"
-
 #include <gmock/gmock.h>
 
-using namespace Escaper;
+#include "lib/escaper.h"
+
+using Escaper::Escaped;
 
 namespace
 {
