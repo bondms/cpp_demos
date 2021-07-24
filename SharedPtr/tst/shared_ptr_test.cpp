@@ -4,7 +4,8 @@
 
 #include "lib/shared_ptr.h"
 
-using namespace SharedPtr;
+using SharedPtr::BadGetWithTimeout;
+using SharedPtr::GoodGetWithTimeout;
 
 using std::chrono_literals::operator""s;
 
