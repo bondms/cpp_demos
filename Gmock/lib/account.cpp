@@ -1,28 +1,25 @@
-#include "lib/account.h"
+// Copyright 2021 Mark Bond
 
 #include <stdexcept>
 
+#include "lib/account.h"
+
 Account::Account(Notifier_Interface & notifier) :
-    notifier_{notifier}
-{
+    notifier_{ notifier } {
 }
 
-unsigned long Account::balance() const
-{
+unsigned int Account::balance() const {
     return balance_;
 }
 
-void Account::deposit(unsigned long amount)
-{
+void Account::deposit(unsigned int amount) {
     balance_ += amount;
 
     notifier_.deposit_made(amount);
 }
 
-void Account::withdraw(unsigned long amount)
-{
-    if ( amount > balance_ )
-    {
+void Account::withdraw(unsigned int amount) {
+    if ( amount > balance_ ) {
         throw std::runtime_error("Balance too small for withdrawal");
     }
 

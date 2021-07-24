@@ -1,3 +1,5 @@
+// Copyright 2021 Mark Bond
+
 #include "lib/event.h"
 
 #include <gmock/gmock.h>
@@ -5,19 +7,17 @@
 #include <atomic>
 #include <thread>
 
-using namespace std::chrono_literals;
+using std::chrono_literals::operator""s;
 
-namespace
-{
-    class EventTestFixture :
-        public testing::Test
-    {
-    };
+namespace {
 
-} // namespace
+class EventTestFixture :
+    public testing::Test {
+};
 
-TEST_F(EventTestFixture, signalAndWait_Quick)
-{
+}  // namespace
+
+TEST_F(EventTestFixture, signalAndWait_Quick) {
     Event e1{ Event::Mode::manualReset, Event::State::nonSignalled };
     Event e2{ Event::Mode::manualReset, Event::State::nonSignalled };
     int i{ 0 };
@@ -38,8 +38,7 @@ TEST_F(EventTestFixture, signalAndWait_Quick)
     t.join();
 }
 
-TEST_F(EventTestFixture, waitForAndManualReset_Quick)
-{
+TEST_F(EventTestFixture, waitForAndManualReset_Quick) {
     Event e{ Event::Mode::manualReset, Event::State::nonSignalled };
     EXPECT_FALSE(e.WaitFor(0s));
     EXPECT_FALSE(e.WaitFor(0s));
@@ -53,8 +52,7 @@ TEST_F(EventTestFixture, waitForAndManualReset_Quick)
     EXPECT_FALSE(e.WaitFor(0s));
 }
 
-TEST_F(EventTestFixture, autoResetAndSignalledInitialState_Quick)
-{
+TEST_F(EventTestFixture, autoResetAndSignalledInitialState_Quick) {
     Event e{ Event::Mode::autoReset, Event::State::signalled };
     EXPECT_TRUE(e.WaitFor(0s));
     EXPECT_FALSE(e.WaitFor(0s));
@@ -64,14 +62,12 @@ TEST_F(EventTestFixture, autoResetAndSignalledInitialState_Quick)
     EXPECT_FALSE(e.WaitFor(0s));
 }
 
-TEST_F(EventTestFixture, autoReset_SignalsOnlyOnce_Quick)
-{
+TEST_F(EventTestFixture, autoReset_SignalsOnlyOnce_Quick) {
     Event e{ Event::Mode::autoReset, Event::State::nonSignalled };
     std::atomic_int i{ 0 };
 
     std::thread t{[&]{
-        for ( auto j = 0 ; j < 2 ; ++j )
-        {
+        for ( auto j = 0 ; j < 2 ; ++j ) {
             e.Wait();
             ++i;
         }
@@ -80,8 +76,7 @@ TEST_F(EventTestFixture, autoReset_SignalsOnlyOnce_Quick)
     EXPECT_EQ(0, i);
 
     e.Signal();
-    while ( i < 1)
-    {
+    while ( i < 1 ) {
         // Spin.
     }
     EXPECT_EQ(1, i);
@@ -91,14 +86,12 @@ TEST_F(EventTestFixture, autoReset_SignalsOnlyOnce_Quick)
     EXPECT_EQ(2, i);
 }
 
-TEST_F(EventTestFixture, autoReset_SignalsOnlyOnce_Slow)
-{
+TEST_F(EventTestFixture, autoReset_SignalsOnlyOnce_Slow) {
     Event e{ Event::Mode::autoReset, Event::State::nonSignalled };
     std::atomic_int i{ 0 };
 
     std::thread t{[&]{
-        for ( auto j = 0 ; j < 2 ; ++j )
-        {
+        for ( auto j = 0 ; j < 2 ; ++j ) {
             e.Wait();
             ++i;
         }
@@ -115,8 +108,7 @@ TEST_F(EventTestFixture, autoReset_SignalsOnlyOnce_Slow)
     EXPECT_EQ(2, i);
 }
 
-TEST_F(EventTestFixture, autoReset_SignalsOnlyOne_Quick)
-{
+TEST_F(EventTestFixture, autoReset_SignalsOnlyOne_Quick) {
     Event e{ Event::Mode::autoReset, Event::State::nonSignalled };
     std::atomic_int i{ 0 };
 
@@ -133,8 +125,7 @@ TEST_F(EventTestFixture, autoReset_SignalsOnlyOne_Quick)
     EXPECT_EQ(0, i);
 
     e.Signal();
-    while ( i < 1 )
-    {
+    while ( i < 1 ) {
         // Spin.
     }
     EXPECT_EQ(1, i);
@@ -145,8 +136,7 @@ TEST_F(EventTestFixture, autoReset_SignalsOnlyOne_Quick)
     EXPECT_EQ(2, i);
 }
 
-TEST_F(EventTestFixture, autoReset_SignalsOnlyOne_Slow)
-{
+TEST_F(EventTestFixture, autoReset_SignalsOnlyOne_Slow) {
     Event e{ Event::Mode::autoReset, Event::State::nonSignalled };
     std::atomic_int i{ 0 };
 
@@ -173,8 +163,7 @@ TEST_F(EventTestFixture, autoReset_SignalsOnlyOne_Slow)
     EXPECT_EQ(2, i);
 }
 
-TEST_F(EventTestFixture, manualReset_SignalsAll_Quick)
-{
+TEST_F(EventTestFixture, manualReset_SignalsAll_Quick) {
     Event e{ Event::Mode::manualReset, Event::State::nonSignalled };
     std::atomic_int i{ 0 };
 
@@ -196,8 +185,7 @@ TEST_F(EventTestFixture, manualReset_SignalsAll_Quick)
     EXPECT_EQ(2, i);
 }
 
-TEST_F(EventTestFixture, manualReset_SignalsAll_Slow)
-{
+TEST_F(EventTestFixture, manualReset_SignalsAll_Slow) {
     Event e{ Event::Mode::manualReset, Event::State::nonSignalled };
     std::atomic_int i{ 0 };
 
@@ -220,8 +208,7 @@ TEST_F(EventTestFixture, manualReset_SignalsAll_Slow)
     EXPECT_EQ(2, i);
 }
 
-TEST_F(EventTestFixture, WaitFor_Slow)
-{
+TEST_F(EventTestFixture, WaitFor_Slow) {
     Event e{ Event::Mode::manualReset, Event::State::nonSignalled };
 
     const auto startTime{ std::chrono::steady_clock::now() };
@@ -243,8 +230,7 @@ TEST_F(EventTestFixture, WaitFor_Slow)
     t.join();
 }
 
-TEST_F(EventTestFixture, WaitUntil_Quick)
-{
+TEST_F(EventTestFixture, WaitUntil_Quick) {
     const auto startTime{ std::chrono::steady_clock::now() };
 
     Event e{ Event::Mode::manualReset, Event::State::nonSignalled };
@@ -253,8 +239,7 @@ TEST_F(EventTestFixture, WaitUntil_Quick)
     EXPECT_TRUE(e.WaitUntil(startTime));
 }
 
-TEST_F(EventTestFixture, WaitUntil_Slow)
-{
+TEST_F(EventTestFixture, WaitUntil_Slow) {
     Event e{ Event::Mode::manualReset, Event::State::nonSignalled };
 
     const auto startTime{ std::chrono::steady_clock::now() };

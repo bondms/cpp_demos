@@ -1,25 +1,25 @@
+// Copyright 2021 Mark Bond
+
 #pragma once
 
 #include <chrono>
 
 template<typename Clock>
-class FlushController
-{
+class FlushController {
     const typename Clock::duration duration_;
     typename Clock::time_point due_;
-public:
-    FlushController(const typename Clock::duration& duration) noexcept :
-        duration_{duration},
-        due_{Clock::now() + duration}
-    {
+
+ public:
+    explicit FlushController(
+            const typename Clock::duration& duration) noexcept :
+        duration_{ duration },
+        due_{ Clock::now() + duration } {
     }
 
-    bool is_due() noexcept
-    {
-        auto now{Clock::now()};
+    bool is_due() noexcept {
+        auto now{ Clock::now() };
 
-        if (now < due_)
-        {
+        if ( now < due_ ) {
             return false;
         }
 

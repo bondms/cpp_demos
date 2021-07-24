@@ -1,3 +1,5 @@
+// Copyright 2021 Mark Bond
+
 #include "lib/binary_search.h"
 
 #include <gmock/gmock.h>
@@ -6,52 +8,56 @@
 #include <array>
 #include <iterator>
 
-namespace
-{
-    struct TestParameter
+namespace {
+
+struct TestParameter {
+    const std::array<int, 3> data{};
+    const int item{};
+};
+
+TestParameter test_parameter[] = {
     {
-        const std::array<int, 3> data{};
-        const int item{};
-    };
-
-    TestParameter test_parameter[] =
+        { 1, 2, 3, },
+        0,
+    },
     {
-        {
-            { 1, 2, 3, },
-            0,
-        },
-        {
-            { 1, 2, 3, },
-            1,
-        },
-        {
-            { 1, 2, 3, },
-            2,
-        },
-        {
-            { 1, 2, 3, },
-            3,
-        },
-        {
-            { 1, 2, 3, },
-            4,
-        },
-    };
-
-    class TestFixture :
-        public ::testing::TestWithParam<TestParameter>
+        { 1, 2, 3, },
+        1,
+    },
     {
-    };
-} // namespace
+        { 1, 2, 3, },
+        2,
+    },
+    {
+        { 1, 2, 3, },
+        3,
+    },
+    {
+        { 1, 2, 3, },
+        4,
+    },
+};
 
-INSTANTIATE_TEST_SUITE_P(simple, TestFixture, ::testing::ValuesIn(test_parameter));
+class TestFixture :
+    public ::testing::TestWithParam<TestParameter> {
+};
 
-TEST_P(TestFixture, simple)
-{
+}  // namespace
+
+INSTANTIATE_TEST_SUITE_P(
+    simple, TestFixture, ::testing::ValuesIn(test_parameter));
+
+TEST_P(TestFixture, simple) {
     const auto & param{ GetParam() };
 
-    const auto actual{ binary_search(std::cbegin(param.data), std::cend(param.data), param.item) };
-    const auto expected { std::lower_bound(std::cbegin(param.data), std::cend(param.data), param.item) };
+    const auto actual{
+        binary_search(
+            std::cbegin(param.data), std::cend(param.data),
+            param.item) };
+    const auto expected {
+        std::lower_bound(
+            std::cbegin(param.data),
+            std::cend(param.data), param.item) };
 
     EXPECT_EQ(expected, actual);
 }

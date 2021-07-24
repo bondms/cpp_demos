@@ -1,77 +1,77 @@
-#include "lib/realign.h"
+// Copyright 2021 Mark Bond
 
 #include <gmock/gmock.h>
 
 #include <string>
 
-namespace
-{
-    struct TestParameter
+#include "lib/realign.h"
+
+namespace {
+
+struct TestParameter {
+    const std::wstring input{};
+    const std::wstring output{};
+    const std::wstring value{};
+};
+
+TestParameter test_parameters[] = {
     {
-        const std::wstring input{};
-        const std::wstring output{};
-        const std::wstring value{};
-    };
-
-    TestParameter test_parameters[] =
+        L"",
+        L"",
+        L"",
+    },
     {
-        {
-            L"",
-            L"",
-            L"",
-        },
-        {
-            L" ",
-            L" ",
-            L"",
-        },
-        {
-            L"a",
-            L"a",
-            L"a",
-        },
-        {
-            L"a ",
-            L" a",
-            L"a",
-        },
-        {
-            L"ab  ",
-            L"  ab",
-            L"ab",
-        },
-        {
-            L"a b ",
-            L" a b",
-            L"a b",
-        },
-        {
-            L"a b    ",
-            L"    a b",
-            L"a b",
-        },
-        {
-            L" ab  ",
-            L"   ab",
-            L" ab",
-        },
-        {
-            L"   ab  ",
-            L"     ab",
-            L"   ab",
-        },
-    };
-
-    class TestFixture :
-        public ::testing::TestWithParam<TestParameter>
+        L" ",
+        L" ",
+        L"",
+    },
     {
-    };
-} // namespace
+        L"a",
+        L"a",
+        L"a",
+    },
+    {
+        L"a ",
+        L" a",
+        L"a",
+    },
+    {
+        L"ab  ",
+        L"  ab",
+        L"ab",
+    },
+    {
+        L"a b ",
+        L" a b",
+        L"a b",
+    },
+    {
+        L"a b    ",
+        L"    a b",
+        L"a b",
+    },
+    {
+        L" ab  ",
+        L"   ab",
+        L" ab",
+    },
+    {
+        L"   ab  ",
+        L"     ab",
+        L"   ab",
+    },
+};
 
-INSTANTIATE_TEST_SUITE_P(simple, TestFixture, ::testing::ValuesIn(test_parameters));
+class TestFixture :
+    public ::testing::TestWithParam<TestParameter> {
+};
 
-TEST_P(TestFixture, simple)
-{
+}  // namespace
+
+INSTANTIATE_TEST_SUITE_P(
+    simple, TestFixture, ::testing::ValuesIn(test_parameters));
+
+TEST_P(TestFixture, simple) {
     const auto & param{ GetParam() };
 
     auto data{ param.input };

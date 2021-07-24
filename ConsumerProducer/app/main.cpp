@@ -1,10 +1,11 @@
-#include "lib/consumer.h"
+// Copyright 2021 Mark Bond
 
 #include <cstdlib>
 #include <iostream>
 
-int main()
-{
+#include "lib/consumer.h"
+
+int main() {
     std::cout << "No application implemented" << std::endl;
     return EXIT_FAILURE;
 }

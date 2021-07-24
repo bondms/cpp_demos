@@ -1,3 +1,4 @@
+// Copyright 2021 Mark Bond
 // Based on scope_exit from https://bajamircea.github.io/coding/cpp/2018/04/12/scope-guard.html
 
 #pragma once
@@ -6,11 +7,10 @@
 #include <utility>
 
 template<typename F>
-class ScopeExit
-{
+class ScopeExit {
     F f_;
 
-public:
+ public:
     explicit ScopeExit(const F& f) :
         f_{f}
     {
@@ -21,8 +21,7 @@ public:
     {
     }
 
-    ~ScopeExit()
-    {
+    ~ScopeExit() {
         f_();
     }
 
@@ -34,7 +33,6 @@ public:
 };
 
 template<typename F>
-auto make_scope_exit(F&& f)
-{
+auto make_scope_exit(F&& f) {
     return ScopeExit<std::remove_reference_t<F>>(std::forward<F>(f));
 }

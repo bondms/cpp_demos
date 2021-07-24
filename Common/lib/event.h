@@ -1,25 +1,24 @@
+// Copyright 2021 Mark Bond
+
 #pragma once
 
 #include <chrono>
 #include <condition_variable>
 #include <mutex>
 
-class Event
-{
-public:
-    enum class State
-    {
+class Event {
+ public:
+    enum class State {
         nonSignalled,
         signalled
     };
 
-    enum class Mode
-    {
+    enum class Mode {
         manualReset,
         autoReset
     };
 
-private:
+ private:
     const Mode mode_{};
 
     std::mutex mutex_{};
@@ -28,7 +27,7 @@ private:
 
     bool WaitPredicate();
 
-public:
+ public:
     Event(Mode mode, State initialState);
 
     void Signal();
@@ -38,16 +37,17 @@ public:
     void Wait();
 
     template<class Rep, class Period>
-    bool WaitFor(const std::chrono::duration<Rep, Period> & relTime)
-    {
+    bool WaitFor(const std::chrono::duration<Rep, Period> & relTime) {
         std::unique_lock<std::mutex> lock{ mutex_ };
-        return condition_variable_.wait_for(lock, relTime, [&]{ return WaitPredicate(); });
+        return condition_variable_.wait_for(
+            lock, relTime, [&]{ return WaitPredicate(); });
     }
 
     template<class Clock, class Duration>
-    bool WaitUntil(const std::chrono::time_point<Clock, Duration> & timeoutTime)
-    {
+    bool WaitUntil(
+            const std::chrono::time_point<Clock, Duration> & timeoutTime) {
         std::unique_lock<std::mutex> lock{ mutex_ };
-        return condition_variable_.wait_until(lock, timeoutTime, [&]{ return WaitPredicate(); });
+        return condition_variable_.wait_until(
+            lock, timeoutTime, [&]{ return WaitPredicate(); });
     }
 };
