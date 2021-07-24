@@ -53,8 +53,7 @@ TEST(ConsumerTest, Simple) {
 // * --gtest_also_run_disabled_tests arguments
 // The test should terminate rather than complete with either a pass or fail.
 TEST(ConsumerTest, DISABLED_TerminatesOnException) {
-    try
-    {
+    try {
         Consumer<bool> consumer{ [](bool) {
             throw std::runtime_error("Test exception");
         } };

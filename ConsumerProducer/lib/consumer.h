@@ -81,4 +81,4 @@ class Consumer {
     }
 };
 
-}  //namespace ConsumerProducer
+}  // namespace ConsumerProducer

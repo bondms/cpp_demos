@@ -2,20 +2,19 @@
 
 #pragma once
 
-#include "notifier_interface.h"
-
 #include <ostream>
 
+#include "notifier_interface.h"
+
 class Notifier :
-    public Notifier_Interface
-{
-public:
+    public Notifier_Interface {
+ public:
     explicit Notifier(std::ostream & os);
 
-public:
-    void deposit_made(unsigned long amount) override;
-    void withdrawal_made(unsigned long amount) override;
+ public:
+    void deposit_made(unsigned int amount) override;
+    void withdrawal_made(unsigned int amount) override;
 
-private:
+ private:
     std::ostream & os_;
 };

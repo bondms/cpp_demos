@@ -6,20 +6,20 @@
 
 class Account
 {
-public:
+ public:
     explicit Account(Notifier_Interface & notifier);
 
     Account(const Account &) = delete;
     Account & operator=(const Account &) = delete;
 
-public:
-    unsigned long balance() const;
+ public:
+    unsigned int balance() const;
 
-    void deposit(unsigned long amount);
-    void withdraw(unsigned long amount);
+    void deposit(unsigned int amount);
+    void withdraw(unsigned int amount);
 
-private:
-    unsigned long balance_{0ul};
+ private:
+    unsigned int balance_{};
 
     Notifier_Interface & notifier_;
 };
