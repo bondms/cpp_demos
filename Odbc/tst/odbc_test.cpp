@@ -1,12 +1,13 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/odbc.h"
-
 #include <gmock/gmock.h>
 
 #include <exception>
 
-using namespace Odbc;
+#include "lib/odbc.h"
+
+using Odbc::allocEnvHandle;
+using Odbc::Exception;
 
 TEST(OdbcTest, OdbcExceptionIsStdException)
 {
