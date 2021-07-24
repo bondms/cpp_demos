@@ -5,7 +5,7 @@
 #include "lib/account.h"
 
 Account::Account(Notifier_Interface & notifier) :
-    notifier_{notifier} {
+    notifier_{ notifier } {
 }
 
 unsigned int Account::balance() const {
