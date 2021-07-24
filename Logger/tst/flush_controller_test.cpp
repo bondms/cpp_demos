@@ -7,8 +7,7 @@
 using std::chrono_literals::operator""h;
 using std::chrono_literals::operator""s;
 
-namespace
-{
+namespace {
 
 class MockClock {
  public:

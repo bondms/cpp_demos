@@ -1,6 +1,6 @@
 // Copyright 2021 Mark Bond
 
-#include "logger.h"
+#include "lib/logger.h"
 
 #include <cassert>
 #include <fstream>
@@ -12,6 +12,7 @@
 #include <thread>
 #include <time.h>
 #include <unistd.h>
+#include <utility>
 
 #include "lib/escaper.h"
 #include "lib/flush_controller.h"
@@ -64,7 +65,7 @@ class Impl {
         }
     }
 
-public:
+ public:
     Impl(const std::filesystem::path& path, size_t rotation_size) :
         path_{ path },
         ofs_{ path, std::ios_base::app },

@@ -4,9 +4,9 @@
 
 #include <chrono>
 #include <filesystem>
+#include <string>
 
-namespace Logger
-{
+namespace Logger {
 
 // TODO(MarkBond): Consider moving elsewhere.
 enum class Severity {

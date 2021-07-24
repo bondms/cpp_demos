@@ -4,7 +4,7 @@
 
 #include <ostream>
 
-#include "notifier_interface.h"
+#include "lib/notifier_interface.h"
 
 class Notifier :
     public Notifier_Interface {

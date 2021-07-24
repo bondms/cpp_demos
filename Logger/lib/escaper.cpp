@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <sstream>
 
-namespace Escaper
-{
+namespace Escaper {
 
-namespace
-{
+namespace {
 
 // Similar to std::isprint, except:
 // * Always uses "C" locale, regardless of the currently installed C locale.

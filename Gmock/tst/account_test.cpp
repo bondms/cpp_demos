@@ -4,12 +4,11 @@
 
 #include "lib/account.h"
 
-namespace
-{
+namespace {
 
 class Notifier_Mock :
     public Notifier_Interface {
-public:
+ public:
     MOCK_METHOD1(deposit_made, void(unsigned int));
     MOCK_METHOD1(withdrawal_made, void(unsigned int));
 };

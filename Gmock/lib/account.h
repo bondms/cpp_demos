@@ -2,10 +2,9 @@
 
 #pragma once
 
-#include "notifier_interface.h"
+#include "lib/notifier_interface.h"
 
-class Account
-{
+class Account {
  public:
     explicit Account(Notifier_Interface & notifier);
 

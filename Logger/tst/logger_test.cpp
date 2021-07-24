@@ -13,9 +13,9 @@
 #include "lib/os.h"
 
 using std::chrono_literals::operator""s;
+using std::string_literals::operator""s;
 
-namespace
-{
+namespace {
 
 auto get_log_lines(const std::filesystem::path& path) {
     std::ifstream ifs{ path };
@@ -50,8 +50,9 @@ auto make_time_point(
         + std::chrono::milliseconds(millisecond);
 }
 
-const std::string log_message_prefix_regex{
-    R"(\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z \d{7}:\d{15} )"};
+constexpr auto log_message_prefix_regex{
+    R"(\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z \d{7}:\d{15} )"
+};
 
 class LoggerTestFixture :
     public testing::Test
@@ -135,7 +136,7 @@ TEST_F(LoggerTestFixture, LOG_ERROR_Simple) {
     Logger::Close(Logger::ErrorReporting::throwOnError);
     auto lines{get_log_lines(log_file_path)};
     ASSERT_EQ(1, lines.size());
-    std::regex re{log_message_prefix_regex + "ERR >> Test message"};
+    std::regex re{log_message_prefix_regex + "ERR >> Test message"s};
     if ( !std::regex_match(lines[0], re) ) {
         ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
     }
@@ -148,7 +149,7 @@ TEST_F(LoggerTestFixture, LOG_WARNING_Simple) {
     Logger::Close(Logger::ErrorReporting::throwOnError);
     auto lines{get_log_lines(log_file_path)};
     ASSERT_EQ(1, lines.size());
-    std::regex re{log_message_prefix_regex + "WRN >> Test message"};
+    std::regex re{log_message_prefix_regex + "WRN >> Test message"s};
     if ( !std::regex_match(lines[0], re) ) {
         ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
     }
@@ -161,7 +162,7 @@ TEST_F(LoggerTestFixture, LOG_INFO_Simple) {
     Logger::Close(Logger::ErrorReporting::throwOnError);
     auto lines{get_log_lines(log_file_path)};
     ASSERT_EQ(1, lines.size());
-    std::regex re{log_message_prefix_regex + "INF >> Test message"};
+    std::regex re{log_message_prefix_regex + "INF >> Test message"s};
     if ( !std::regex_match(lines[0], re) ) {
         ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
     }
@@ -175,7 +176,7 @@ TEST_F(LoggerTestFixture, LOG_DEBUG_Simple) {
     auto lines{ get_log_lines(log_file_path) };
 #ifdef _DEBUG
     ASSERT_EQ(1, lines.size());
-    std::regex re{log_message_prefix_regex + "DBG >> Test message"};
+    std::regex re{log_message_prefix_regex + "DBG >> Test message"s};
     if ( !std::regex_match(lines[0], re) ){
         ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
     }
@@ -193,14 +194,14 @@ TEST_F(LoggerTestFixture, LOG_messages_append) {
     auto lines{get_log_lines(log_file_path)};
     ASSERT_EQ(2, lines.size());
     {
-        std::regex re{ log_message_prefix_regex + "INF >> Test message 1" };
+        std::regex re{ log_message_prefix_regex + "INF >> Test message 1"s };
         if ( !std::regex_match(lines[0], re) ) {
             ADD_FAILURE()
                 << "First logged message did not match expected: " << lines[0];
         }
     }
     {
-        std::regex re{ log_message_prefix_regex + "INF >> Test message 2" };
+        std::regex re{ log_message_prefix_regex + "INF >> Test message 2"s };
         if ( !std::regex_match(lines[1], re) ) {
             ADD_FAILURE()
                 << "First logged message did not match expected: " << lines[1];
@@ -225,7 +226,7 @@ TEST_F(LoggerTestFixture, LOG_appends_to_existing_file) {
 
     EXPECT_EQ("Test message 1", lines[0]);
 
-    std::regex re{log_message_prefix_regex + "INF >> Test message 2"};
+    std::regex re{ log_message_prefix_regex + "INF >> Test message 2"s };
     if ( !std::regex_match(lines[1], re) ) {
         ADD_FAILURE()
             << "First logged message did not match expected: " << lines[1];
@@ -259,7 +260,9 @@ TEST_F(LoggerTestFixture, Escaping) {
     Logger::Close(Logger::ErrorReporting::throwOnError);
     auto lines{get_log_lines(log_file_path)};
     ASSERT_EQ(1, lines.size());
-    std::regex re{log_message_prefix_regex + R"<<<(INF >> Test message\\n)<<<"};
+    std::regex re{
+        log_message_prefix_regex + R"<<<(INF >> Test message\\n)<<<"s
+    };
     if ( !std::regex_match(lines[0], re) ) {
         ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
     }

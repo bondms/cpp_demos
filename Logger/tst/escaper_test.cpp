@@ -6,13 +6,13 @@
 
 using Escaper::Escaped;
 
-namespace
-{
-    class EscaperTestFixture :
-        public testing::Test
-    {
-    };
-}
+namespace {
+
+class EscaperTestFixture :
+    public testing::Test {
+};
+
+}  // namespace
 
 TEST_F(EscaperTestFixture, Simple) {
     EXPECT_EQ(

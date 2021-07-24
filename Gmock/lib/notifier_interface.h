@@ -2,8 +2,7 @@
 
 #pragma once
 
-class Notifier_Interface
-{
+class Notifier_Interface {
  protected:
     virtual ~Notifier_Interface() = default;
 
