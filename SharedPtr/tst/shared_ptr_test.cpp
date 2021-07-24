@@ -9,12 +9,11 @@ using SharedPtr::GoodGetWithTimeout;
 
 using std::chrono_literals::operator""s;
 
-namespace
-{
-    class SharedPtrTestFixture :
-        public testing::Test
-    {
-    };
+namespace {
+
+class SharedPtrTestFixture :
+    public testing::Test {
+};
 
 }  // namespace
 

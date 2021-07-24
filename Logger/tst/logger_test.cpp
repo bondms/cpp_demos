@@ -55,8 +55,7 @@ constexpr auto log_message_prefix_regex{
 };
 
 class LoggerTestFixture :
-    public testing::Test
-{
+        public testing::Test {
     void SetUp() override {
         std::filesystem::create_directory(temp_test_path_);
     }
@@ -119,7 +118,7 @@ TEST_F(LoggerTestFixture, Initialise_Simple) {
 
 TEST_F(LoggerTestFixture, Initialise_Failure) {
     GtestHelper::expect_throw_with_callback<std::runtime_error>(
-        []{Logger::Initialise("/invalid/path/to/file.txt");},
+        []{ Logger::Initialise("/invalid/path/to/file.txt"); },
         [](const std::runtime_error& e){
             return
                 std::string{

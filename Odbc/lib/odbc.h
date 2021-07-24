@@ -11,8 +11,7 @@
 namespace Odbc {
 
 class Exception :
-    public std::runtime_error
-{
+    public std::runtime_error {
  private:
     SQLRETURN sqlReturn_{};
 
@@ -37,4 +36,4 @@ EnvHandle allocEnvHandle(SQLRETURN & sqlReturn);
 // On failure, throws std::exception.
 EnvHandle allocEnvHandle();
 
-}  //namespace Odbc
+}  // namespace Odbc

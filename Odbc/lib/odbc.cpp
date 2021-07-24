@@ -7,8 +7,7 @@
 
 using std::string_literals::operator""s;
 
-namespace Odbc
-{
+namespace Odbc {
 
 Exception::Exception(SQLRETURN sqlReturn, const char * context) :
     std::runtime_error(context + ": "s + std::to_string(sqlReturn)),
@@ -40,4 +39,4 @@ EnvHandle allocEnvHandle() {
     return result;
 }
 
-}  //namespace Odbc
+}  // namespace Odbc

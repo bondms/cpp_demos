@@ -9,8 +9,7 @@ static_assert(0 == (CHAR_BIT % 8));
 namespace {
 
 template<typename T>
-auto shift_left_byte(T& v)
-{
+auto shift_left_byte(T& v) {
     constexpr auto bits_in_t{ sizeof(T) * CHAR_BIT };
     auto result{ static_cast<uint8_t>(v >> (bits_in_t - 8)) };
     v = v << 8;
@@ -43,7 +42,9 @@ std::vector<uint8_t> Encode(size_t input) {
         ++reservedBits;
     }
 
-    auto lengthIndicatorBits{ static_cast<uint8_t>(~(0xFF >> (reservedBits - 1))) };
+    auto lengthIndicatorBits{
+        static_cast<uint8_t>(~(0xFF >> (reservedBits - 1)))
+    };
 
     if ( overlap ) {
         result.push_back(lengthIndicatorBits);

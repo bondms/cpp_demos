@@ -1,18 +1,18 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/event.h"
 #include "lib/shared_ptr.h"
 
+#include <memory>
 #include <thread>
 #include <utility>
 
+#include "lib/event.h"
+
 using std::chrono_literals::operator""s;
 
-namespace SharedPtr
-{
+namespace SharedPtr {
 
-namespace
-{
+namespace {
 
 struct Data {
     std::mutex mutex_{};

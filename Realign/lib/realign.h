@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <utility>
 
 template<typename It>
 auto realign(It first, It last) {

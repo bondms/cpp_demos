@@ -6,8 +6,7 @@
 
 #include "lib/shuffle.h"
 
-namespace
-{
+namespace {
 
 template<typename Shuffler>
 void test(Shuffler & shuffler) {
@@ -54,8 +53,7 @@ TEST(ShuffleTest, Simple_MaxLimit) {
     EXPECT_NO_THROW(
         Shuffle::Simple<std::size_t>{
             std::numeric_limits<std::size_t>::max() - 1
-        }
-    );
+        });
 }
 
 TEST(ShuffleTest, LowMem_ShuffleMillion) {
@@ -80,6 +78,5 @@ TEST(ShuffleTest, LowMem_MaxLimit) {
     EXPECT_NO_THROW(
         Shuffle::Simple<
             std::size_t
-        >{std::numeric_limits<std::size_t>::max() - 1}
-    );
+        >{std::numeric_limits<std::size_t>::max() - 1});
 }

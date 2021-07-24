@@ -5,8 +5,7 @@
 
 #include "lib/shuffle.h"
 
-namespace
-{
+namespace {
 
 template<typename Shuffler>
 void f(Shuffler & shuffler) {

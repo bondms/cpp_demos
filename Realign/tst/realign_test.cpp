@@ -6,11 +6,9 @@
 
 #include "lib/realign.h"
 
-namespace
-{
+namespace {
 
-struct TestParameter
-{
+struct TestParameter {
     const std::wstring input{};
     const std::wstring output{};
     const std::wstring value{};
@@ -65,8 +63,7 @@ TestParameter test_parameters[] = {
 };
 
 class TestFixture :
-    public ::testing::TestWithParam<TestParameter>
-{
+    public ::testing::TestWithParam<TestParameter> {
 };
 
 }  // namespace

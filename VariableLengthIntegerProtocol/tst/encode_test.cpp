@@ -4,8 +4,7 @@
 
 #include "lib/encode.h"
 
-namespace
-{
+namespace {
 
 struct Parameters {
     Parameters(size_t _input, std::vector<uint8_t> _expected) :
@@ -19,8 +18,7 @@ struct Parameters {
 };
 
 class EncodeTestFixture :
-    public testing::TestWithParam<Parameters>
-{
+    public testing::TestWithParam<Parameters> {
 };
 
 }  // namespace

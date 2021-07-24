@@ -20,7 +20,7 @@ constexpr auto dotless_lowercase_w{ L'\u0131' };
 constexpr auto dotless_uppercase_w{ L'I' };
 
 auto as_string(wchar_t ch) {
-    switch(ch) {
+    switch ( ch ) {
     case dotted_lowercase_w:
         return "Dotted lowercase";
     case dotted_uppercase_w:

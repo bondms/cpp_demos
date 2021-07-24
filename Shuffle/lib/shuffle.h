@@ -9,19 +9,18 @@
 #include <random>
 #include <vector>
 
-namespace Shuffle
-{
+namespace Shuffle {
 
 template<typename T>
 class Simple {
     using vec = std::vector<T>;
     using size_type = typename vec::size_type;
-    std::mt19937 rand_{std::random_device{}()};
+    std::mt19937 rand_{ std::random_device{}() };
     vec v_{};
     const size_type max_;
 
  public:
-    Simple(typename std::vector<T>::size_type max) :
+    explicit Simple(typename std::vector<T>::size_type max) :
         max_{max}
     {
         if ( (max < 0) || (max >= std::numeric_limits<size_type>::max()) ) {
@@ -48,10 +47,10 @@ class Simple {
 template<typename T, T N>
 class LowMem {
     static_assert((N >= 0) && (N < std::numeric_limits<std::size_t>::max()));
-    std::mt19937 rand_{std::random_device{}()};
+    std::mt19937 rand_{ std::random_device{}() };
     std::bitset<N + 1> bitset_{};
-    std::size_t remaining_{N + 1};
-    std::uniform_int_distribution<T> dist_{0, N};
+    std::size_t remaining_{ N + 1 };
+    std::uniform_int_distribution<T> dist_{ 0, N };
 
  public:
     T operator()() {
@@ -62,8 +61,7 @@ class LowMem {
         --remaining_;
         while ( true ) {
             auto r = dist_(rand_);
-            if ( 0 != bitset_[r] )
-            {
+            if ( 0 != bitset_[r] )             {
                 continue;
             }
             bitset_[r] = true;

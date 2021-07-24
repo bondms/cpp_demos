@@ -2,16 +2,17 @@
 
 #include "lib/logger.h"
 
+#include <sys/types.h>
+#include <time.h>
+#include <unistd.h>
+
 #include <cassert>
 #include <fstream>
 #include <iomanip>
 #include <memory>
 #include <mutex>
 #include <sstream>
-#include <sys/types.h>
 #include <thread>
-#include <time.h>
-#include <unistd.h>
 #include <utility>
 
 #include "lib/escaper.h"
@@ -22,11 +23,9 @@
 
 using std::chrono_literals::operator""s;
 
-namespace Logger
-{
+namespace Logger {
 
-namespace
-{
+namespace {
 
 class Impl {
     const std::filesystem::path path_;
