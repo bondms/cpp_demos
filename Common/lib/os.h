@@ -1,4 +1,8 @@
+// Copyright 2021 Mark Bond
+
 #pragma once
+
+#include <string>
 
 #ifdef __linux__
     #define OS_TEXT(text) text

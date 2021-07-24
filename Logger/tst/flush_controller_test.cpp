@@ -1,57 +1,54 @@
-#include "lib/flush_controller.h"
+// Copyright 2021 Mark Bond
 
 #include <gmock/gmock.h>
 
-using namespace std::chrono_literals;
+#include "lib/flush_controller.h"
 
-namespace
-{
-    class MockClock
-    {
-    public:
-        using time_point = std::chrono::steady_clock::time_point;
-        using duration = std::chrono::steady_clock::duration;
+using std::chrono_literals::operator""h;
+using std::chrono_literals::operator""s;
 
-    private:
-        static time_point now_;
+namespace {
 
-    public:
-        static time_point now()
-        {
-            return now_;
-        }
+class MockClock {
+ public:
+    using time_point = std::chrono::steady_clock::time_point;
+    using duration = std::chrono::steady_clock::duration;
 
-        static void advance_time(MockClock::duration duration)
-        {
-            now_ += duration;
-        }
-    };
+ private:
+    static time_point now_;
 
-    MockClock::time_point MockClock::now_{};
+ public:
+    static time_point now() {
+        return now_;
+    }
 
-    class FlushControllerTestFixture :
-        public testing::Test
-    {
-    };
-}
+    static void advance_time(MockClock::duration duration) {
+        now_ += duration;
+    }
+};
 
-TEST_F(FlushControllerTestFixture, SteadyClock_ImmediatelyDue)
-{
-    FlushController<std::chrono::steady_clock> flush_controller{0s};
+MockClock::time_point MockClock::now_{};
+
+class FlushControllerTestFixture :
+    public testing::Test {
+};
+
+}  // namespace
+
+TEST_F(FlushControllerTestFixture, SteadyClock_ImmediatelyDue) {
+    FlushController<std::chrono::steady_clock> flush_controller{ 0s };
     EXPECT_TRUE(flush_controller.is_due());
     EXPECT_TRUE(flush_controller.is_due());
 }
 
-TEST_F(FlushControllerTestFixture, SteadyClock_NotDue)
-{
-    FlushController<std::chrono::steady_clock> flush_controller{1h};
+TEST_F(FlushControllerTestFixture, SteadyClock_NotDue) {
+    FlushController<std::chrono::steady_clock> flush_controller{ 1h };
     EXPECT_FALSE(flush_controller.is_due());
     EXPECT_FALSE(flush_controller.is_due());
 }
 
-TEST_F(FlushControllerTestFixture, MockClock_Simple)
-{
-    FlushController<MockClock> flush_controller{10s};
+TEST_F(FlushControllerTestFixture, MockClock_Simple) {
+    FlushController<MockClock> flush_controller{ 10s };
     EXPECT_FALSE(flush_controller.is_due());
     MockClock::advance_time(1s);
     EXPECT_FALSE(flush_controller.is_due());

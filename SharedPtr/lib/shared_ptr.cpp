@@ -1,66 +1,68 @@
-#include "lib/event.h"
+// Copyright 2021 Mark Bond
+
 #include "lib/shared_ptr.h"
 
+#include <memory>
 #include <thread>
 #include <utility>
 
-using namespace std::chrono_literals;
+#include "lib/event.h"
 
-namespace SharedPtr
-{
-    namespace
-    {
-        struct Data
-        {
-            std::mutex mutex_{};
-            std::string result_{};
+using std::chrono_literals::operator""s;
 
-            Event event_{Event::Mode::manualReset, Event::State::nonSignalled};
-        };
-        using DataPtr = std::shared_ptr<Data>;
-    }
+namespace SharedPtr {
 
-    std::string SlowNoninterruptableGet()
-    {
-        std::this_thread::sleep_for(1s);
-        return "The data";
-    }
+namespace {
 
-    std::string BadGetWithTimeout(std::chrono::milliseconds timeout)
-    {
-        std::string result{};
-        Event event{Event::Mode::manualReset, Event::State::nonSignalled};
+struct Data {
+    std::mutex mutex_{};
+    std::string result_{};
 
-        std::thread thread{[&]{
-            result = SlowNoninterruptableGet();
-            event.Signal();
-        }};
+    Event event_{Event::Mode::manualReset, Event::State::nonSignalled};
+};
+using DataPtr = std::shared_ptr<Data>;
 
-        event.WaitFor(timeout);
-        thread.detach();
+}  // namespace
 
-        return result;
-    }
+std::string SlowNoninterruptableGet() {
+    std::this_thread::sleep_for(1s);
+    return "The data";
+}
 
-    std::string GoodGetWithTimeout(std::chrono::milliseconds timeout)
-    {
-        auto dataPtr{ std::make_shared<Data>() };
+std::string BadGetWithTimeout(std::chrono::milliseconds timeout) {
+    std::string result{};
+    Event event{ Event::Mode::manualReset, Event::State::nonSignalled };
 
-        std::thread thread{[dataPtr]{
-            auto localResult{ SlowNoninterruptableGet() };
-            {
-                std::lock_guard<std::mutex> lock{ dataPtr->mutex_ };
-                dataPtr->result_ = std::move(localResult);
-            }
-            dataPtr->event_.Signal();
-        }};
+    std::thread thread{ [&]{
+        result = SlowNoninterruptableGet();
+        event.Signal();
+    } };
 
-        dataPtr->event_.WaitFor(timeout);
-        thread.detach();
+    event.WaitFor(timeout);
+    thread.detach();
 
+    return result;
+}
+
+std::string GoodGetWithTimeout(std::chrono::milliseconds timeout) {
+    auto dataPtr{ std::make_shared<Data>() };
+
+    std::thread thread{ [dataPtr]{
+        auto localResult{ SlowNoninterruptableGet() };
         {
             std::lock_guard<std::mutex> lock{ dataPtr->mutex_ };
-            return std::move(dataPtr->result_);
+            dataPtr->result_ = std::move(localResult);
         }
+        dataPtr->event_.Signal();
+    } };
+
+    dataPtr->event_.WaitFor(timeout);
+    thread.detach();
+
+    {
+        std::lock_guard<std::mutex> lock{ dataPtr->mutex_ };
+        return std::move(dataPtr->result_);
     }
-} // namespace SharedPtr
+}
+
+}  // namespace SharedPtr

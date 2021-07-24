@@ -1,23 +1,24 @@
+// Copyright 2021 Mark Bond
+
 #pragma once
 
-#include "notifier_interface.h"
+#include "lib/notifier_interface.h"
 
-class Account
-{
-public:
+class Account {
+ public:
     explicit Account(Notifier_Interface & notifier);
 
     Account(const Account &) = delete;
     Account & operator=(const Account &) = delete;
 
-public:
-    unsigned long balance() const;
+ public:
+    unsigned int balance() const;
 
-    void deposit(unsigned long amount);
-    void withdraw(unsigned long amount);
+    void deposit(unsigned int amount);
+    void withdraw(unsigned int amount);
 
-private:
-    unsigned long balance_{0ul};
+ private:
+    unsigned int balance_{};
 
     Notifier_Interface & notifier_;
 };

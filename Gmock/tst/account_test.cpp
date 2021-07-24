@@ -1,22 +1,21 @@
-#include "lib/account.h"
+// Copyright 2021 Mark Bond
 
 #include <gmock/gmock.h>
 
-namespace
-{
+#include "lib/account.h"
 
-    class Notifier_Mock :
-        public Notifier_Interface
-    {
-    public:
-        MOCK_METHOD1(deposit_made, void(unsigned long));
-        MOCK_METHOD1(withdrawal_made, void(unsigned long));
-    };
+namespace {
+
+class Notifier_Mock :
+    public Notifier_Interface {
+ public:
+    MOCK_METHOD1(deposit_made, void(unsigned int));
+    MOCK_METHOD1(withdrawal_made, void(unsigned int));
+};
 
 }  // namespace
 
-TEST(AccountTests, simple)
-{
+TEST(AccountTests, simple) {
     Notifier_Mock notifier{};
 
     testing::InSequence in_sequence{};

@@ -1,10 +1,11 @@
-#include "lib/notifier.h"
+// Copyright 2021 Mark Bond
 
 #include <gmock/gmock.h>
 #include <sstream>
 
-TEST(NotifierTests, deposit_made)
-{
+#include "lib/notifier.h"
+
+TEST(NotifierTests, deposit_made) {
     std::ostringstream oss{};
     Notifier notifier{oss};
 
@@ -13,8 +14,7 @@ TEST(NotifierTests, deposit_made)
     EXPECT_EQ("Deposited: 123\n", oss.str());
 }
 
-TEST(NotifierTests, withdrawal_made)
-{
+TEST(NotifierTests, withdrawal_made) {
     std::ostringstream oss{};
     Notifier notifier{oss};
 
