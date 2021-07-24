@@ -1,12 +1,12 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/shared_ptr.h"
-
 #include <gmock/gmock.h>
+
+#include "lib/shared_ptr.h"
 
 using namespace SharedPtr;
 
-using namespace std::chrono_literals;
+using std::chrono_literals::operator""s;
 
 namespace
 {
@@ -17,22 +17,18 @@ namespace
 
 }  // namespace
 
-TEST_F(SharedPtrTestFixture, BadWithLongEnoughWait)
-{
+TEST_F(SharedPtrTestFixture, BadWithLongEnoughWait) {
     EXPECT_EQ("The data", BadGetWithTimeout(2s));
 }
 
-TEST_F(SharedPtrTestFixture, DISABLED_BadWithTooShortWait)
-{
+TEST_F(SharedPtrTestFixture, DISABLED_BadWithTooShortWait) {
     EXPECT_TRUE(BadGetWithTimeout(0s).empty());
 }
 
-TEST_F(SharedPtrTestFixture, GoodWithLongEnoughWait)
-{
+TEST_F(SharedPtrTestFixture, GoodWithLongEnoughWait) {
     EXPECT_EQ("The data", GoodGetWithTimeout(2s));
 }
 
-TEST_F(SharedPtrTestFixture, GoodWithTooShortWait)
-{
+TEST_F(SharedPtrTestFixture, GoodWithTooShortWait) {
     EXPECT_TRUE(GoodGetWithTimeout(0s).empty());
 }

@@ -6,18 +6,15 @@
 #include <iterator>
 
 template<typename It>
-auto realign(It first, It last)
-{
+auto realign(It first, It last) {
     auto r_first{ std::make_reverse_iterator(last) };
     auto r_last{ std::make_reverse_iterator(first) };
 
-    auto r_source_first{ std::find_if_not(r_first, r_last, [](wchar_t ch)
-    {
+    auto r_source_first{ std::find_if_not(r_first, r_last, [](wchar_t ch) {
         return ' ' == ch;
     }) };
 
-    if ( r_source_first == r_first )
-    {
+    if ( r_source_first == r_first ) {
         // Return early if no move is required since std::move `behavior is
         // undefined if d_first is within the range [first, last).`
         return first;
