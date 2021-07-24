@@ -9,7 +9,6 @@
 //
 
 #include <ctime>
-#include <functional>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -45,9 +44,10 @@ public:
     message_ = make_daytime_string();
 
     asio::async_write(socket_, asio::buffer(message_),
-        std::bind(&tcp_connection::handle_write, shared_from_this(),
-          std::placeholders::_1,
-          std::placeholders::_2));
+        [shared_this=shared_from_this()](
+            const asio::error_code& error, size_t bytes_transferred) {
+          shared_this->handle_write(error, bytes_transferred);
+        });
   }
 
 private:
@@ -82,8 +82,9 @@ private:
       tcp_connection::create(io_context_);
 
     acceptor_.async_accept(new_connection->socket(),
-        std::bind(&tcp_server::handle_accept, this, new_connection,
-          std::placeholders::_1));
+        [&](const asio::error_code& error){
+          this->handle_accept(new_connection, error);
+        });
   }
 
   void handle_accept(tcp_connection::pointer new_connection,
