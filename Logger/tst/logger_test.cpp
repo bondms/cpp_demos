@@ -174,7 +174,7 @@ TEST_F(LoggerTestFixture, LOG_DEBUG_Simple) {
 #ifdef _DEBUG
     ASSERT_EQ(1, lines.size());
     std::regex re{ log_message_prefix_regex + "DBG >> Test message"s };
-    if ( !std::regex_match(lines[0], re) ){
+    if ( !std::regex_match(lines[0], re) ) {
         ADD_FAILURE() << "Logged message did not match expected: " << lines[0];
     }
 #else
