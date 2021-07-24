@@ -7,8 +7,7 @@
 namespace {
 
 class ScopeExitTestFixture :
-    public testing::Test
-{
+    public testing::Test {
 };
 
 }  // namespace

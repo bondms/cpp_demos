@@ -12,6 +12,7 @@ template<
     HandleType invalidValue = nullptr>
 class RaiiHandle {
     HandleType handle_{ invalidValue };
+
  public:
     RaiiHandle() noexcept = default;
     explicit RaiiHandle(HandleType handle) noexcept :
@@ -32,8 +33,7 @@ class RaiiHandle {
     }
 
     RaiiHandle & operator=(RaiiHandle && other) noexcept {
-        if ( this != &other )
-        {
+        if ( this != &other ) {
             free();
             handle_ = other.detach();
         }
@@ -49,8 +49,7 @@ class RaiiHandle {
     }
 
     void free() noexcept {
-        if ( isValid() )
-        {
+        if ( isValid() ) {
             freeFunction(handle_);
             handle_ = invalidValue;
         }

@@ -9,14 +9,14 @@
 #include <utility>
 #include <vector>
 
-using namespace testing;
+using testing::ElementsAre;
 
 namespace {
 
-class MockClass
-{
+class MockClass {
     bool freed_{ false };
-public:
+
+ public:
     void free() noexcept {
         freed_ = true;
     };
@@ -41,9 +41,8 @@ void mockFree(MockHandle mockHandle) noexcept {
 using MockRaiiHandle = utilities::RaiiHandle<MockHandle, mockFree>;
 
 class RaiiHandleTestFixture :
-    public testing::Test
-{
-public:
+    public testing::Test {
+ public:
     MockClass mockClass_{};
     void SetUp() override {
         mockClass_.reset();
@@ -213,7 +212,7 @@ TEST_F(RaiiHandleTestFixture, NonDefaultInvalidValue) {
     }
     EXPECT_TRUE(int_mock_free_calls.empty());
 
-    for(auto i = 0 ; i < 3 ; ++i) {
+    for ( auto i = 0 ; i < 3 ; ++i ) {
         IntMockRaiiHandle intMockRaiiHandle{i};
         EXPECT_TRUE(intMockRaiiHandle.isValid());
     }
