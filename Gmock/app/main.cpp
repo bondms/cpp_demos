@@ -1,36 +1,29 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/account.h"
-#include "lib/notifier.h"
-
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 
-int main()
-{
-    try
-    {
+#include "lib/account.h"
+#include "lib/notifier.h"
+
+int main() {
+    try {
         Notifier notifier{std::cout};
         Account account{notifier};
 
-        while ( true )
-        {
-            long amount{};
+        while ( true ) {
+            int amount{};
             std::cin >> amount;
 
-            if ( 0 == amount )
-            {
+            if ( 0 == amount ) {
                 break;
             }
 
-            if ( amount < 0 )
-            {
+            if ( amount < 0 ) {
                 account.withdraw(std::abs(amount));
-            }
-            else
-            {
+            } else {
                 account.deposit(amount);
             }
 
@@ -41,8 +34,7 @@ int main()
 
         return EXIT_SUCCESS;
     }
-    catch ( const std::exception & e )
-    {
+    catch ( const std::exception & e ) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
     return EXIT_FAILURE;

@@ -9,13 +9,11 @@
 
 using ConsumerProducer::Consumer;
 
-TEST(ConsumerTest, DefaultConstructed)
-{
+TEST(ConsumerTest, DefaultConstructed) {
     Consumer<bool> consumer{};
 }
 
-TEST(ConsumerTest, Empty)
-{
+TEST(ConsumerTest, Empty) {
     unsigned int count{ 0 };
 
     Consumer<bool> consumer{ [&](bool) {
@@ -25,20 +23,16 @@ TEST(ConsumerTest, Empty)
     EXPECT_EQ(0, count);
 }
 
-TEST(ConsumerTest, Simple)
-{
+TEST(ConsumerTest, Simple) {
     unsigned int true_count{ 0 };
     unsigned int false_count{ 0 };
 
     Event event{Event::Mode::manualReset, Event::State::nonSignalled};
 
     Consumer<bool> consumer{ [&](bool b) {
-        if (b)
-        {
+        if (b) {
             ++true_count;
-        }
-        else
-        {
+        } else {
             ++false_count;
             event.Signal();
         }
@@ -54,10 +48,11 @@ TEST(ConsumerTest, Simple)
     EXPECT_EQ(1, false_count);
 }
 
-// Use the --gtest_filter=ConsumerTest.DISABLED_TerminatesOnException --gtest_also_run_disabled_tests arguments to run this test.
+// Use the the following arguments to run this test:
+// * --gtest_filter=ConsumerTest.DISABLED_TerminatesOnException
+// * --gtest_also_run_disabled_tests arguments
 // The test should terminate rather than complete with either a pass or fail.
-TEST(ConsumerTest, DISABLED_TerminatesOnException)
-{
+TEST(ConsumerTest, DISABLED_TerminatesOnException) {
     try
     {
         Consumer<bool> consumer{ [](bool) {
@@ -69,8 +64,7 @@ TEST(ConsumerTest, DISABLED_TerminatesOnException)
         Event event{Event::Mode::manualReset, Event::State::nonSignalled};
         event.Wait();
     }
-    catch (const std::exception &)
-    {
+    catch (const std::exception &) {
     }
     ADD_FAILURE() << "Program execution should not reach here";
 }
