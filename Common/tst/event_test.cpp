@@ -7,7 +7,7 @@
 #include <atomic>
 #include <thread>
 
-using std::chrono_literals::s;
+using std::chrono_literals::operator""s;
 
 namespace {
 
