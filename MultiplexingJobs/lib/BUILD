@@ -4,8 +4,8 @@ cc_library(
     name = "job_multiplexor",
     srcs = [
     ],
-    hdrs = [
-        "job_multiplexor.h",
-    ],
+    hdrs = glob([
+        "*.h",
+    ]),
     visibility = ["//:__subpackages__"],
 )

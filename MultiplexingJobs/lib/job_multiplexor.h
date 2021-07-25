@@ -12,60 +12,12 @@
 #include <thread>
 #include <utility>
 
+#include "lib/pool.h"
+
 using std::string_literals::operator""s;
 
 template<typename JobData, typename JobId>
 class JobMultiplexor {
-    class Pool {
-     public:
-        enum class JobState {
-            initial,
-            finished,
-            cancelled,
-        };
-        struct ContainerItem {
-            JobData jobData{};
-            JobState jobState{};
-        };
-        using Container = std::list<ContainerItem>;
-        using ContainerItemRef = typename Container::iterator;
-
-     private:
-        Container container_{};
-        ContainerItemRef nextToStart_{ container_.begin() };
-
-     public:
-        ContainerItemRef add(const JobData & jobData) {
-            container_.emplace_back(jobData, JobState::initial);
-        }
-
-        bool availableToStart() const {
-            return container_.end() != nextToStart_;
-        }
-
-        ContainerItemRef nextToStart() {
-            if ( !availableToStart() ) {
-                throw std::runtime_error{ "No job avialable to start" };
-            }
-
-            return nextToStart_++;
-        }
-
-        template<typename Pred>
-        ContainerItemRef find_if(Pred pred) {
-            const auto it { std::find_if(
-                container_.begin(), container_.end(), pred) };
-            if ( container_.end() == it ) {
-                throw std::runtime_error{ "Job not found in pool" };
-            }
-            return it;
-        }
-
-        void erase(ContainerItemRef ref) {
-            container_.erase(ref);
-        }
-    };
-
  public:
     using InitiateFunction = std::function<void(const JobData &)>;
     using CompleteFunction = std::function<bool(JobData &, JobId &)>;
@@ -75,7 +27,7 @@ class JobMultiplexor {
  private:
     std::mutex mutex_{};
     std::condition_variable condition_variable_{};
-    Pool pool_{};
+    Pool<JobData> pool_{};
     bool quit_{ false };
     std::string error_{};
 
@@ -151,8 +103,8 @@ class JobMultiplexor {
                     if ( completed ) {
                         auto containerItemRef{
                             jobMultiplexor_.pool_.find_if([&](
-                                    const typename Pool::ContainerItem &
-                                        containerItem) {
+                                    const typename Pool<JobData>::ContainerItem
+                                        & containerItem) {
                                 return jobMatchFunction_(
                                     containerItem.jobData, jobId);
                             })
@@ -215,14 +167,14 @@ class JobMultiplexor {
                 return true;
             }
             switch ( ref->jobState ) {
-            case Pool::JobState::finished:
-            case Pool::JobState::cancelled:
+            case JobState::finished:
+            case JobState::cancelled:
                 return true;
             }
             return false;
         }) ) {
             // Timeout; cancel the job.
-            ref->jobState = Pool::JobState::cancelled;
+            ref->jobState = JobState::cancelled;
             throw std::runtime_error{ "Timeout" };
         }
 
@@ -235,11 +187,11 @@ class JobMultiplexor {
         }
 
         switch ( ref->jobState ) {
-        case Pool::JobState::initial:
+        case JobState::initial:
             throw std::logic_error{ "Unexpected 'initial' job state" };
-        case Pool::JobState::finished:
+        case JobState::finished:
             break;
-        case Pool::JobState::cancelled:
+        case JobState::cancelled:
             throw std::runtime_error{ "Cancelled" };
         }
 
