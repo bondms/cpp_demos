@@ -1,2 +1,8 @@
+build --cxxopt='-fno-rtti'
 build --cxxopt='-std=c++17'
+build --cxxopt='-Wall'
 build --cxxopt='-Werror'
+build --cxxopt='-Wextra'
+build --cxxopt='-Wnon-virtual-dtor'
+build --cxxopt='-Wpedantic'
+build --cxxopt='-Wshadow'
