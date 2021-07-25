@@ -103,8 +103,11 @@ class JobMultiplexor {
         void threadFunc() noexcept {
             try {
                 while ( true ) {
-                    if ( completeFunction_(xxx) ) {
-                        xxx;
+                    if ( !completeFunction_(xxx) ) {
+                        std::lock_guard<std::mutex> lock{ mutex_ };
+                        if ( quit_ || !error_.empty() ) {
+                            return;
+                        }
                     }
                     xxx;
                 }
