@@ -5,18 +5,18 @@
 #include <stdexcept>
 #include <string>
 
-#include "lib/job_multiplexor.h"
+#include "lib/multiplexor.h"
 
 using std::chrono::operator""s;
 
-TEST(JobMultiplexorTest, ConstructionAndDestruction) {
+TEST(MultiplexorTest, ConstructionAndDestruction) {
     struct Data {
         std::string str;
     };
     auto nopInitiate = [](const Data &) { };
     auto nopComplete = [](Data &, int &) { return true; };
     auto nopJobMatch = [](const Data &, int) { return true; };
-    JobMultiplexor<Data, int> jobMultiplexor{
+    Multiplexor<Data, int> jobMultiplexor{
         nopInitiate, nopComplete, nopJobMatch, 1s };
 }
 

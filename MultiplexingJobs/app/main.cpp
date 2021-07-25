@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "lib/job_multiplexor.h"
+#include "lib/multiplexor.h"
 
 int main() {
     std::cout << "No application implemented" << std::endl;

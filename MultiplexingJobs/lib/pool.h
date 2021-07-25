@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "lib/job_state.h"
+#include "lib/state.h"
 
 template<typename JobData>
 class Pool {
  public:
     struct ContainerItem {
         JobData jobData{};
-        JobState jobState{};
+        State jobState{};
     };
 
     using Container = std::list<ContainerItem>;
@@ -21,7 +21,7 @@ class Pool {
 
  public:
     ContainerIt add(const JobData & jobData) {
-        container_.emplace_back(jobData, JobState::initial);
+        container_.emplace_back(jobData, State::initial);
     }
 
     bool availableToStart() const {

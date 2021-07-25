@@ -17,7 +17,7 @@
 using std::string_literals::operator""s;
 
 template<typename JobData, typename JobId>
-class JobMultiplexor {
+class Multiplexor {
  public:
     using InitiateFunction = std::function<void(const JobData &)>;
     using CompleteFunction = std::function<bool(JobData &, JobId &)>;
@@ -34,7 +34,7 @@ class JobMultiplexor {
     const std::chrono::milliseconds timeout_;
 
     class Initiator {
-        JobMultiplexor<JobData, JobId> & jobMultiplexor_;
+        Multiplexor<JobData, JobId> & jobMultiplexor_;
         InitiateFunction initiateFunction_{};
 
         std::thread thread_{};
@@ -65,7 +65,7 @@ class JobMultiplexor {
 
      public:
         Initiator(
-                    JobMultiplexor<JobData, JobId> & jobMultiplexor,
+                    Multiplexor<JobData, JobId> & jobMultiplexor,
                     InitiateFunction initiateFunction) :
                 jobMultiplexor_{ jobMultiplexor },
                 initiateFunction_{ initiateFunction } {
@@ -78,7 +78,7 @@ class JobMultiplexor {
     };
 
     class Completor {
-        JobMultiplexor<JobData, JobId> & jobMultiplexor_;
+        Multiplexor<JobData, JobId> & jobMultiplexor_;
         CompleteFunction completeFunction_;
         JobMatchFunction jobMatchFunction_;
 
@@ -120,7 +120,7 @@ class JobMultiplexor {
 
      public:
         Completor(
-                    JobMultiplexor<JobData, JobId> & jobMultiplexor,
+                    Multiplexor<JobData, JobId> & jobMultiplexor,
                     CompleteFunction completeFunction,
                     JobMatchFunction jobMatchFunction) :
                 jobMultiplexor_{ jobMultiplexor },
@@ -138,7 +138,7 @@ class JobMultiplexor {
     Completor completor_;
 
  public:
-    JobMultiplexor(
+    Multiplexor(
                 InitiateFunction initiateFunction,
                 CompleteFunction completeFunction,
                 JobMatchFunction jobMatchFunction,
@@ -148,7 +148,7 @@ class JobMultiplexor {
             completor_{ *this, completeFunction, jobMatchFunction } {
     }
 
-    ~JobMultiplexor() {
+    ~Multiplexor() {
         {
             std::lock_guard<std::mutex> lock{ mutex_ };
             quit_ = true;
@@ -166,14 +166,14 @@ class JobMultiplexor {
                 return true;
             }
             switch ( ref->jobState ) {
-            case JobState::finished:
-            case JobState::cancelled:
+            case State::finished:
+            case State::cancelled:
                 return true;
             }
             return false;
         }) ) {
             // Timeout; cancel the job.
-            ref->jobState = JobState::cancelled;
+            ref->jobState = State::cancelled;
             throw std::runtime_error{ "Timeout" };
         }
 
@@ -186,11 +186,11 @@ class JobMultiplexor {
         }
 
         switch ( ref->jobState ) {
-        case JobState::initial:
+        case State::initial:
             throw std::logic_error{ "Unexpected 'initial' job state" };
-        case JobState::finished:
+        case State::finished:
             break;
-        case JobState::cancelled:
+        case State::cancelled:
             throw std::runtime_error{ "Cancelled" };
         }
 

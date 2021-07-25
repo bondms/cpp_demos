@@ -2,7 +2,7 @@
 
 #pragma once
 
-enum class JobState {
+enum class State {
     initial,
     finished,
     cancelled,
