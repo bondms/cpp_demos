@@ -47,7 +47,7 @@ TEST(MultiplexorTest, SingleJob) {
     auto jobMatch = [&](const std::string & jd, int id) {
         EXPECT_FALSE(jobMatchCalled);
         jobMatchCalled = true;
-        EXPECT_EQ("MyJobOutput", jd);
+        EXPECT_EQ("MyJobInput", jd);
         EXPECT_EQ(1, id);
         completedEvent.Signal();
         return true;
