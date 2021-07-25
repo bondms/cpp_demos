@@ -32,9 +32,10 @@ TEST(PoolTest, SingleItem) {
 
     EXPECT_TRUE(pool.availableToStart());
     EXPECT_EQ("MyJob", pool.nextToStart());
+    EXPECT_FALSE(pool.availableToStart());
 
     bool pred_fn_called{ false };
-    auto pred_fn = [&](const MockPool::ContainerItem & containerItem) {
+    auto pred_fn_1 = [&](const MockPool::ContainerItem & containerItem) {
         EXPECT_FALSE(pred_fn_called);
         pred_fn_called = true;
         EXPECT_EQ("MyJob", containerItem.jobData);
@@ -42,8 +43,42 @@ TEST(PoolTest, SingleItem) {
         return true;
     };
 
-    EXPECT_EQ("MyJob", pool.find_if(pred_fn));
+    EXPECT_EQ("MyJob", pool.find_if(pred_fn_1));
     EXPECT_TRUE(pred_fn_called);
+
+    pool.erase(it);
+    pred_fn_called = false;
+    auto pred_fn_2 = [&](const MockPool::ContainerItem &) {
+        pred_fn_called = true;
+        return true;
+    };
+
+    EXPECT_THROW(pool.find_if(pred_fn_2), std::exception);
+    EXPECT_FALSE(pred_fn_called);
+}
+
+TEST(PoolTest, SeveralItems) {
+    MockPool pool{};
+
+    auto it1{ pool.add("FirstJob") };
+    auto it2{ pool.add("SecondJob") };
+    // EXPECT_EQ("MyJob", it->jobData);
+    // EXPECT_EQ(State::initial, it->jobState);
+
+    // EXPECT_TRUE(pool.availableToStart());
+    // EXPECT_EQ("MyJob", pool.nextToStart());
+
+    // bool pred_fn_called{ false };
+    // auto pred_fn = [&](const MockPool::ContainerItem & containerItem) {
+    //     EXPECT_FALSE(pred_fn_called);
+    //     pred_fn_called = true;
+    //     EXPECT_EQ("MyJob", containerItem.jobData);
+    //     EXPECT_EQ(State::initial, containerItem.jobState);
+    //     return true;
+    // };
+
+    // EXPECT_EQ("MyJob", pool.find_if(pred_fn));
+    // EXPECT_TRUE(pred_fn_called);
 }
 
 // TODO(MarkBond): Implement more tests.
