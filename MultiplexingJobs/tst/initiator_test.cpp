@@ -4,7 +4,12 @@
 
 #include "lib/initiator.h"
 
-TEST(InitiatorTest, Simple) {
-}
+TEST(InitiatorTest, NoJobs) {
+    Sync<std::string> sync{};
 
-// TODO(MarkBond): Implement more tests.
+    // auto initiateFunc = [&](const std::string&) -> void {
+    //     throw std::runtime_error{ "Unexpected call to initiatFunc" };
+    // };
+
+    // Initiator<std::string, int> initiator{sync, initiateFunc};
+}
