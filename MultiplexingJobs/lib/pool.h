@@ -49,13 +49,13 @@ class Pool {
     }
 
     template<typename Pred>
-    JobData & find_if(Pred pred) {
+    ContainerItem & find_if(Pred pred) {
         const auto it { std::find_if(
             container_.begin(), container_.end(), pred) };
         if ( container_.end() == it ) {
             throw std::runtime_error{ "Job not found in pool" };
         }
-        return it->jobData;
+        return *it;
     }
 
     void erase(ContainerIt ref) {

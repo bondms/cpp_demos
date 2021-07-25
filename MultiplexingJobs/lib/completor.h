@@ -26,15 +26,15 @@ class Completor {
 
                 const auto completed{ completeFunction_(jobData, jobId) };
 
-                std::lock_guard<std::mutex> lock{ sync_.mutex };
+                {
+                    std::lock_guard<std::mutex> lock{ sync_.mutex };
 
-                if ( sync_.quit || !sync_.error.empty() ) {
-                    return;
-                }
+                    if ( sync_.quit || !sync_.error.empty() ) {
+                        return;
+                    }
 
-                if ( completed ) {
-                    {
-                        auto & jobDataRef{
+                    if ( completed ) {
+                        auto & containerItemRef{
                             sync_.pool.find_if([&](
                                     const typename Pool<JobData>::ContainerItem
                                         & containerItem) {
@@ -42,9 +42,12 @@ class Completor {
                                     containerItem.jobData, jobId);
                             })
                         };
-                        jobDataRef = std::move(jobData);
+                        containerItemRef.jobData = std::move(jobData);
+                        containerItemRef.jobState = State::finished;
                     }
+                }
 
+                if ( completed ) {
                     sync_.condition_variable.notify_all();
                 }
             }

@@ -43,7 +43,9 @@ TEST(PoolTest, SingleItem) {
         return true;
     };
 
-    EXPECT_EQ("MyJob", pool.find_if(pred_fn_1));
+    const auto containerItemRef{ pool.find_if(pred_fn_1) };
+    EXPECT_EQ("MyJob", containerItemRef.jobData);
+    EXPECT_EQ(State::initial, containerItemRef.jobState);
     EXPECT_TRUE(pred_fn_called);
 
     pool.erase(it);
