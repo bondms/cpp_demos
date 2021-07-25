@@ -9,10 +9,10 @@
 
 using std::string_literals::operator""s;
 
-template<typename JobData, typename JobId>
+template<typename JobData>
 class Initiator {
     Sync<JobData> & sync_;
-    typename Functions<JobData, JobId>::InitiateFunction initiateFunction_{};
+    typename Functions<JobData>::InitiateFunction initiateFunction_{};
 
     std::thread thread_{};
 
@@ -49,7 +49,7 @@ class Initiator {
  public:
     Initiator(
                 Sync<JobData> & sync,
-                typename Functions<JobData, JobId>::InitiateFunction
+                typename Functions<JobData>::InitiateFunction
                     initiateFunction) :
             sync_{ sync },
             initiateFunction_{ initiateFunction } {

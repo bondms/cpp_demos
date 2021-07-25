@@ -12,19 +12,19 @@ TEST(CompletorTest, EndsOnFailure) {
     Event event{ Event::Mode::manualReset, Event::State::nonSignalled };
 
     bool completeFuncCalled{ false };
-    auto completeFunc = [&](std::string&, int&) -> bool {
+    auto completeFunc = [&](std::string&) -> bool {
         EXPECT_FALSE(completeFuncCalled);
         completeFuncCalled = true;
         event.Signal();
         throw std::runtime_error{ "Failure from completeFunc" };
     };
 
-    auto jobMatchFunc = [&](const std::string&, const int&) {
+    auto jobMatchFunc = [&](const std::string&, const std::string&) {
         ADD_FAILURE() << "Unexpected call to jobMatchFunc";
         return true;
     };
 
-    Completor<std::string, int> completor{sync, completeFunc, jobMatchFunc};
+    Completor<std::string> completor{sync, completeFunc, jobMatchFunc};
     event.Wait();
     EXPECT_TRUE(completeFuncCalled);
 }

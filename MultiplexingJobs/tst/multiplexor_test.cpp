@@ -10,11 +10,13 @@
 using std::chrono::operator""s;
 
 TEST(MultiplexorTest, ConstructionAndDestruction) {
-    auto nopInitiate = [](const std::string &) { };
-    auto nopComplete = [](std::string &, int &) { return true; };
-    auto nopJobMatch = [](const std::string &, int) { return true; };
+    auto nopInitiate = [](const std::string &) {};
+    auto nopComplete = [](std::string &) { return true; };
+    auto nopJobMatch = [](const std::string &, const std::string &) {
+        return true;
+    };
 
-    Multiplexor<std::string, int> jobMultiplexor{
+    Multiplexor<std::string> jobMultiplexor{
         nopInitiate, nopComplete, nopJobMatch, 1s };
 }
 
@@ -25,37 +27,36 @@ TEST(MultiplexorTest, SingleJob) {
         Event::Mode::manualReset, Event::State::nonSignalled };
 
     bool initiateCalled{ false };
-    auto initiate = [&](const std::string & jd) {
+    auto initiate = [&](const std::string & jobData) {
         EXPECT_FALSE(initiateCalled);
         initiateCalled = true;
-        EXPECT_EQ("MyJobInput", jd);
+        EXPECT_EQ("MyJobInput", jobData);
         initiatedEvent.Signal();
      };
 
     bool completeCalled{ false };
-    auto complete = [&](std::string & jd, int & id) {
+    auto complete = [&](std::string & jobData) {
         initiatedEvent.Wait();
         if ( completeCalled ) {
             std::this_thread::sleep_for(1s);
             return false;
         }
         completeCalled = true;
-        jd = "MyJobOutput";
-        id = 1;
+        jobData = "MyJobOutput";
         return true;
     };
 
     bool jobMatchCalled{ false };
-    auto jobMatch = [&](const std::string & jd, int id) {
+    auto jobMatch = [&](const std::string & input, const std::string & output) {
         EXPECT_FALSE(jobMatchCalled);
         jobMatchCalled = true;
-        EXPECT_EQ("MyJobInput", jd);
-        EXPECT_EQ(1, id);
+        EXPECT_EQ("MyJobInput", input);
+        EXPECT_EQ("MyJobOutput", output);
         completedEvent.Signal();
         return true;
     };
 
-    Multiplexor<std::string, int> jobMultiplexor{
+    Multiplexor<std::string> jobMultiplexor{
         initiate, complete, jobMatch, 5s };
 
     std::string jobData{ "MyJobInput" };

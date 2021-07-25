@@ -27,8 +27,8 @@ TEST(PoolTest, SingleItem) {
     MockPool pool{};
 
     auto it{ pool.add("MyJob") };
-    EXPECT_EQ("MyJob", it->jobData);
-    EXPECT_EQ(State::initial, it->jobState);
+    EXPECT_EQ("MyJob", it->data);
+    EXPECT_EQ(State::initial, it->state);
 
     EXPECT_TRUE(pool.availableToStart());
     EXPECT_EQ("MyJob", pool.nextToStart());
@@ -38,14 +38,14 @@ TEST(PoolTest, SingleItem) {
     auto pred_fn_1 = [&](const MockPool::ContainerItem & containerItem) {
         EXPECT_FALSE(pred_fn_called);
         pred_fn_called = true;
-        EXPECT_EQ("MyJob", containerItem.jobData);
-        EXPECT_EQ(State::initial, containerItem.jobState);
+        EXPECT_EQ("MyJob", containerItem.data);
+        EXPECT_EQ(State::initial, containerItem.state);
         return true;
     };
 
     const auto containerItemRef{ pool.find_if(pred_fn_1) };
-    EXPECT_EQ("MyJob", containerItemRef.jobData);
-    EXPECT_EQ(State::initial, containerItemRef.jobState);
+    EXPECT_EQ("MyJob", containerItemRef.data);
+    EXPECT_EQ(State::initial, containerItemRef.state);
     EXPECT_TRUE(pred_fn_called);
 
     pool.erase(it);
@@ -65,8 +65,8 @@ TEST(PoolTest, SeveralItems) {
     auto it1{ pool.add("FirstJob") };
     auto it2{ pool.add("SecondJob") };
 
-    EXPECT_EQ("FirstJob", it1->jobData);
-    EXPECT_EQ("SecondJob", it2->jobData);
+    EXPECT_EQ("FirstJob", it1->data);
+    EXPECT_EQ("SecondJob", it2->data);
 
     EXPECT_TRUE(pool.availableToStart());
     EXPECT_EQ("FirstJob", pool.nextToStart());

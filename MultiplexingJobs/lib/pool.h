@@ -12,12 +12,14 @@ template<typename JobData>
 class Pool {
  public:
     struct ContainerItem {
-        ContainerItem(const JobData & jd, const State s) :
-            jobData{ jd },
-            jobState{ s } {
+        ContainerItem(
+                const JobData & jobData,
+                const State jobState) :
+            data{ jobData },
+            state{ jobState } {
         }
-        JobData jobData{};
-        State jobState{};
+        JobData data{};
+        State state{};
     };
 
     using Container = std::list<ContainerItem>;
@@ -45,7 +47,7 @@ class Pool {
             throw std::runtime_error{ "No job avialable to start" };
         }
 
-        return (nextToStart_++)->jobData;
+        return (nextToStart_++)->data;
     }
 
     template<typename Pred>

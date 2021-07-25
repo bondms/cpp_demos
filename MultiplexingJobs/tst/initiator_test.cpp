@@ -11,7 +11,7 @@ TEST(InitiatorTest, EndsOnQuit) {
         throw std::runtime_error{ "Unexpected call to initiatFunc" };
     };
 
-    Initiator<std::string, int> initiator{sync, initiateFunc};
+    Initiator<std::string> initiator{sync, initiateFunc};
 
     {
         std::unique_lock<std::mutex> lock{ sync.mutex };

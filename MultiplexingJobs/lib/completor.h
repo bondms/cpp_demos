@@ -10,11 +10,11 @@
 
 using std::string_literals::operator""s;
 
-template<typename JobData, typename JobId>
+template<typename JobData>
 class Completor {
     Sync<JobData> & sync_;
-    typename Functions<JobData, JobId>::CompleteFunction completeFunction_;
-    typename Functions<JobData, JobId>::JobMatchFunction jobMatchFunction_;
+    typename Functions<JobData>::CompleteFunction completeFunction_;
+    typename Functions<JobData>::JobMatchFunction jobMatchFunction_;
 
     std::thread thread_{};
 
@@ -22,9 +22,7 @@ class Completor {
         try {
             while ( true ) {
                 JobData jobData{};
-                JobId jobId{};
-
-                const auto completed{ completeFunction_(jobData, jobId) };
+                const auto completed{ completeFunction_(jobData) };
 
                 {
                     std::lock_guard<std::mutex> lock{ sync_.mutex };
@@ -39,11 +37,11 @@ class Completor {
                                     const typename Pool<JobData>::ContainerItem
                                         & containerItem) {
                                 return jobMatchFunction_(
-                                    containerItem.jobData, jobId);
+                                    containerItem.data, jobData);
                             })
                         };
-                        containerItemRef.jobData = std::move(jobData);
-                        containerItemRef.jobState = State::finished;
+                        containerItemRef.data = std::move(jobData);
+                        containerItemRef.state = State::finished;
                     }
                 }
 
@@ -64,9 +62,8 @@ class Completor {
  public:
     Completor(
                 Sync<JobData> & sync,
-                typename Functions<JobData, JobId>::CompleteFunction
-                    completeFunction,
-                typename Functions<JobData, JobId>::JobMatchFunction
+                typename Functions<JobData>::CompleteFunction completeFunction,
+                typename Functions<JobData>::JobMatchFunction
                     jobMatchFunction) :
             sync_{ sync },
             completeFunction_{ completeFunction },

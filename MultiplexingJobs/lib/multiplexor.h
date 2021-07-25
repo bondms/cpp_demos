@@ -11,23 +11,20 @@
 #include "lib/pool.h"
 #include "lib/sync.h"
 
-template<typename JobData, typename JobId>
+template<typename JobData>
 class Multiplexor {
     Sync<JobData> sync_{};
 
     const std::chrono::milliseconds timeout_;
 
-    Initiator<JobData, JobId> initiator_;
-    Completor<JobData, JobId> completor_;
+    Initiator<JobData> initiator_;
+    Completor<JobData> completor_;
 
  public:
     Multiplexor(
-                typename Functions<JobData, JobId>::InitiateFunction
-                    initiateFunction,
-                typename Functions<JobData, JobId>::CompleteFunction
-                    completeFunction,
-                typename Functions<JobData, JobId>::JobMatchFunction
-                    jobMatchFunction,
+                typename Functions<JobData>::InitiateFunction initiateFunction,
+                typename Functions<JobData>::CompleteFunction completeFunction,
+                typename Functions<JobData>::JobMatchFunction jobMatchFunction,
                 std::chrono::milliseconds timeout) :
             timeout_{ timeout },
             initiator_{ sync_, initiateFunction },
@@ -59,12 +56,12 @@ class Multiplexor {
                 return
                     sync_.quit
                     || (!sync_.error.empty())
-                    || (State::initial != ref->jobState);
+                    || (State::initial != ref->state);
             };
 
             if ( !sync_.condition_variable.wait_for(lock, timeout_, pred) ) {
                 // Timeout; cancel the job.
-                ref->jobState = State::cancelled;
+                ref->state = State::cancelled;
                 throw std::runtime_error{ "Timeout" };
             }
 
@@ -76,7 +73,7 @@ class Multiplexor {
                 throw std::runtime_error{ "Error: " + sync_.error };
             }
 
-            switch ( ref->jobState ) {
+            switch ( ref->state ) {
             case State::initial:
                 throw std::logic_error{ "Unexpected 'initial' job state" };
             case State::finished:
@@ -85,7 +82,7 @@ class Multiplexor {
                 throw std::runtime_error{ "Cancelled" };
             }
 
-            jobData = std::move(ref->jobData);
+            jobData = std::move(ref->data);
             sync_.pool.erase(ref);
         }
     }
