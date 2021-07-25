@@ -59,6 +59,9 @@ class Pool {
     }
 
     void erase(ContainerIt ref) {
+        if ( nextToStart_ == ref ) {
+            ++nextToStart_;
+        }
         container_.erase(ref);
     }
 };

@@ -50,8 +50,11 @@ class Completor {
             }
         }
         catch ( const std::exception & e ) {
-            std::lock_guard<std::mutex> lock{ sync_.mutex };
-            sync_.error = "Completor exception: "s + e.what();
+            {
+                std::lock_guard<std::mutex> lock{ sync_.mutex };
+                sync_.error = "Completor exception: "s + e.what();
+            }
+            sync_.condition_variable.notify_all();
         }
     }
 

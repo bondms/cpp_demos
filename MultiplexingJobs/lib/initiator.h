@@ -38,8 +38,11 @@ class Initiator {
             }
         }
         catch ( const std::exception & e ) {
-            std::lock_guard<std::mutex> lock{ sync_.mutex };
-            sync_.error = "Initiator exception: "s + e.what();
+            {
+                std::lock_guard<std::mutex> lock{ sync_.mutex };
+                sync_.error = "Initiator exception: "s + e.what();
+            }
+            sync_.condition_variable.notify_all();
         }
     }
 

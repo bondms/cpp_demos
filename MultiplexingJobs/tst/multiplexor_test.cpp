@@ -40,7 +40,6 @@ TEST(MultiplexorTest, SingleJob) {
         completeCalled = true;
         jd = "MyJobOutput";
         id = 1;
-        completedEvent.Signal();
         return true;
     };
 
@@ -50,6 +49,7 @@ TEST(MultiplexorTest, SingleJob) {
         jobMatchCalled = true;
         EXPECT_EQ("MyJobOutput", jd);
         EXPECT_EQ(1, id);
+        completedEvent.Signal();
         return true;
     };
 
