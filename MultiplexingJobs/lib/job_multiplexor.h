@@ -120,6 +120,10 @@ class JobMultiplexor {
                 initiateFunction_{ initiateFunction } {
             thread_ = std::thread{ &Initiator::threadFunc, this };
         }
+
+        ~Initiator() {
+            thread_.join();
+        }
     };
 
     class Completor {
@@ -171,6 +175,10 @@ class JobMultiplexor {
                 completeFunction_{ completeFunction },
                 jobMatchFunction_{ jobMatchFunction } {
             thread_ = std::thread{ &Completor::threadFunc, this };
+        }
+
+        ~Completor() {
+            thread_.join();
         }
     };
 
