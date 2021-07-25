@@ -64,6 +64,8 @@ class JobMultiplexor {
     bool quit_{ false };
     std::string error_{};
 
+    const std::chrono::milliseconds timeout_;
+
     class Initiator {
         InitiateFunction initiateFunction_{};
         std::thread thread_{};
@@ -119,9 +121,55 @@ class JobMultiplexor {
 
  public:
     JobMultiplexor(
-            InitiateFunction initiateFunction,
-            CompleteFunction completeFunction,
-            std::chrono::milliseconds timeout) {
-        xxx;
+                InitiateFunction initiateFunction,
+                CompleteFunction completeFunction,
+                std::chrono::milliseconds timeout) :
+            timeout_{ timeout } {
+    }
+
+    ~JobMultiplexor() {
+        std::lock_guard<std::mutex> lock{ mutex_ };
+        quit_ = true;
+    }
+
+    void sendAndReceive(JobData & jobData) {
+        std::unique_lock<std::mutex> lock{ mutex_ };
+
+        auto ref{ pool_.add(jobData) };
+
+        if ( ! condition_variable_.wait_for(lock, timeout_, [](){
+            if ( quit_ || !error_.empty() ) {
+                return true;
+            }
+            switch ( ref->jobState ) {
+            case JobState::finished:
+            case JobState::cancelled:
+                return true;
+            }
+            return false;
+        }) ) {
+            // Timeout; cancel the job.
+            ref->jobState = JobState::cancelled;
+            throw std::runtime_error{ "Timeout" };
+        }
+
+        if ( quit_ ) {
+            throw std::runtime_error{ "Quit" };
+        }
+
+        if ( !error_.empty() ) {
+            throw std::runtime_error{ "Error: " + error };
+        }
+
+        switch ( ref->jobState ) {
+        case JobState::initial:
+            throw std::logic_error{ "Unexpected 'initial' job state" };
+        case JobState::finished:
+            break;
+        case JobState::cancelled:
+            throw std::runtime_error{ "Cancelled" };
+        }
+
+        jobData = std::move(ref->jobData);
     }
 };
