@@ -13,7 +13,7 @@
 
 using std::string_literals::operator""s;
 
-template<typename JobData>
+template<typename JobData, typename JobId>
 class JobMultiplexor {
 
     class Pool {
@@ -55,7 +55,7 @@ class JobMultiplexor {
 
  public:
     using InitiateFunction = std::function<void(const JobData &)>;
-    using CompleteFunction = std::function<bool(JobData &)>;
+    using CompleteFunction = std::function<bool(JobData &, JobId &)>;
 
  private:
     std::mutex mutex_{};
@@ -103,7 +103,9 @@ class JobMultiplexor {
         void threadFunc() noexcept {
             try {
                 while ( true ) {
-                    if ( !completeFunction_(xxx) ) {
+                    JobData jobData{};
+                    JobId jobId{};
+                    if ( !completeFunction_(jobData, jobId) ) {
                         std::lock_guard<std::mutex> lock{ mutex_ };
                         if ( quit_ || !error_.empty() ) {
                             return;
