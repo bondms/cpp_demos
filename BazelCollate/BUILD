@@ -29,7 +29,7 @@ test_suite(
         "@Logger//tst:escaper_test",
         "@Logger//tst:flush_controller_test",
         "@Logger//tst:logger_test",
-        "@MultiplexingJobs:job_multiplexor_test",
+        "@MultiplexingJobs//tst:job_multiplexor_test",
         "@Odbc//tst:odbc_test",
         "@Realign//tst:realign_test",
         "@SharedPtr//tst:shared_ptr_test",

@@ -151,7 +151,8 @@ class JobMultiplexor {
                     if ( completed ) {
                         auto containerItemRef{
                             jobMultiplexor_.pool_.find_if([&](
-                                    const typename Pool::ContainerItem & containerItem) {
+                                    const typename Pool::ContainerItem &
+                                        containerItem) {
                                 return jobMatchFunction_(
                                     containerItem.jobData, jobId);
                             })
