@@ -61,6 +61,10 @@ class JobMultiplexor {
             }
             return it;
         }
+
+        void erase(ConainerItemRef ref) {
+            container_.erase(ref);
+        }
     };
 
  public:
@@ -194,5 +198,6 @@ class JobMultiplexor {
         }
 
         jobData = std::move(ref->jobData);
+        pool_.erase(ref);
     }
 };
