@@ -25,7 +25,10 @@ TEST(PoolTest, EmptyPool) {
 
 TEST(PoolTest, SingleItem) {
     MockPool pool{};
+
     auto it{ pool.add("MyJob") };
+    EXPECT_EQ("MyJob", it->jobData);
+    EXPECT_EQ(State::initial, it->jobState);
 
     EXPECT_TRUE(pool.availableToStart());
     EXPECT_EQ("MyJob", pool.nextToStart());
