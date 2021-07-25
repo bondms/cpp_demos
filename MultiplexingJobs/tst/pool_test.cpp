@@ -62,23 +62,17 @@ TEST(PoolTest, SeveralItems) {
 
     auto it1{ pool.add("FirstJob") };
     auto it2{ pool.add("SecondJob") };
-    // EXPECT_EQ("MyJob", it->jobData);
-    // EXPECT_EQ(State::initial, it->jobState);
 
-    // EXPECT_TRUE(pool.availableToStart());
-    // EXPECT_EQ("MyJob", pool.nextToStart());
+    EXPECT_EQ("FirstJob", it1->jobData);
+    EXPECT_EQ("SecondJob", it2->jobData);
 
-    // bool pred_fn_called{ false };
-    // auto pred_fn = [&](const MockPool::ContainerItem & containerItem) {
-    //     EXPECT_FALSE(pred_fn_called);
-    //     pred_fn_called = true;
-    //     EXPECT_EQ("MyJob", containerItem.jobData);
-    //     EXPECT_EQ(State::initial, containerItem.jobState);
-    //     return true;
-    // };
+    EXPECT_TRUE(pool.availableToStart());
+    EXPECT_EQ("FirstJob", pool.nextToStart());
 
-    // EXPECT_EQ("MyJob", pool.find_if(pred_fn));
-    // EXPECT_TRUE(pred_fn_called);
+    EXPECT_TRUE(pool.availableToStart());
+    EXPECT_EQ("SecondJob", pool.nextToStart());
+
+    EXPECT_FALSE(pool.availableToStart());
 }
 
 // TODO(MarkBond): Implement more tests.
