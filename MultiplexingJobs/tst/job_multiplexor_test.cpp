@@ -20,6 +20,4 @@ TEST(JobMultiplexorTest, ConstructionAndDestruction) {
         nopInitiate, nopComplete, nopJobMatch, 1s };
 }
 
-TEST(JobMultiplexorTest, TODO) {
-    ADD_FAILURE() << "TODO(MarkBond): Implement";
-}
+// TODO(MarkBond): Implement more tests.
