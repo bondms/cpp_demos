@@ -84,20 +84,21 @@ class JobMultiplexor {
     const std::chrono::milliseconds timeout_;
 
     class Initiator {
+        JobMultiplexor<JobData, JobId> & jobMultiplexor_;
         InitiateFunction initiateFunction_{};
         std::thread thread_{};
 
         void threadFunc() noexcept {
             try {
                 while ( true ) {
-                    std::unique_lock<std::mutex> lock{ mutex_ };
-                    condition_variable_.wait(lock, []() {
+                    std::unique_lock<std::mutex> lock{ jobMultiplexor_.mutex_ };
+                    jobMultiplexor_.condition_variable_.wait(lock, [&]() {
                         return
-                            pool_.availableToStart()
-                            || quit_
-                            || !error_.empty();
+                            jobMultiplexor_.pool_.availableToStart()
+                            || jobMultiplexor_.quit_
+                            || !jobMultiplexor_.error_.empty();
                     });
-                    initiateFunction_(pool_.nextToStart());
+                    initiateFunction_(*jobMultiplexor_.pool_.nextToStart());
                 }
             }
             catch ( const std::exception & e ) {
@@ -107,9 +108,12 @@ class JobMultiplexor {
         }
 
      public:
-        Initiator(InitiateFunction initiateFunction) :
+        Initiator(
+                    JobMultiplexor<JobData, JobId> & jobMultiplexor,
+                    InitiateFunction initiateFunction) :
+                jobMultiplexor_{ jobMultiplexor },
                 initiateFunction_{ initiateFunction } {
-            thread_ = std::thread{ threadFunc, this };
+            thread_ = std::thread{ &Initiator::threadFunc, this };
         }
     };
 
@@ -151,7 +155,7 @@ class JobMultiplexor {
                     JobMatchFunction jobMatchFunction) :
                 completeFunction_{ completeFunction },
                 jobMatchFunction_{ jobMatchFunction } {
-            thread_ = std::thread{ threadFunc, this };
+            thread_ = std::thread{ &Completor::threadFunc, this };
         }
     };
 
@@ -165,7 +169,7 @@ class JobMultiplexor {
                 JobMatchFunction jobMatchFunction,
                 std::chrono::milliseconds timeout) :
             timeout_{ timeout },
-            initiator_{ initiateFunction },
+            initiator_{ *this, initiateFunction },
             completor_{ completeFunction, jobMatchFunction } {
     }
 
