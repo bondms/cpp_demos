@@ -117,16 +117,18 @@ class JobMultiplexor {
                 while ( true ) {
                     JobData jobData{};
                     JobId jobId{};
-                    if ( completeFunction_(jobData, jobId) ) {
-                        std::lock_guard<std::mutex> lock{ mutex_ };
+
+                    const auto completed{ completeFunction_(jobData, jobId) };
+
+                    std::lock_guard<std::mutex> lock{ mutex_ };
+
+                    if ( quit_ || !error_.empty() ) {
+                        return;
+                    }
+
+                    if ( completed ) {
                         auto jobDataRef{ pool_.find_if(pred_) };
                         *jobDataRef = std::move(jobData);
-                        return;
-                    } else {
-                        std::lock_guard<std::mutex> lock{ mutex_ };
-                        if ( quit_ || !error_.empty() ) {
-                            return;
-                        }
                     }
                 }
             }
