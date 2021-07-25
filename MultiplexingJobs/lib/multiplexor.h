@@ -47,12 +47,14 @@ class Multiplexor {
 
         auto ref{ sync_.pool.add(jobData) };
 
-        if ( !sync_.condition_variable.wait_for(lock, timeout_, [&](){
+        auto pred = [&](){
             return
                 sync_.quit
                 || (!sync_.error.empty())
                 || (State::initial != ref->jobstate);
-        }) ) {
+        };
+
+        if ( !sync_.condition_variable.wait_for(lock, timeout_, pred) ) {
             // Timeout; cancel the job.
             ref->jobState = State::cancelled;
             throw std::runtime_error{ "Timeout" };
