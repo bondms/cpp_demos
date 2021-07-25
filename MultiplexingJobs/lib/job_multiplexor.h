@@ -53,7 +53,8 @@ class JobMultiplexor {
             return result;
         }
 
-        ContainItemRef find_if(Pred pred) {
+        template<typename Pred>
+        ContainerItemRef find_if(Pred pred) {
             const auto it { std::find_if(
                 container_.begin(), container_.end(), pred) };
             if ( container_.end() == it ) {
@@ -113,8 +114,10 @@ class JobMultiplexor {
     };
 
     class Completor {
-        CompleteFunction completeFunction_{};
-        std::thread thread_;
+        CompleteFunction completeFunction_;
+        JobMatchFunction jobMatchFunction_;
+
+        std::thread thread_{};
 
         void threadFunc() noexcept {
             try {
@@ -131,7 +134,7 @@ class JobMultiplexor {
                     }
 
                     if ( completed ) {
-                        auto jobDataRef{ pool_.find_if(pred_) };
+                        auto jobDataRef{ pool_.find_if(jobMatchFunction_) };
                         *jobDataRef = std::move(jobData);
                     }
                 }
@@ -141,17 +144,29 @@ class JobMultiplexor {
                 error_ = "Completor exception: "s + e.what();
             }
         }
+
+     public:
+        Completor(
+                    CompleteFunction completeFunction,
+                    JobMatchFunction jobMatchFunction) :
+                completeFunction_{ completeFunction },
+                jobMatchFunction_{ jobMatchFunction } {
+            thread_ = std::thread{ threadFunc, this };
+        }
     };
 
-    Initiator initiator_{};
-    Completor completor_{};
+    Initiator initiator_;
+    Completor completor_;
 
  public:
     JobMultiplexor(
                 InitiateFunction initiateFunction,
                 CompleteFunction completeFunction,
+                JobMatchFunction jobMatchFunction,
                 std::chrono::milliseconds timeout) :
-            timeout_{ timeout } {
+            timeout_{ timeout },
+            initiator_{ initiateFunction_},
+            completor_{ completeFunction, jobMatchFunction } {
     }
 
     ~JobMultiplexor() {
