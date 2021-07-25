@@ -26,15 +26,15 @@ class Completor {
 
                 const auto completed{ completeFunction_(jobData, jobId) };
 
-                std::lock_guard<std::mutex> lock{ sync_.mutex_ };
+                std::lock_guard<std::mutex> lock{ sync_.mutex };
 
-                if ( sync_.quit_ || !sync_.error_.empty() ) {
+                if ( sync_.quit || !sync_.error.empty() ) {
                     return;
                 }
 
                 if ( completed ) {
                     auto & jobDataRef{
-                        sync_.pool_.find_if([&](
+                        sync_.pool.find_if([&](
                                 const typename Pool<JobData>::ContainerItem
                                     & containerItem) {
                             return jobMatchFunction_(
@@ -46,8 +46,8 @@ class Completor {
             }
         }
         catch ( const std::exception & e ) {
-            std::lock_guard<std::mutex> lock{ sync_.mutex_ };
-            sync_.error_ = "Completor exception: "s + e.what();
+            std::lock_guard<std::mutex> lock{ sync_.mutex };
+            sync_.error = "Completor exception: "s + e.what();
         }
     }
 

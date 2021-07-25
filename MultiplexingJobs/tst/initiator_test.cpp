@@ -14,8 +14,8 @@ TEST(InitiatorTest, EndsOnQuit) {
     Initiator<std::string, int> initiator{sync, initiateFunc};
 
     {
-        std::unique_lock<std::mutex> lock{ sync.mutex_ };
-        sync.quit_ = true;
+        std::unique_lock<std::mutex> lock{ sync.mutex };
+        sync.quit = true;
     }
-    sync.condition_variable_.notify_one();
+    sync.condition_variable.notify_one();
 }

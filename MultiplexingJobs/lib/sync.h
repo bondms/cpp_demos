@@ -10,9 +10,9 @@
 
 template<typename JobData>
 struct Sync {
-    std::mutex mutex_{};
-    std::condition_variable condition_variable_{};
-    Pool<JobData> pool_{};
-    bool quit_{ false };
-    std::string error_{};
+    std::mutex mutex{};
+    std::condition_variable condition_variable{};
+    Pool<JobData> pool{};
+    bool quit{ false };
+    std::string error{};
 };

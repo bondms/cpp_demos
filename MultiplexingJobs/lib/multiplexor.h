@@ -36,18 +36,18 @@ class Multiplexor {
 
     ~Multiplexor() {
         {
-            std::lock_guard<std::mutex> lock{ sync_.mutex_ };
-            sync_.quit_ = true;
+            std::lock_guard<std::mutex> lock{ sync_.mutex };
+            sync_.quit = true;
         }
-        sync_.condition_variable_.notify_all();
+        sync_.condition_variable.notify_all();
     }
 
     void sendAndReceive(JobData & jobData) {
-        std::unique_lock<std::mutex> lock{ sync_.mutex_ };
+        std::unique_lock<std::mutex> lock{ sync_.mutex };
 
-        auto ref{ sync_.pool_.add(jobData) };
+        auto ref{ sync_.pool.add(jobData) };
 
-        if ( !sync_.condition_variable_.wait_for(lock, timeout_, [&](){
+        if ( !sync_.condition_variable.wait_for(lock, timeout_, [&](){
             return
                 sync_.quit
                 || (!sync_.error.empty())
@@ -58,12 +58,12 @@ class Multiplexor {
             throw std::runtime_error{ "Timeout" };
         }
 
-        if ( sync_.quit_ ) {
+        if ( sync_.quit ) {
             throw std::runtime_error{ "Quit" };
         }
 
-        if ( !sync_.error_.empty() ) {
-            throw std::runtime_error{ "Error: " + sync_.error_ };
+        if ( !sync_.error.empty() ) {
+            throw std::runtime_error{ "Error: " + sync_.error };
         }
 
         switch ( ref->jobState ) {
@@ -76,6 +76,6 @@ class Multiplexor {
         }
 
         jobData = std::move(ref->jobData);
-        sync_.pool_.erase(ref);
+        sync_.pool.erase(ref);
     }
 };

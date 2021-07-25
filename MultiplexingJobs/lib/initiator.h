@@ -19,23 +19,23 @@ class Initiator {
     void threadFunc() noexcept {
         try {
             while ( true ) {
-                std::unique_lock<std::mutex> lock{ sync_.mutex_ };
-                sync_.condition_variable_.wait(lock, [&]() {
+                std::unique_lock<std::mutex> lock{ sync_.mutex };
+                sync_.condition_variable.wait(lock, [&]() {
                     return
-                        sync_.pool_.availableToStart()
-                        || sync_.quit_
-                        || !sync_.error_.empty();
+                        sync_.pool.availableToStart()
+                        || sync_.quit
+                        || !sync_.error.empty();
                 });
 
-                if ( sync_.quit_ ||  !sync_.error_.empty() ) {
+                if ( sync_.quit ||  !sync_.error.empty() ) {
                     return;
                 }
-                initiateFunction_(sync_.pool_.nextToStart());
+                initiateFunction_(sync_.pool.nextToStart());
             }
         }
         catch ( const std::exception & e ) {
-            std::lock_guard<std::mutex> lock{ sync_.mutex_ };
-            sync_.error_ = "Initiator exception: "s + e.what();
+            std::lock_guard<std::mutex> lock{ sync_.mutex };
+            sync_.error = "Initiator exception: "s + e.what();
         }
     }
 
