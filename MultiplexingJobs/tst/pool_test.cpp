@@ -31,18 +31,19 @@ TEST(PoolTest, SingleItem) {
     EXPECT_EQ(State::initial, it->jobState);
 
     EXPECT_TRUE(pool.availableToStart());
-    // EXPECT_EQ("MyJob", pool.nextToStart());
+    EXPECT_EQ("MyJob", pool.nextToStart());
 
-    // bool pred_fn_called{ false };
-    // auto pred_fn = [&](const MockPool::ContainerItem & containerItem) {
-    //     EXPECT_FALSE(pred_fn_called);
-    //     EXPECT_EQ("MyJob", containerItem.jobData);
-    //     EXPECT_EQ(State::initial, containerItem.jobState);
-    //     return true;
-    // };
+    bool pred_fn_called{ false };
+    auto pred_fn = [&](const MockPool::ContainerItem & containerItem) {
+        EXPECT_FALSE(pred_fn_called);
+        pred_fn_called = true;
+        EXPECT_EQ("MyJob", containerItem.jobData);
+        EXPECT_EQ(State::initial, containerItem.jobState);
+        return true;
+    };
 
-    // EXPECT_EQ("MyJob", pool.find_if(pred_fn));
-    // EXPECT_TRUE(pred_fn_called);
+    EXPECT_EQ("MyJob", pool.find_if(pred_fn));
+    EXPECT_TRUE(pred_fn_called);
 }
 
 // TODO(MarkBond): Implement more tests.
