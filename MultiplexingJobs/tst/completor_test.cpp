@@ -6,18 +6,16 @@
 
 #include "lib/completor.h"
 
-TEST(CompletorTest, Simple) {
+TEST(CompletorTest, NoJobs) {
     Sync<std::string> sync{};
 
-    auto completeFunc = [&](std::string&, int&){
-        return true;
+    auto completeFunc = [&](std::string&, int&) -> bool {
+        throw std::runtime_error{ "Unexpected call to completeFunc" };
     };
 
-    auto jobMatchFunc = [&](const std::string&, const int&){
-        return true;
+    auto jobMatchFunc = [&](const std::string&, const int&) -> bool {
+        throw std::runtime_error{ "Unexpected call to jobMatchFunc" };
     };
 
     Completor<std::string, int> completor{sync, completeFunc, jobMatchFunc};
 }
-
-// TODO(MarkBond): Implement more tests.
