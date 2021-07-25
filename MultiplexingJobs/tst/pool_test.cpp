@@ -74,5 +74,3 @@ TEST(PoolTest, SeveralItems) {
 
     EXPECT_FALSE(pool.availableToStart());
 }
-
-// TODO(MarkBond): Implement more tests.
