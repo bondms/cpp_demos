@@ -30,6 +30,9 @@ class Pool {
  public:
     ContainerIt add(const JobData & jobData) {
         container_.emplace_back(jobData, State::initial);
+        if ( container_.end() == nextToStart_ ) {
+            nextToStart_ = container_.begin();
+        }
         return std::prev(container_.end());
     }
 
