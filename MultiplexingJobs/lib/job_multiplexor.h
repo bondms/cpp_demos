@@ -54,8 +54,7 @@ class JobMultiplexor {
                             ||  !jobMultiplexor_.error_.empty() ) {
                         return;
                     }
-                    initiateFunction_(
-                        jobMultiplexor_.pool_.nextToStart()->jobData);
+                    initiateFunction_(jobMultiplexor_.pool_.nextToStart());
                 }
             }
             catch ( const std::exception & e ) {

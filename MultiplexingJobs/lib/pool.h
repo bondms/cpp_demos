@@ -28,12 +28,12 @@ class Pool {
         return container_.end() != nextToStart_;
     }
 
-    ContainerIt nextToStart() {
+    JobData & nextToStart() {
         if ( !availableToStart() ) {
             throw std::runtime_error{ "No job avialable to start" };
         }
 
-        return nextToStart_++;
+        return (nextToStart_++)->jobData;
     }
 
     template<typename Pred>
