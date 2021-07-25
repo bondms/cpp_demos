@@ -3,6 +3,7 @@
 #pragma once
 
 #include <algorithm>
+#include <iterator>
 #include <list>
 
 #include "lib/state.h"
@@ -11,6 +12,10 @@ template<typename JobData>
 class Pool {
  public:
     struct ContainerItem {
+        ContainerItem(const JobData & jd, const State s) :
+            jobData{ jd },
+            jobState{ s } {
+        }
         JobData jobData{};
         State jobState{};
     };
@@ -25,6 +30,7 @@ class Pool {
  public:
     ContainerIt add(const JobData & jobData) {
         container_.emplace_back(jobData, State::initial);
+        return std::prev(container_.end());
     }
 
     bool availableToStart() const {
