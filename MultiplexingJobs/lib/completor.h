@@ -33,15 +33,19 @@ class Completor {
                 }
 
                 if ( completed ) {
-                    auto & jobDataRef{
-                        sync_.pool.find_if([&](
-                                const typename Pool<JobData>::ContainerItem
-                                    & containerItem) {
-                            return jobMatchFunction_(
-                                containerItem.jobData, jobId);
-                        })
-                    };
-                    jobDataRef = std::move(jobData);
+                    {
+                        auto & jobDataRef{
+                            sync_.pool.find_if([&](
+                                    const typename Pool<JobData>::ContainerItem
+                                        & containerItem) {
+                                return jobMatchFunction_(
+                                    containerItem.jobData, jobId);
+                            })
+                        };
+                        jobDataRef = std::move(jobData);
+                    }
+
+                    sync_.condition_variable.notify_all();
                 }
             }
         }

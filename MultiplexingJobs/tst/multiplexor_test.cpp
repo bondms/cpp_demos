@@ -19,19 +19,20 @@ TEST(MultiplexorTest, ConstructionAndDestruction) {
 }
 
 TEST(MultiplexorTest, SingleJob) {
-    Event event{ Event::Mode::manualReset, Event::State::nonSignalled };
+    Event initiatedEvent{ Event::Mode::manualReset, Event::State::nonSignalled };
+    Event completedEvent{ Event::Mode::manualReset, Event::State::nonSignalled };
 
     bool initiateCalled{ false };
     auto initiate = [&](const std::string & jd) {
         EXPECT_FALSE(initiateCalled);
         initiateCalled = true;
         EXPECT_EQ("MyJobInput", jd);
-        event.Signal();
+        initiatedEvent.Signal();
      };
 
     bool completeCalled{ false };
     auto complete = [&](std::string & jd, int & id) {
-        event.Wait();
+        initiatedEvent.Wait();
         if ( completeCalled ) {
             std::this_thread::sleep_for(1s);
             return false;
@@ -39,6 +40,7 @@ TEST(MultiplexorTest, SingleJob) {
         completeCalled = true;
         jd = "MyJobOutput";
         id = 1;
+        completedEvent.Signal();
         return true;
     };
 
@@ -57,6 +59,8 @@ TEST(MultiplexorTest, SingleJob) {
     std::string jobData{ "MyJobInput" };
     jobMultiplexor.sendAndReceive(jobData);
     EXPECT_EQ("MyJobOutput", jobData);
+
+    completedEvent.Wait();
 
     EXPECT_TRUE(initiateCalled);
     EXPECT_TRUE(completeCalled);
