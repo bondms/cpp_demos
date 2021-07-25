@@ -6,7 +6,7 @@ cc_binary(
         "main.cpp",
     ],
     deps = [
-        "//lib:job_multiplexor",
+        "//lib:multiplexing_jobs",
     ],
     visibility = ["//visibility:public"],
 )

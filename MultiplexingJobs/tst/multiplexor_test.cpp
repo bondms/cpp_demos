@@ -2,9 +2,6 @@
 
 #include <gmock/gmock.h>
 
-#include <stdexcept>
-#include <string>
-
 #include "lib/multiplexor.h"
 
 using std::chrono::operator""s;

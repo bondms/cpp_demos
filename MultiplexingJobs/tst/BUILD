@@ -1,6 +1,34 @@
 load("@rules_cc//cc:defs.bzl", "cc_test")
 
 cc_test(
+    name = "completor_test",
+    srcs = [
+        "completor_test.cpp",
+    ],
+    copts = [
+        "-Iexternal/gmock/include",
+    ],
+    deps = [
+        "//lib:multiplexing_jobs",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "initiator_test",
+    srcs = [
+        "initiator_test.cpp",
+    ],
+    copts = [
+        "-Iexternal/gmock/include",
+    ],
+    deps = [
+        "//lib:multiplexing_jobs",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
     name = "multiplexor_test",
     srcs = [
         "multiplexor_test.cpp",
@@ -9,7 +37,21 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:job_multiplexor",
+        "//lib:multiplexing_jobs",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "pool_test",
+    srcs = [
+        "pool_test.cpp",
+    ],
+    copts = [
+        "-Iexternal/gmock/include",
+    ],
+    deps = [
+        "//lib:multiplexing_jobs",
         "@googletest//:gtest_main",
     ],
 )
