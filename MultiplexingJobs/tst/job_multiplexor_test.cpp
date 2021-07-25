@@ -16,8 +16,8 @@ TEST(JobMultiplexorTest, ConstructionAndDestruction) {
     auto nopInitiate = [](const Data &) { };
     auto nopComplete = [](Data &, int &) { return true; };
     auto nopJobMatch = [](const Data &, int) { return true; };
-//     JobMultiplexor<Data, int> jobMultiplexor{
-//         nopInitiate, nopComplete, nopJobMatch, 1s };
+    JobMultiplexor<Data, int> jobMultiplexor{
+        nopInitiate, nopComplete, nopJobMatch, 1s };
 }
 
 TEST(JobMultiplexorTest, TODO) {
