@@ -3,6 +3,7 @@
 #pragma once
 
 #include <thread>
+#include <utility>
 
 #include "lib/functions.h"
 #include "lib/sync.h"
@@ -50,7 +51,7 @@ class Completor {
         }
     }
 
-    public:
+ public:
     Completor(
                 Sync<JobData> & sync,
                 typename Functions<JobData, JobId>::CompleteFunction

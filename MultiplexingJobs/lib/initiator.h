@@ -39,7 +39,7 @@ class Initiator {
         }
     }
 
-    public:
+ public:
     Initiator(
                 Sync<JobData> & sync,
                 typename Functions<JobData, JobId>::InitiateFunction

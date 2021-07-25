@@ -48,15 +48,10 @@ class Multiplexor {
         auto ref{ sync_.pool_.add(jobData) };
 
         if ( !sync_.condition_variable_.wait_for(lock, timeout_, [&](){
-            if ( sync_.quit_ || !sync_.error_.empty() ) {
-                return true;
-            }
-            switch ( ref->jobState ) {
-            case State::finished:
-            case State::cancelled:
-                return true;
-            }
-            return false;
+            return
+                sync_.quit
+                || (!sync_.error.empty())
+                || (State::initial != ref->jobstate);
         }) ) {
             // Timeout; cancel the job.
             ref->jobState = State::cancelled;
