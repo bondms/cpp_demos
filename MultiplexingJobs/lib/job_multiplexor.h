@@ -100,7 +100,7 @@ class JobMultiplexor {
                     }
 
                     if ( completed ) {
-                        auto containerItemRef{
+                        auto & jobDataRef{
                             jobMultiplexor_.pool_.find_if([&](
                                     const typename Pool<JobData>::ContainerItem
                                         & containerItem) {
@@ -108,7 +108,7 @@ class JobMultiplexor {
                                     containerItem.jobData, jobId);
                             })
                         };
-                        containerItemRef->jobData = std::move(jobData);
+                        jobDataRef = std::move(jobData);
                     }
                 }
             }
