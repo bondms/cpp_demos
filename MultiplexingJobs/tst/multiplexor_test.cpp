@@ -19,8 +19,10 @@ TEST(MultiplexorTest, ConstructionAndDestruction) {
 }
 
 TEST(MultiplexorTest, SingleJob) {
-    Event initiatedEvent{ Event::Mode::manualReset, Event::State::nonSignalled };
-    Event completedEvent{ Event::Mode::manualReset, Event::State::nonSignalled };
+    Event initiatedEvent{
+        Event::Mode::manualReset, Event::State::nonSignalled };
+    Event completedEvent{
+        Event::Mode::manualReset, Event::State::nonSignalled };
 
     bool initiateCalled{ false };
     auto initiate = [&](const std::string & jd) {
