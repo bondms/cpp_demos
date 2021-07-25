@@ -63,7 +63,7 @@ class JobMultiplexor {
             return it;
         }
 
-        void erase(ConainerItemRef ref) {
+        void erase(ContainerItemRef ref) {
             container_.erase(ref);
         }
     };
@@ -165,7 +165,7 @@ class JobMultiplexor {
                 JobMatchFunction jobMatchFunction,
                 std::chrono::milliseconds timeout) :
             timeout_{ timeout },
-            initiator_{ initiateFunction_},
+            initiator_{ initiateFunction },
             completor_{ completeFunction, jobMatchFunction } {
     }
 
@@ -179,19 +179,19 @@ class JobMultiplexor {
 
         auto ref{ pool_.add(jobData) };
 
-        if ( ! condition_variable_.wait_for(lock, timeout_, [](){
+        if ( ! condition_variable_.wait_for(lock, timeout_, [&](){
             if ( quit_ || !error_.empty() ) {
                 return true;
             }
             switch ( ref->jobState ) {
-            case JobState::finished:
-            case JobState::cancelled:
+            case Pool::JobState::finished:
+            case Pool::JobState::cancelled:
                 return true;
             }
             return false;
         }) ) {
             // Timeout; cancel the job.
-            ref->jobState = JobState::cancelled;
+            ref->jobState = Pool::JobState::cancelled;
             throw std::runtime_error{ "Timeout" };
         }
 
@@ -200,15 +200,15 @@ class JobMultiplexor {
         }
 
         if ( !error_.empty() ) {
-            throw std::runtime_error{ "Error: " + error };
+            throw std::runtime_error{ "Error: " + error_ };
         }
 
         switch ( ref->jobState ) {
-        case JobState::initial:
+        case Pool::JobState::initial:
             throw std::logic_error{ "Unexpected 'initial' job state" };
-        case JobState::finished:
+        case Pool::JobState::finished:
             break;
-        case JobState::cancelled:
+        case Pool::JobState::cancelled:
             throw std::runtime_error{ "Cancelled" };
         }
 
