@@ -197,8 +197,11 @@ class JobMultiplexor {
     }
 
     ~JobMultiplexor() {
-        std::lock_guard<std::mutex> lock{ mutex_ };
-        quit_ = true;
+        {
+            std::lock_guard<std::mutex> lock{ mutex_ };
+            quit_ = true;
+        }
+        condition_variable_.notify_all();
     }
 
     void sendAndReceive(JobData & jobData) {
