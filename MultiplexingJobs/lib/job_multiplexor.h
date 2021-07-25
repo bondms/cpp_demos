@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <chrono>
 #include <condition_variable>
 #include <functional>
@@ -51,11 +52,22 @@ class JobMultiplexor {
             }
             return result;
         }
+
+        ContainItemRef find_if(Pred pred) {
+            const auto it { std::find_if(
+                container_.begin(), container_.end(), pred) };
+            if ( container_.end() == it ) {
+                throw std::runtime_error{ "Job not found in pool" };
+            }
+            return it;
+        }
     };
 
  public:
     using InitiateFunction = std::function<void(const JobData &)>;
     using CompleteFunction = std::function<bool(JobData &, JobId &)>;
+    using JobMatchFunction =
+        std::function<bool(const JobData &, const JobId &)>;
 
  private:
     std::mutex mutex_{};
@@ -105,13 +117,17 @@ class JobMultiplexor {
                 while ( true ) {
                     JobData jobData{};
                     JobId jobId{};
-                    if ( !completeFunction_(jobData, jobId) ) {
+                    if ( completeFunction_(jobData, jobId) ) {
+                        std::lock_guard<std::mutex> lock{ mutex_ };
+                        auto jobDataRef{ pool_.find_if(pred_) };
+                        *jobDataRef = std::move(jobData);
+                        return;
+                    } else {
                         std::lock_guard<std::mutex> lock{ mutex_ };
                         if ( quit_ || !error_.empty() ) {
                             return;
                         }
                     }
-                    xxx;
                 }
             }
             catch ( const std::exception & e ) {
