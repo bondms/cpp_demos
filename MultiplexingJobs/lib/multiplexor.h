@@ -51,7 +51,7 @@ class Multiplexor {
             return
                 sync_.quit
                 || (!sync_.error.empty())
-                || (State::initial != ref->jobstate);
+                || (State::initial != ref->jobState);
         };
 
         if ( !sync_.condition_variable.wait_for(lock, timeout_, pred) ) {

@@ -94,7 +94,7 @@ $(TST_BIN_DIR)/completor_test : $(INT_DIR)/completor_test.o $(INT_DIR)/event.o $
 $(TST_BIN_DIR)/initiator_test : $(INT_DIR)/initiator_test.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
-$(TST_BIN_DIR)/multiplexor_test : $(INT_DIR)/multiplexor_test.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
+$(TST_BIN_DIR)/multiplexor_test : $(INT_DIR)/multiplexor_test.o $(INT_DIR)/event.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
 $(TST_BIN_DIR)/pool_test : $(INT_DIR)/pool_test.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)

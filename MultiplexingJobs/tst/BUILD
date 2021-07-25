@@ -39,6 +39,7 @@ cc_test(
     ],
     deps = [
         "//lib:multiplexing_jobs",
+        "@Common//lib:event",
         "@googletest//:gtest_main",
     ],
 )
