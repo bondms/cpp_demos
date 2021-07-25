@@ -145,15 +145,15 @@ class JobMultiplexor {
                     }
 
                     if ( completed ) {
-                        auto jobDataRef{
+                        auto containerItemRef{
                             jobMultiplexor_.pool_.find_if(jobMatchFunction_) };
-                        *jobDataRef = std::move(jobData);
+                        containerItemRef->jobData = std::move(jobData);
                     }
                 }
             }
             catch ( const std::exception & e ) {
                 std::lock_guard<std::mutex> lock{ jobMultiplexor_.mutex_ };
-                error_ = "Completor exception: "s + e.what();
+                jobMultiplexor_.error_ = "Completor exception: "s + e.what();
             }
         }
 
