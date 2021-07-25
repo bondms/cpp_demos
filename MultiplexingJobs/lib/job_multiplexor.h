@@ -28,7 +28,7 @@ class JobMultiplexor {
             JobState jobState{};
         };
         using Container = std::list<ContainerItem>;
-        using ContainerItemRef = Container::iterator;
+        using ContainerItemRef = typename Container::iterator;
 
      private:
         Container container_{};
@@ -92,7 +92,7 @@ class JobMultiplexor {
      public:
         Initiator(InitiateFunction initiateFunction) :
                 initiateFunction_{ initiateFunction } {
-            thread_ = std::thread{ threadFunc, this }
+            thread_ = std::thread{ threadFunc, this };
         }
     };
 
