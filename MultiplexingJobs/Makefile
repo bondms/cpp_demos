@@ -88,7 +88,7 @@ $(BIN_TARGET): $(APP_OBJ_FILES) $(LIB_OBJ_FILES) $(COMMON_OBJ_FILES) | $(BIN_DIR
 $(TST_OBJ_FILES): $(INT_DIR)/%.o: $(TST_SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $< -isystem $(GMOCK_SRC_DIR)/include -isystem $(GTEST_SRC_DIR)/include
 
-$(TST_BIN_DIR)/consumer_test : $(INT_DIR)/consumer_test.o $(INT_DIR)/event.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
+$(TST_BIN_DIR)/job_multiplexor_test : $(INT_DIR)/job_multiplexor_test.o $(GTEST_LIB_DIR)/libgtest.a $(GTEST_LIB_DIR)/libgtest_main.a | $(TST_BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
 $(TST_RESULTS) : $(INT_DIR)/%.passed: $(TST_BIN_DIR)/%
