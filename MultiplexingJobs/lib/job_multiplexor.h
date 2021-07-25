@@ -149,7 +149,7 @@ class JobMultiplexor {
                             jobMultiplexor_.pool_.find_if([&](
                                     const typename Pool::ContainerItem & containerItem) {
                                 return jobMatchFunction_(
-                                    containerItem->jobData, jobId);
+                                    containerItem.jobData, jobId);
                             })
                         };
                         containerItemRef->jobData = std::move(jobData);
