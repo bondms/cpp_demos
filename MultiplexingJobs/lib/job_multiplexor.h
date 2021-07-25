@@ -8,7 +8,6 @@
 #include <functional>
 #include <list>
 #include <mutex>
-#include <optional>
 #include <string>
 #include <thread>
 
@@ -44,13 +43,12 @@ class JobMultiplexor {
             return container_.end() != nextToStart_;
         }
 
-        std::optional<ContainerItemRef> nextToStart() {
-            std::optional<ContainerItemRef> result{};
-            if ( availableToStart() ) {
-                result.jobData = nextToStart_;
-                ++nextToStart_;
+        ContainerItemRef nextToStart() {
+            if ( !availableToStart() ) {
+                throw std::runtime_error{ "No job avialable to start" };
             }
-            return result;
+
+            return nextToStart_++;
         }
 
         template<typename Pred>
@@ -98,12 +96,18 @@ class JobMultiplexor {
                             || jobMultiplexor_.quit_
                             || !jobMultiplexor_.error_.empty();
                     });
-                    initiateFunction_(*jobMultiplexor_.pool_.nextToStart());
+
+                    if ( jobMultiplexor_.quit_
+                            ||  !jobMultiplexor_.error_.empty() ) {
+                        return;
+                    }
+                    initiateFunction_(
+                        jobMultiplexor_.pool_.nextToStart()->jobData);
                 }
             }
             catch ( const std::exception & e ) {
-                std::lock_guard<std::mutex> lock{ mutex_ };
-                error_ = "Initiator exception: "s + e.what();
+                std::lock_guard<std::mutex> lock{ jobMultiplexor_.mutex_ };
+                jobMultiplexor_.error_ = "Initiator exception: "s + e.what();
             }
         }
 
