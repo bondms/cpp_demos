@@ -7,7 +7,6 @@
 #include "lib/event.h"
 #include "lib/multiplexor.h"
 
-using std::chrono::operator""h;
 using std::chrono::operator""s;
 
 TEST(MultiplexorTest, ConstructionAndDestruction) {
@@ -19,7 +18,7 @@ TEST(MultiplexorTest, ConstructionAndDestruction) {
         nopInitiate, nopComplete, nopJobMatch, 1s };
 }
 
-TEST(MultiplexorTest, DISABLED_SingleJob) {
+TEST(MultiplexorTest, SingleJob) {
     Event event{ Event::Mode::manualReset, Event::State::nonSignalled };
 
     bool initiateCalled{ false };
@@ -27,15 +26,19 @@ TEST(MultiplexorTest, DISABLED_SingleJob) {
         EXPECT_FALSE(initiateCalled);
         initiateCalled = true;
         EXPECT_EQ("MyJobInput", jd);
+        event.Signal();
      };
 
     bool completeCalled{ false };
     auto complete = [&](std::string & jd, int & id) {
-        EXPECT_FALSE(completeCalled);
+        event.Wait();
+        if ( completeCalled ) {
+            std::this_thread::sleep_for(1s);
+            return false;
+        }
         completeCalled = true;
         jd = "MyJobOutput";
         id = 1;
-        event.Signal();
         return true;
     };
 
@@ -49,12 +52,11 @@ TEST(MultiplexorTest, DISABLED_SingleJob) {
     };
 
     Multiplexor<std::string, int> jobMultiplexor{
-        initiate, complete, jobMatch, 1h };
+        initiate, complete, jobMatch, 5s };
 
     std::string jobData{ "MyJobInput" };
     jobMultiplexor.sendAndReceive(jobData);
     EXPECT_EQ("MyJobOutput", jobData);
-    event.Wait();
 
     EXPECT_TRUE(initiateCalled);
     EXPECT_TRUE(completeCalled);

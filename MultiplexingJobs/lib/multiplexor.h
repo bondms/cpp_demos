@@ -43,41 +43,50 @@ class Multiplexor {
     }
 
     void sendAndReceive(JobData & jobData) {
-        std::unique_lock<std::mutex> lock{ sync_.mutex };
+        typename Pool<JobData>::ContainerIt ref{};
 
-        auto ref{ sync_.pool.add(jobData) };
-
-        auto pred = [&](){
-            return
-                sync_.quit
-                || (!sync_.error.empty())
-                || (State::initial != ref->jobState);
-        };
-
-        if ( !sync_.condition_variable.wait_for(lock, timeout_, pred) ) {
-            // Timeout; cancel the job.
-            ref->jobState = State::cancelled;
-            throw std::runtime_error{ "Timeout" };
+        {
+            std::unique_lock<std::mutex> lock{ sync_.mutex };
+            ref = sync_.pool.add(jobData);
         }
 
-        if ( sync_.quit ) {
-            throw std::runtime_error{ "Quit" };
-        }
+        sync_.condition_variable.notify_all();
 
-        if ( !sync_.error.empty() ) {
-            throw std::runtime_error{ "Error: " + sync_.error };
-        }
+        {
+            std::unique_lock<std::mutex> lock{ sync_.mutex };
 
-        switch ( ref->jobState ) {
-        case State::initial:
-            throw std::logic_error{ "Unexpected 'initial' job state" };
-        case State::finished:
-            break;
-        case State::cancelled:
-            throw std::runtime_error{ "Cancelled" };
-        }
+            auto pred = [&](){
+                return
+                    sync_.quit
+                    || (!sync_.error.empty())
+                    || (State::initial != ref->jobState);
+            };
 
-        jobData = std::move(ref->jobData);
-        sync_.pool.erase(ref);
+            if ( !sync_.condition_variable.wait_for(lock, timeout_, pred) ) {
+                // Timeout; cancel the job.
+                ref->jobState = State::cancelled;
+                throw std::runtime_error{ "Timeout" };
+            }
+
+            if ( sync_.quit ) {
+                throw std::runtime_error{ "Quit" };
+            }
+
+            if ( !sync_.error.empty() ) {
+                throw std::runtime_error{ "Error: " + sync_.error };
+            }
+
+            switch ( ref->jobState ) {
+            case State::initial:
+                throw std::logic_error{ "Unexpected 'initial' job state" };
+            case State::finished:
+                break;
+            case State::cancelled:
+                throw std::runtime_error{ "Cancelled" };
+            }
+
+            jobData = std::move(ref->jobData);
+            sync_.pool.erase(ref);
+        }
     }
 };
