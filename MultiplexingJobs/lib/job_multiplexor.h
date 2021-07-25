@@ -10,12 +10,12 @@
 #include <mutex>
 #include <string>
 #include <thread>
+#include <utility>
 
 using std::string_literals::operator""s;
 
 template<typename JobData, typename JobId>
 class JobMultiplexor {
-
     class Pool {
      public:
         enum class JobState {
@@ -210,7 +210,7 @@ class JobMultiplexor {
 
         auto ref{ pool_.add(jobData) };
 
-        if ( ! condition_variable_.wait_for(lock, timeout_, [&](){
+        if ( !condition_variable_.wait_for(lock, timeout_, [&](){
             if ( quit_ || !error_.empty() ) {
                 return true;
             }
