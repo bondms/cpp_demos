@@ -11,6 +11,8 @@
 #include <string>
 #include <thread>
 
+using std::string_literals::operator""s;
+
 template<typename JobData>
 class JobMultiplexor {
 
@@ -67,15 +69,21 @@ class JobMultiplexor {
         std::thread thread_{};
 
         void threadFunc() noexcept {
-            while ( true ) {
-                std::unique_lock<std::mutex> lock{ mutex_ };
-                condition_variable_.wait(lock, []() {
-                    return
-                        pool_.availableToStart()
-                        || quit_
-                        || !error_.empty();
-                });
-                initiateFunction_(jobData);
+            try {
+                while ( true ) {
+                    std::unique_lock<std::mutex> lock{ mutex_ };
+                    condition_variable_.wait(lock, []() {
+                        return
+                            pool_.availableToStart()
+                            || quit_
+                            || !error_.empty();
+                    });
+                    initiateFunction_(pool_.nextToStart());
+                }
+            }
+            catch ( const std::exception & e ) {
+                std::lock_guard<std::mutex> lock{ mutex_ };
+                error_ = "Initiator exception: "s + e.what();
             }
         }
 
@@ -87,7 +95,23 @@ class JobMultiplexor {
     };
 
     class Completor {
+        CompleteFunction completeFunction_{};
         std::thread thread_;
+
+        void threadFunc() noexcept {
+            try {
+                while ( true ) {
+                    if ( completeFunction_(xxx) ) {
+                        xxx;
+                    }
+                    xxx;
+                }
+            }
+            catch ( const std::exception & e ) {
+                std::lock_guard<std::mutex> lock{ mutex_ };
+                error_ = "Completor exception: "s + e.what();
+            }
+        }
     };
 
     Initiator initiator_{};
