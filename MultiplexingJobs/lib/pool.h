@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include <algorithm>
+#include <list>
+
 #include "lib/state.h"
 
 template<typename JobData>

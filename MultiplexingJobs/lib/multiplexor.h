@@ -2,167 +2,53 @@
 
 #pragma once
 
-#include <algorithm>
 #include <chrono>
-#include <condition_variable>
-#include <functional>
-#include <list>
-#include <mutex>
-#include <string>
-#include <thread>
 #include <utility>
 
+#include "lib/completor.h"
+#include "lib/functions.h"
+#include "lib/initiator.h"
 #include "lib/pool.h"
-
-using std::string_literals::operator""s;
+#include "lib/sync.h"
 
 template<typename JobData, typename JobId>
 class Multiplexor {
- public:
-    using InitiateFunction = std::function<void(const JobData &)>;
-    using CompleteFunction = std::function<bool(JobData &, JobId &)>;
-    using JobMatchFunction =
-        std::function<bool(const JobData &, const JobId &)>;
-
- private:
-    std::mutex mutex_{};
-    std::condition_variable condition_variable_{};
-    Pool<JobData> pool_{};
-    bool quit_{ false };
-    std::string error_{};
+    Sync<JobData> sync_{};
 
     const std::chrono::milliseconds timeout_;
 
-    class Initiator {
-        Multiplexor<JobData, JobId> & jobMultiplexor_;
-        InitiateFunction initiateFunction_{};
-
-        std::thread thread_{};
-
-        void threadFunc() noexcept {
-            try {
-                while ( true ) {
-                    std::unique_lock<std::mutex> lock{ jobMultiplexor_.mutex_ };
-                    jobMultiplexor_.condition_variable_.wait(lock, [&]() {
-                        return
-                            jobMultiplexor_.pool_.availableToStart()
-                            || jobMultiplexor_.quit_
-                            || !jobMultiplexor_.error_.empty();
-                    });
-
-                    if ( jobMultiplexor_.quit_
-                            ||  !jobMultiplexor_.error_.empty() ) {
-                        return;
-                    }
-                    initiateFunction_(jobMultiplexor_.pool_.nextToStart());
-                }
-            }
-            catch ( const std::exception & e ) {
-                std::lock_guard<std::mutex> lock{ jobMultiplexor_.mutex_ };
-                jobMultiplexor_.error_ = "Initiator exception: "s + e.what();
-            }
-        }
-
-     public:
-        Initiator(
-                    Multiplexor<JobData, JobId> & jobMultiplexor,
-                    InitiateFunction initiateFunction) :
-                jobMultiplexor_{ jobMultiplexor },
-                initiateFunction_{ initiateFunction } {
-            thread_ = std::thread{ &Initiator::threadFunc, this };
-        }
-
-        ~Initiator() {
-            thread_.join();
-        }
-    };
-
-    class Completor {
-        Multiplexor<JobData, JobId> & jobMultiplexor_;
-        CompleteFunction completeFunction_;
-        JobMatchFunction jobMatchFunction_;
-
-        std::thread thread_{};
-
-        void threadFunc() noexcept {
-            try {
-                while ( true ) {
-                    JobData jobData{};
-                    JobId jobId{};
-
-                    const auto completed{ completeFunction_(jobData, jobId) };
-
-                    std::lock_guard<std::mutex> lock{ jobMultiplexor_.mutex_ };
-
-                    if ( jobMultiplexor_.quit_
-                         || !jobMultiplexor_.error_.empty() ) {
-                        return;
-                    }
-
-                    if ( completed ) {
-                        auto & jobDataRef{
-                            jobMultiplexor_.pool_.find_if([&](
-                                    const typename Pool<JobData>::ContainerItem
-                                        & containerItem) {
-                                return jobMatchFunction_(
-                                    containerItem.jobData, jobId);
-                            })
-                        };
-                        jobDataRef = std::move(jobData);
-                    }
-                }
-            }
-            catch ( const std::exception & e ) {
-                std::lock_guard<std::mutex> lock{ jobMultiplexor_.mutex_ };
-                jobMultiplexor_.error_ = "Completor exception: "s + e.what();
-            }
-        }
-
-     public:
-        Completor(
-                    Multiplexor<JobData, JobId> & jobMultiplexor,
-                    CompleteFunction completeFunction,
-                    JobMatchFunction jobMatchFunction) :
-                jobMultiplexor_{ jobMultiplexor },
-                completeFunction_{ completeFunction },
-                jobMatchFunction_{ jobMatchFunction } {
-            thread_ = std::thread{ &Completor::threadFunc, this };
-        }
-
-        ~Completor() {
-            thread_.join();
-        }
-    };
-
-    Initiator initiator_;
-    Completor completor_;
+    Initiator<JobData, JobId> initiator_;
+    Completor<JobData, JobId> completor_;
 
  public:
     Multiplexor(
-                InitiateFunction initiateFunction,
-                CompleteFunction completeFunction,
-                JobMatchFunction jobMatchFunction,
+                typename Functions<JobData, JobId>::InitiateFunction
+                    initiateFunction,
+                typename Functions<JobData, JobId>::CompleteFunction
+                    completeFunction,
+                typename Functions<JobData, JobId>::JobMatchFunction
+                    jobMatchFunction,
                 std::chrono::milliseconds timeout) :
             timeout_{ timeout },
-            initiator_{ *this, initiateFunction },
-            completor_{ *this, completeFunction, jobMatchFunction } {
+            initiator_{ sync_, initiateFunction },
+            completor_{ sync_, completeFunction, jobMatchFunction } {
     }
 
     ~Multiplexor() {
         {
-            std::lock_guard<std::mutex> lock{ mutex_ };
-            quit_ = true;
+            std::lock_guard<std::mutex> lock{ sync_.mutex_ };
+            sync_.quit_ = true;
         }
-        condition_variable_.notify_all();
+        sync_.condition_variable_.notify_all();
     }
 
     void sendAndReceive(JobData & jobData) {
-        std::unique_lock<std::mutex> lock{ mutex_ };
+        std::unique_lock<std::mutex> lock{ sync_.mutex_ };
 
-        auto ref{ pool_.add(jobData) };
+        auto ref{ sync_.pool_.add(jobData) };
 
-        if ( !condition_variable_.wait_for(lock, timeout_, [&](){
-            if ( quit_ || !error_.empty() ) {
+        if ( !sync_.condition_variable_.wait_for(lock, timeout_, [&](){
+            if ( sync_.quit_ || !sync_.error_.empty() ) {
                 return true;
             }
             switch ( ref->jobState ) {
@@ -177,12 +63,12 @@ class Multiplexor {
             throw std::runtime_error{ "Timeout" };
         }
 
-        if ( quit_ ) {
+        if ( sync_.quit_ ) {
             throw std::runtime_error{ "Quit" };
         }
 
-        if ( !error_.empty() ) {
-            throw std::runtime_error{ "Error: " + error_ };
+        if ( !sync_.error_.empty() ) {
+            throw std::runtime_error{ "Error: " + sync_.error_ };
         }
 
         switch ( ref->jobState ) {
@@ -195,6 +81,6 @@ class Multiplexor {
         }
 
         jobData = std::move(ref->jobData);
-        pool_.erase(ref);
+        sync_.pool_.erase(ref);
     }
 };
