@@ -58,9 +58,9 @@ Supported build system(s):
 * Makefile
 * Bazel
 
-## MultiplexiJobs
+## MultiplexingJobs
 
-In progress: Job taskers with concurrent start and complete threads running
+In progress: Job taskers with concurrent start and complete threads running.
 
 Supported build system(s):
 * Makefile
