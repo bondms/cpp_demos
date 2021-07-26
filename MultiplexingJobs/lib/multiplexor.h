@@ -39,7 +39,7 @@ class Multiplexor {
         sync_.condition_variable.notify_all();
     }
 
-    void sendAndReceive(JobData & jobData) {
+    void processJob(JobData & jobData) {
         typename Pool<JobData>::ContainerIt ref{};
 
         {
@@ -61,6 +61,9 @@ class Multiplexor {
 
             if ( !sync_.condition_variable.wait_for(lock, timeout_, pred) ) {
                 // Timeout; cancel the job.
+                // TODO(MarkBond): Something needs to eventually erase the
+                // cancelled jobs.
+                // Remember, even the completor may never receive a completion.
                 ref->state = State::cancelled;
                 throw std::runtime_error{ "Timeout" };
             }
@@ -74,12 +77,13 @@ class Multiplexor {
             }
 
             switch ( ref->state ) {
-            case State::initial:
-                throw std::logic_error{ "Unexpected 'initial' job state" };
             case State::finished:
                 break;
             case State::cancelled:
+                // TODO(MarkBond): Think about this.
                 throw std::runtime_error{ "Cancelled" };
+            case State::initial:
+                throw std::logic_error{ "Unexpected 'initial' job state" };
             }
 
             jobData = std::move(ref->data);

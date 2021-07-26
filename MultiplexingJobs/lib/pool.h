@@ -12,9 +12,7 @@ template<typename JobData>
 class Pool {
  public:
     struct ContainerItem {
-        ContainerItem(
-                const JobData & jobData,
-                const State jobState) :
+        ContainerItem(const JobData & jobData, const State jobState) :
             data{ jobData },
             state{ jobState } {
         }
@@ -32,10 +30,11 @@ class Pool {
  public:
     ContainerIt add(const JobData & jobData) {
         container_.emplace_back(jobData, State::initial);
+        auto added{ std::prev(container_.end()) };
         if ( container_.end() == nextToStart_ ) {
-            nextToStart_ = container_.begin();
+            nextToStart_ = added;
         }
-        return std::prev(container_.end());
+        return added;
     }
 
     bool availableToStart() const {

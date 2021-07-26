@@ -13,14 +13,12 @@ TEST(PoolTest, EmptyPool) {
     EXPECT_FALSE(pool.availableToStart());
     EXPECT_THROW(pool.nextToStart(), std::exception);
 
-    bool pred_fn_called{ false };
     auto pred_fn = [&](const MockPool::ContainerItem &) {
-        pred_fn_called = true;
+        ADD_FAILURE() << "pred_fn called unexpectedly";
         return true;
     };
 
     EXPECT_THROW(pool.find_if(pred_fn), std::exception);
-    EXPECT_FALSE(pred_fn_called);
 }
 
 TEST(PoolTest, SingleItem) {
@@ -49,14 +47,12 @@ TEST(PoolTest, SingleItem) {
     EXPECT_TRUE(pred_fn_called);
 
     pool.erase(it);
-    pred_fn_called = false;
     auto pred_fn_2 = [&](const MockPool::ContainerItem &) {
-        pred_fn_called = true;
+        ADD_FAILURE() << "Unexpected call to pred_fn_2";
         return true;
     };
 
     EXPECT_THROW(pool.find_if(pred_fn_2), std::exception);
-    EXPECT_FALSE(pred_fn_called);
 }
 
 TEST(PoolTest, SeveralItems) {

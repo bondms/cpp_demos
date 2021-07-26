@@ -16,7 +16,7 @@ TEST(CompletorTest, EndsOnFailure) {
         EXPECT_FALSE(completeFuncCalled);
         completeFuncCalled = true;
         event.Signal();
-        throw std::runtime_error{ "Failure from completeFunc" };
+        throw std::runtime_error{ "Simulated failure from completeFunc" };
     };
 
     auto jobMatchFunc = [&](const std::string&, const std::string&) {

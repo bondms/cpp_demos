@@ -32,6 +32,7 @@ class Completor {
                     }
 
                     if ( completed ) {
+                        // TODO(MarkBond): Can the item have been erased?
                         auto & containerItemRef{
                             sync_.pool.find_if([&](
                                     const typename Pool<JobData>::ContainerItem

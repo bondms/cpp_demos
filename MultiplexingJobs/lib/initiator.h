@@ -28,7 +28,7 @@ class Initiator {
                             || !sync_.error.empty();
                     });
 
-                    if ( sync_.quit ||  !sync_.error.empty() ) {
+                    if ( sync_.quit || !sync_.error.empty() ) {
                         return;
                     }
                     initiateFunction_(sync_.pool.nextToStart());
