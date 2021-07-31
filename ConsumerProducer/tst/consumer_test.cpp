@@ -5,7 +5,8 @@
 #include <stdexcept>
 
 #include "lib/consumer.h"
-#include "lib/event.h"
+
+#include "common/event.h"
 
 using ConsumerProducer::Consumer;
 

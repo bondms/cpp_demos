@@ -9,8 +9,8 @@
 
 #include "lib/logger.h"
 
-#include "lib/gtest_helper.h"
-#include "lib/os.h"
+#include "common/gtest_helper.h"
+#include "common/os.h"
 
 using std::chrono_literals::operator""s;
 using std::string_literals::operator""s;

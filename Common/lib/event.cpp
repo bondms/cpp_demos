@@ -1,6 +1,6 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/event.h"
+#include "common/event.h"
 
 Event::Event(Mode mode, State initialState) :
     mode_{ mode },

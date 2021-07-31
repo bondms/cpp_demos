@@ -1,6 +1,6 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/raii_handle.h"
+#include "common/raii_handle.h"
 
 #include <gmock/gmock.h>
 
