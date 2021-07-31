@@ -4,8 +4,9 @@
 
 #include <string>
 
-#include "lib/event.h"
 #include "lib/multiplexor.h"
+
+#include "common/event.h"
 
 using std::chrono::operator""s;
 

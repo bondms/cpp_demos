@@ -6,7 +6,7 @@
 #include <thread>
 #include <utility>
 
-#include "lib/event.h"
+#include "common/event.h"
 
 using std::chrono_literals::operator""s;
 

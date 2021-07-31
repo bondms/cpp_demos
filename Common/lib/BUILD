@@ -6,8 +6,9 @@ cc_library(
         "event.cpp",
     ],
     hdrs = [
-        "event.h",
+        "common/event.h",
     ],
+    strip_include_prefix = "/lib",
     visibility = ["//visibility:public"],
 )
 
@@ -16,8 +17,9 @@ cc_library(
     srcs = [
     ],
     hdrs = [
-        "gtest_helper.h",
+        "common/gtest_helper.h",
     ],
+    strip_include_prefix = "/lib",
     visibility = ["//visibility:public"],
 )
 
@@ -26,8 +28,9 @@ cc_library(
     srcs = [
     ],
     hdrs = [
-        "os.h",
+        "common/os.h",
     ],
+    strip_include_prefix = "/lib",
     visibility = ["//visibility:public"],
 )
 
@@ -36,8 +39,9 @@ cc_library(
     srcs = [
     ],
     hdrs = [
-        "raii_handle.h",
+        "common/raii_handle.h",
     ],
+    strip_include_prefix = "/lib",
     visibility = ["//visibility:public"],
 )
 
@@ -46,7 +50,8 @@ cc_library(
     srcs = [
     ],
     hdrs = [
-        "scope_exit.h",
+        "common/scope_exit.h",
     ],
+    strip_include_prefix = "/lib",
     visibility = ["//visibility:public"],
 )

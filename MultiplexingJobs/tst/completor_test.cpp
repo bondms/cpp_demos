@@ -5,7 +5,8 @@
 #include <string>
 
 #include "lib/completor.h"
-#include "lib/event.h"
+
+#include "common/event.h"
 
 TEST(CompletorTest, EndsOnFailure) {
     Sync<std::string> sync{};

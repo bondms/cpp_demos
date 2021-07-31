@@ -39,7 +39,7 @@ TST_DEP_FILES := $(TST_CPP_FILES:$(TST_SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
 TST_BIN_TARGETS = $(TST_CPP_FILES:$(TST_SRC_DIR)/%.cpp=$(TST_BIN_DIR)/%)
 TST_RESULTS = $(TST_CPP_FILES:$(TST_SRC_DIR)/%.cpp=$(INT_DIR)/%.passed)
 
-DEP_FLAGS = -MT $@ -MMD -MP -MF $(INT_DIR)/$*.d -iquote . -iquote ../Common
+DEP_FLAGS = -MT $@ -MMD -MP -MF $(INT_DIR)/$*.d -iquote . -iquote ../Common/lib
 STD_FLAGS = -std=c++17 -pthread -fno-rtti
 WARN_FLAGS = -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wpedantic -Werror
 

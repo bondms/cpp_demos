@@ -18,8 +18,8 @@
 #include "lib/escaper.h"
 #include "lib/flush_controller.h"
 
-#include "lib/os.h"
-#include "lib/scope_exit.h"
+#include "common/os.h"
+#include "common/scope_exit.h"
 
 using std::chrono_literals::operator""s;
 
