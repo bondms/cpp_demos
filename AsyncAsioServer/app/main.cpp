@@ -10,110 +10,101 @@
 #include <iostream>
 #include <memory>
 #include <string>
+
 #include <asio.hpp>
 
 using asio::ip::tcp;
 
-std::string make_daytime_string()
-{
-  using namespace std; // For time_t, time and ctime;
-  time_t now = time(0);
-  return ctime(&now);
-}
+class TcpConnection :
+        public std::enable_shared_from_this<TcpConnection> {
+    struct PrivateConstruction{};
 
-class tcp_connection
-  : public std::enable_shared_from_this<tcp_connection>
-{
-  struct PrivateConstruction{};
+    tcp::socket socket_;
+    std::string message_;
 
-public:
-  tcp_connection(PrivateConstruction, asio::io_context& io_context)
-    : socket_(io_context)
-  {
-  }
-
-  typedef std::shared_ptr<tcp_connection> pointer;
-
-  static pointer create(asio::io_context& io_context)
-  {
-    return std::make_shared<tcp_connection>(PrivateConstruction{}, io_context);
-  }
-
-  tcp::socket& socket()
-  {
-    return socket_;
-  }
-
-  void start()
-  {
-    message_ = make_daytime_string();
-
-    asio::async_write(socket_, asio::buffer(message_),
-        [shared_this=shared_from_this()](
-            const asio::error_code& error, size_t bytes_transferred) {
-          shared_this->handle_write(error, bytes_transferred);
-        });
-  }
-
-private:
-  void handle_write(const asio::error_code& /*error*/,
-      size_t /*bytes_transferred*/)
-  {
-  }
-
-  tcp::socket socket_;
-  std::string message_;
-};
-
-class tcp_server
-{
-public:
-  tcp_server(asio::io_context& io_context)
-    : io_context_(io_context),
-      acceptor_(io_context, tcp::endpoint(tcp::v4(), 8013))
-  {
-    start_accept();
-  }
-
-private:
-  void start_accept()
-  {
-    tcp_connection::pointer new_connection =
-      tcp_connection::create(io_context_);
-
-    acceptor_.async_accept(new_connection->socket(),
-        [this, new_connection](const asio::error_code& error){
-          this->handle_accept(new_connection, error);
-        });
-  }
-
-  void handle_accept(tcp_connection::pointer new_connection,
-      const asio::error_code& error)
-  {
-    if (!error)
+    void handle_write(const asio::error_code& /*error*/,
+            size_t /*bytes_transferred*/)
     {
-      new_connection->start();
     }
 
-    start_accept();
-  }
+ public:
+    TcpConnection(PrivateConstruction, asio::io_context& io_context)
+        : socket_{ io_context } {
+    }
 
-  asio::io_context& io_context_;
-  tcp::acceptor acceptor_;
+    using SharedPointer = std::shared_ptr<TcpConnection>;
+
+    static SharedPointer create(asio::io_context & io_context) {
+        return std::make_shared<TcpConnection>(
+            PrivateConstruction{}, io_context);
+    }
+
+    tcp::socket& socket() {
+        return socket_;
+    }
+
+    void start() {
+        const time_t now{ std::time(0) };
+        message_ = std::ctime(&now);
+
+        asio::async_write(
+            socket_,
+            asio::buffer(message_),
+            [shared_this=shared_from_this()](
+                    const asio::error_code& error,
+                    size_t bytes_transferred) {
+                shared_this->handle_write(error, bytes_transferred);
+            }
+        );
+    }
 };
 
-int main()
+class TcpServer
 {
-  try
-  {
-    asio::io_context io_context;
-    tcp_server server(io_context);
-    io_context.run();
-  }
-  catch (std::exception& e)
-  {
-    std::cerr << e.what() << std::endl;
-  }
+    asio::io_context & io_context_;
+    tcp::acceptor acceptor_;
 
-  return 0;
+    void start_accept() {
+        TcpConnection::SharedPointer new_connection {
+            TcpConnection::create(io_context_)
+        };
+
+        acceptor_.async_accept(
+            new_connection->socket(),
+            [this, new_connection](const asio::error_code & error) {
+                this->handle_accept(new_connection, error);
+            }
+        );
+    }
+
+    void handle_accept(
+            TcpConnection::SharedPointer new_connection,
+            const asio::error_code & error) {
+        if (!error) {
+            new_connection->start();
+        }
+
+        start_accept();
+    }
+
+ public:
+    explicit TcpServer(asio::io_context & io_context) :
+            io_context_{ io_context },
+            acceptor_{ io_context, tcp::endpoint{ tcp::v4(), 8013 } } {
+        start_accept();
+    }
+};
+
+int main(){
+    try {
+        asio::io_context io_context{};
+        TcpServer server{ io_context };
+        io_context.run();
+        return EXIT_SUCCESS;
+    }
+    catch (std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    return EXIT_FAILURE;
 }

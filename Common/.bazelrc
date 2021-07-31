@@ -1,4 +1,3 @@
-build --cxxopt='-fno-rtti'
 build --cxxopt='-std=c++17'
 build --cxxopt='-Wall'
 build --cxxopt='-Werror'
