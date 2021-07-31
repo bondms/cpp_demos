@@ -1,6 +1,7 @@
 filegroup(
     name = "all_applications",
     srcs = [
+        "@AsyncAsioServer//app:main",
         "@BinarySearch//app:main",
         "@ConsumerProducer//app:main",
         "@Gmock//app:main",
