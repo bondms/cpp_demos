@@ -6,6 +6,7 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <memory>
@@ -22,14 +23,14 @@ class TcpConnection :
     tcp::socket socket_;
     std::string message_;
 
-    void handle_write(const asio::error_code& /*error*/,
-            size_t /*bytes_transferred*/)
-    {
+    void handle_write(
+        const asio::error_code & /*error*/,
+        size_t /*bytes_transferred*/) {
     }
 
  public:
-    TcpConnection(PrivateConstruction, asio::io_context& io_context)
-        : socket_{ io_context } {
+    TcpConnection(PrivateConstruction, asio::io_context & io_context) :
+        socket_{ io_context } {
     }
 
     using SharedPointer = std::shared_ptr<TcpConnection>;
@@ -39,7 +40,7 @@ class TcpConnection :
             PrivateConstruction{}, io_context);
     }
 
-    tcp::socket& socket() {
+    tcp::socket & socket() {
         return socket_;
     }
 
@@ -51,7 +52,7 @@ class TcpConnection :
             socket_,
             asio::buffer(message_),
             [shared_this=shared_from_this()](
-                    const asio::error_code& error,
+                    const asio::error_code & error,
                     size_t bytes_transferred) {
                 shared_this->handle_write(error, bytes_transferred);
             }
@@ -95,14 +96,14 @@ class TcpServer
     }
 };
 
-int main(){
+int main() {
     try {
         asio::io_context io_context{};
         TcpServer server{ io_context };
         io_context.run();
         return EXIT_SUCCESS;
     }
-    catch (std::exception& e) {
+    catch ( const std::exception & e ) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
 
