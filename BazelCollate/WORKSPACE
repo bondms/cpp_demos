@@ -59,6 +59,11 @@ local_repository(
 )
 
 local_repository(
+    name = "MultiplexingJobs",
+    path = "../MultiplexingJobs",
+)
+
+local_repository(
     name = "Odbc",
     path = "../Odbc",
 )

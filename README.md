@@ -66,6 +66,14 @@ Supported build system(s):
 * Makefile
 * Bazel
 
+## MultiplexingJobs
+
+In progress: Job taskers with concurrent start and complete threads running.
+
+Supported build system(s):
+* Makefile
+* Bazel
+
 ## Odbc
 
 Thin C++ around ODBC.
