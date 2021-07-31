@@ -56,17 +56,15 @@ class TcpConnection :
         asio::async_write(
             socket_,
             asio::buffer(message_),
-            [shared_this=shared_from_this()](
+            [shared_this = shared_from_this()](
                     const asio::error_code & error,
                     size_t bytes_transferred) {
                 shared_this->handle_write(error, bytes_transferred);
-            }
-        );
+            });
     }
 };
 
-class TcpServer
-{
+class TcpServer {
     asio::io_context & io_context_;
     tcp::acceptor acceptor_;
 
@@ -79,8 +77,7 @@ class TcpServer
             new_connection->socket(),
             [this, new_connection](const asio::error_code & error) {
                 this->handle_accept(new_connection, error);
-            }
-        );
+            });
     }
 
     void handle_accept(
