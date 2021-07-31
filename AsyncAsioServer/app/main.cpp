@@ -48,6 +48,11 @@ class TcpConnection :
         const time_t now{ std::time(0) };
         message_ = std::ctime(&now);
 
+        std::cout
+            << "Connection accepted; sending message: "
+            << message_
+            << std::flush;
+
         asio::async_write(
             socket_,
             asio::buffer(message_),
@@ -97,10 +102,14 @@ class TcpServer
 };
 
 int main() {
+    std::cout << "Starting..." << std::endl;
+
     try {
         asio::io_context io_context{};
         TcpServer server{ io_context };
         io_context.run();
+
+        std::cout << "Shutting down..." << std::endl;
         return EXIT_SUCCESS;
     }
     catch ( const std::exception & e ) {
