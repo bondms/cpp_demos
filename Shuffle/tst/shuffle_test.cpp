@@ -16,8 +16,9 @@ void test(Shuffler & shuffler) {
             bs.reset();
         }
         const auto v{ shuffler() };
-        EXPECT_FALSE(bs[v]);
-        bs.set(v);
+        auto r{ bs[v] };
+        EXPECT_FALSE(r);
+        r = true;
     }
 }
 
