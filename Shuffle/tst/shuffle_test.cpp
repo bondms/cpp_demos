@@ -8,15 +8,16 @@
 
 namespace {
 
-template<typename Shuffler>
+template<std::int32_t max, typename Shuffler>
 void test(Shuffler & shuffler) {
-    const auto max = shuffler.max();
-    std::set<std::int_least32_t> s{};
+    std::bitset<max+1> bs{};
     for ( std::int_fast32_t i = 0 ; i < (max * 2 + max / 2 + 1) ; ++i ) {
         if ( 0 == i % (max + 1) ) {
-            s.clear();
+            bs.reset();
         }
-        EXPECT_TRUE(s.insert(shuffler()).second);
+        const auto v{ shuffler() };
+        EXPECT_FALSE(bs[v]);
+        bs.set(v);
     }
 }
 
@@ -24,14 +25,14 @@ void test(Shuffler & shuffler) {
 
 TEST(ShuffleTest, Simple_ShuffleMillion) {
     Shuffle::Simple<std::int_fast32_t> shuffler{ 999'999 };
-    test(shuffler);
+    test<999'999>(shuffler);
 }
 
 TEST(ShuffleTest, Simple_FullRangeOfType) {
     Shuffle::Simple<std::uint8_t> shuffler{
         std::numeric_limits<std::uint8_t>::max()
     };
-    test(shuffler);
+    test<std::numeric_limits<std::uint8_t>::max()>(shuffler);
 }
 
 TEST(ShuffleTest, Simple_Zero) {
@@ -58,14 +59,14 @@ TEST(ShuffleTest, Simple_MaxLimit) {
 
 TEST(ShuffleTest, LowMem_ShuffleMillion) {
     Shuffle::LowMem<std::int_least32_t, 999'999> shuffler{};
-    test(shuffler);
+    test<shuffler.max()>(shuffler);
 }
 
 TEST(ShuffleTest, LowMem_FullRangeOfType) {
     Shuffle::LowMem<
         std::uint8_t, std::numeric_limits<std::uint8_t>::max()
     > shuffler{};
-    test(shuffler);
+    test<shuffler.max()>(shuffler);
 }
 
 TEST(ShuffleTest, LowMem_Zero) {
