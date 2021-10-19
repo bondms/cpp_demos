@@ -61,7 +61,7 @@ class LowMem {
         --remaining_;
         while ( true ) {
             auto r = dist_(rand_);
-            if ( 0 != bitset_[r] )             {
+            if ( 0 != bitset_[r] ) {
                 continue;
             }
             bitset_[r] = true;
