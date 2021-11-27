@@ -1,5 +1,9 @@
 # README
 
+## Overview
+
+A collection of simple C++ demo programs that build using [Bazel](https://bazel.build/).
+
 ## Status
 
 ![CI](https://github.com/bondms/CppDemos/workflows/CI/badge.svg)
@@ -9,17 +13,9 @@
 
 Example of using ASIO asynchronously.
 
-Supported build system(s):
-* Makefile
-* Bazel
-
 ## BinarySearch
 
 Example self-implemented binary search with parameterized tests.
-
-Supported build system(s):
-* Makefile
-* Bazel
 
 ## Common
 
@@ -30,57 +26,29 @@ Libraries shared between other projects, including:
 * RAII handle.
 * Scope exit.
 
-Supported build system(s):
-* Makefile
-* Bazel
-
 ## ConsumerProducer
 
 Example use of C++ threading primitives.
-
-Supported build system(s):
-* Makefile
-* Bazel
 
 ## Gmock
 
 Example use of Google's gmock framework.
 
-Supported build system(s):
-* Makefile
-* Bazel
-
 ## Jsoncpp
 
 Example use of jsoncpp library.
-
-Supported build system(s):
-* Makefile
-* Bazel
 
 ## Logger
 
 In progress: General purpose file logger with log-file rotation.
 
-Supported build system(s):
-* Makefile
-* Bazel
-
 ## MultiplexingJobs
 
 In progress: Job taskers with concurrent start and complete threads running.
 
-Supported build system(s):
-* Makefile
-* Bazel
-
 ## Odbc
 
 Thin C++ around ODBC.
-
-Supported build system(s):
-* Makefile
-* Bazel
 
 ## Realign
 
@@ -88,40 +56,20 @@ Moves a left-aligned string in a buffer to be right-aligned returning an iterato
 
 Uses a parameterized gtest unit test.
 
-Supported build system(s):
-* Makefile
-* Bazel
-
 ## SharedPtr
 
 Example usage of C++ std::shared_ptr.
-
-Supported build system(s):
-* Makefile
-* Bazel
 
 ## Shuffle
 
 Non-repeating pseudo-random-number generation.
 
-Supported build system(s):
-* Makefile
-* Bazel
-
 ## TurkishLocale
 
 Investigate the infamouse Turkish 'i' case conversion issue.
-
-Supported build system(s):
-* Makefile
-* Bazel
 
 ## VariableLengthIntegerProtocol
 
 Variable-length integer protocol with leading bit indicators for length (number of bytes).
 
 Uses a parameterized gtest unit test.
-
-Supported build system(s):
-* Makefile
-* Bazel
