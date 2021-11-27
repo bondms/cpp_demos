@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "lib/shuffle.h"
+#include "Shuffle/lib/shuffle.h"
 
 namespace {
 
