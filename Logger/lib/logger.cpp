@@ -1,6 +1,6 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/logger.h"
+#include "Logger/lib/logger.h"
 
 #include <sys/types.h>
 #include <time.h>
@@ -15,11 +15,11 @@
 #include <thread>
 #include <utility>
 
-#include "lib/escaper.h"
-#include "lib/flush_controller.h"
+#include "Logger/lib/escaper.h"
+#include "Logger/lib/flush_controller.h"
 
-#include "common/os.h"
-#include "common/scope_exit.h"
+#include "Common/lib/os.h"
+#include "Common/lib/scope_exit.h"
 
 using std::chrono_literals::operator""s;
 

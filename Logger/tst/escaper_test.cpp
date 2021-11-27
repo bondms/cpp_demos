@@ -2,7 +2,7 @@
 
 #include <gmock/gmock.h>
 
-#include "lib/escaper.h"
+#include "Logger/lib/escaper.h"
 
 using Escaper::Escaped;
 

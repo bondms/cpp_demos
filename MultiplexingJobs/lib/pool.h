@@ -6,7 +6,7 @@
 #include <iterator>
 #include <list>
 
-#include "lib/state.h"
+#include "MultiplexingJobs/lib/state.h"
 
 template<typename JobData>
 class Pool {

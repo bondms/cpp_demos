@@ -5,8 +5,8 @@
 #include <stdexcept>
 #include <string>
 
-#include "lib/account.h"
-#include "lib/notifier.h"
+#include "Gmock/lib/account.h"
+#include "Gmock/lib/notifier.h"
 
 int main() {
     try {

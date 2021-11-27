@@ -6,7 +6,7 @@
 #include <mutex>
 #include <string>
 
-#include "lib/pool.h"
+#include "MultiplexingJobs/lib/pool.h"
 
 template<typename JobData>
 struct Sync {

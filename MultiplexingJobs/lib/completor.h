@@ -5,8 +5,8 @@
 #include <thread>
 #include <utility>
 
-#include "lib/functions.h"
-#include "lib/sync.h"
+#include "MultiplexingJobs/lib/functions.h"
+#include "MultiplexingJobs/lib/sync.h"
 
 using std::string_literals::operator""s;
 

@@ -6,7 +6,7 @@
 
 #include <stdexcept>
 
-#include "common/raii_handle.h"
+#include "Common/lib/raii_handle.h"
 
 namespace Odbc {
 

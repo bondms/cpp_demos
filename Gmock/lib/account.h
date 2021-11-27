@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "lib/notifier_interface.h"
+#include "Gmock/lib/notifier_interface.h"
 
 class Account {
  public:

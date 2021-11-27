@@ -2,7 +2,7 @@
 
 #include <gmock/gmock.h>
 
-#include "lib/shared_ptr.h"
+#include "SharedPtr/lib/shared_ptr.h"
 
 using SharedPtr::BadGetWithTimeout;
 using SharedPtr::GoodGetWithTimeout;

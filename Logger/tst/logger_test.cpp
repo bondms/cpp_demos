@@ -7,10 +7,10 @@
 #include <string>
 #include <vector>
 
-#include "lib/logger.h"
+#include "Logger/lib/logger.h"
 
-#include "common/gtest_helper.h"
-#include "common/os.h"
+#include "Common/lib/gtest_helper.h"
+#include "Common/lib/os.h"
 
 using std::chrono_literals::operator""s;
 using std::string_literals::operator""s;

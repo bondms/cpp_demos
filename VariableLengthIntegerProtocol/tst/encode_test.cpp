@@ -2,7 +2,7 @@
 
 #include <gmock/gmock.h>
 
-#include "lib/encode.h"
+#include "VariableLengthIntegerProtocol/lib/encode.h"
 
 namespace {
 
