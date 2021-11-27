@@ -3,7 +3,7 @@
 #include <gmock/gmock.h>
 #include <sstream>
 
-#include "lib/notifier.h"
+#include "Gmock/lib/notifier.h"
 
 TEST(NotifierTests, deposit_made) {
     std::ostringstream oss{};

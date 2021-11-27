@@ -4,9 +4,9 @@
 
 #include <string>
 
-#include "lib/completor.h"
+#include "MultiplexingJobs/lib/completor.h"
 
-#include "common/event.h"
+#include "Common/lib/event.h"
 
 TEST(CompletorTest, EndsOnFailure) {
     Sync<std::string> sync{};

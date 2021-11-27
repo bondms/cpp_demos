@@ -9,7 +9,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:shuffle",
+        "//Shuffle/lib:shuffle",
         "@googletest//:gtest_main",
     ],
 )

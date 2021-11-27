@@ -6,7 +6,7 @@ cc_binary(
         "main.cpp",
     ],
     deps = [
-        "//lib:shuffle",
+        "//Shuffle/lib:shuffle",
     ],
     visibility = ["//visibility:public"],
 )

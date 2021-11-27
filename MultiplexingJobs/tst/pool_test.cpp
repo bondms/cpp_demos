@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include "lib/pool.h"
+#include "MultiplexingJobs/lib/pool.h"
 
 using MockPool = Pool<std::string>;
 

@@ -6,8 +6,8 @@ cc_binary(
         "main.cpp",
     ],
     deps = [
-        "//lib:account",
-        "//lib:notifier",
+        "//Gmock/lib:account",
+        "//Gmock/lib:notifier",
     ],
     visibility = ["//visibility:public"],
 )

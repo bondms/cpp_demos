@@ -1,6 +1,6 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/notifier.h"
+#include "Gmock/lib/notifier.h"
 
 Notifier::Notifier(std::ostream & os) :
     os_{ os } {

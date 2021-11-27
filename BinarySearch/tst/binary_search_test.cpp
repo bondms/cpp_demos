@@ -1,6 +1,6 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/binary_search.h"
+#include "BinarySearch/lib/binary_search.h"
 
 #include <gmock/gmock.h>
 

@@ -4,7 +4,7 @@
 
 #include <exception>
 
-#include "lib/odbc.h"
+#include "Odbc/lib/odbc.h"
 
 using Odbc::allocEnvHandle;
 using Odbc::Exception;

@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "lib/account.h"
+#include "Gmock/lib/account.h"
 
 Account::Account(Notifier_Interface & notifier) :
     notifier_{ notifier } {

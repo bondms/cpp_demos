@@ -9,8 +9,8 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:consumer",
-        "@Common//lib:event",
+        "//ConsumerProducer/lib:consumer",
+        "//Common/lib:event",
         "@googletest//:gtest_main",
     ],
 )

@@ -2,7 +2,7 @@
 
 #include <gmock/gmock.h>
 
-#include "lib/initiator.h"
+#include "MultiplexingJobs/lib/initiator.h"
 
 TEST(InitiatorTest, EndsOnQuit) {
     Sync<std::string> sync{};

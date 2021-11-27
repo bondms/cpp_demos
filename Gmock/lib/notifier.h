@@ -4,7 +4,7 @@
 
 #include <ostream>
 
-#include "lib/notifier_interface.h"
+#include "Gmock/lib/notifier_interface.h"
 
 class Notifier :
     public Notifier_Interface {

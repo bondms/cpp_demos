@@ -1,8 +1,8 @@
 // Copyright 2021 Mark Bond
 
-#include "common/scope_exit.h"
+#include "Common/lib/scope_exit.h"
 
-#include "common/gtest_helper.h"
+#include "Common/lib/gtest_helper.h"
 
 namespace {
 

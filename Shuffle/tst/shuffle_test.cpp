@@ -4,7 +4,7 @@
 
 #include <cstdlib>
 
-#include "lib/shuffle.h"
+#include "Shuffle/lib/shuffle.h"
 
 namespace {
 

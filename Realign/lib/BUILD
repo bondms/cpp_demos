@@ -6,7 +6,7 @@ cc_library(
         "realign.h",
     ],
     deps = [
-        "@Common//lib:raii_handle",
+        "//Common/lib:raii_handle",
     ],
     visibility = ["//:__subpackages__"],
 )

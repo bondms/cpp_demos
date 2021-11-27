@@ -1,12 +1,12 @@
 // Copyright 2021 Mark Bond
 
-#include "lib/shared_ptr.h"
+#include "SharedPtr/lib/shared_ptr.h"
 
 #include <memory>
 #include <thread>
 #include <utility>
 
-#include "common/event.h"
+#include "Common/lib/event.h"
 
 using std::chrono_literals::operator""s;
 

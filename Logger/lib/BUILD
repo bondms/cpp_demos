@@ -32,8 +32,8 @@ cc_library(
     deps = [
         ":escaper",
         ":flush_controller",
-        "@Common//lib:os",
-        "@Common//lib:scope_exit",
+        "//Common/lib:os",
+        "//Common/lib:scope_exit",
     ],
     visibility = ["//:__subpackages__"],
 )

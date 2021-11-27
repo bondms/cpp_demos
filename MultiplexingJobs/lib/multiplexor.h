@@ -5,11 +5,11 @@
 #include <chrono>
 #include <utility>
 
-#include "lib/completor.h"
-#include "lib/functions.h"
-#include "lib/initiator.h"
-#include "lib/pool.h"
-#include "lib/sync.h"
+#include "MultiplexingJobs/lib/completor.h"
+#include "MultiplexingJobs/lib/functions.h"
+#include "MultiplexingJobs/lib/initiator.h"
+#include "MultiplexingJobs/lib/pool.h"
+#include "MultiplexingJobs/lib/sync.h"
 
 template<typename JobData>
 class Multiplexor {

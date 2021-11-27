@@ -9,7 +9,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:event",
+        "//Common/lib:event",
         "@googletest//:gtest_main",
     ],
 )
@@ -23,7 +23,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:raii_handle",
+        "//Common/lib:raii_handle",
         "@googletest//:gtest_main",
     ],
 )
@@ -37,8 +37,8 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:gtest_helper",
-        "//lib:scope_exit",
+        "//Common/lib:gtest_helper",
+        "//Common/lib:scope_exit",
         "@googletest//:gtest_main",
     ],
 )

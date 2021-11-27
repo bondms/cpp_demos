@@ -9,7 +9,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:odbc",
+        "//Odbc/lib:odbc",
         "@googletest//:gtest_main",
     ],
     linkopts = [

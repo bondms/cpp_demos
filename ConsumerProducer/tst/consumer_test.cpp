@@ -4,9 +4,9 @@
 
 #include <stdexcept>
 
-#include "lib/consumer.h"
+#include "ConsumerProducer/lib/consumer.h"
 
-#include "common/event.h"
+#include "Common/lib/event.h"
 
 using ConsumerProducer::Consumer;
 

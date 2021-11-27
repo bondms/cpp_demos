@@ -2,7 +2,7 @@
 
 #include <gmock/gmock.h>
 
-#include "lib/flush_controller.h"
+#include "Logger/lib/flush_controller.h"
 
 using std::chrono_literals::operator""h;
 using std::chrono_literals::operator""s;

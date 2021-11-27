@@ -2,7 +2,7 @@
 
 #include <gmock/gmock.h>
 
-#include "lib/account.h"
+#include "Gmock/lib/account.h"
 
 namespace {
 

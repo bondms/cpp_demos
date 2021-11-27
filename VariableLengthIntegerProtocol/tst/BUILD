@@ -9,7 +9,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:encode",
+        "//VariableLengthIntegerProtocol/lib:encode",
         "@googletest//:gtest_main",
     ],
 )
