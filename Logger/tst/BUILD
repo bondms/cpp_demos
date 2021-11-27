@@ -38,7 +38,7 @@ cc_test(
     ],
     deps = [
         "//lib:logger",
-        "@Common//lib:gtest_helper",
+        "//Common/lib:gtest_helper",
         "@googletest//:gtest_main",
     ],
 )

@@ -9,7 +9,7 @@ cc_library(
         "odbc.h",
     ],
     deps = [
-        "@Common//lib:raii_handle",
+        "//Common/lib:raii_handle",
     ],
     visibility = ["//:__subpackages__"],
 )
