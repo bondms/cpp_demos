@@ -9,7 +9,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:shared_ptr",
+        "//SharedPtr/lib:shared_ptr",
         "@googletest//:gtest_main",
     ],
 )
