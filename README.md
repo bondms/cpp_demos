@@ -12,12 +12,12 @@ A collection of simple C++ demo programs that build using [Bazel](https://bazel.
 ## Building
 
 To build all and run all unit tests:
-```
+```bash
 bazel test $(bazel query //...)
 ```
 
 To clean all:
-```
+```bash
 bazel clean
 ```
 
