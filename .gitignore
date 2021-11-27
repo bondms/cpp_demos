@@ -1,9 +1,3 @@
-/thirdparty/
-
-.vscode/
-bin/
-int/
-
-*.orig
-
 bazel-*
+*.orig
+.vscode/
