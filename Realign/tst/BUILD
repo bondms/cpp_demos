@@ -9,7 +9,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:realign",
+        "//Realign/lib:realign",
         "@googletest//:gtest_main",
     ],
 )
