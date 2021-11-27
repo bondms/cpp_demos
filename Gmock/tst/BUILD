@@ -9,7 +9,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:account",
+        "//Gmock/lib:account",
         "@googletest//:gtest_main",
     ],
 )
@@ -23,7 +23,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:notifier",
+        "//Gmock/lib:notifier",
         "@googletest//:gtest_main",
     ],
 )

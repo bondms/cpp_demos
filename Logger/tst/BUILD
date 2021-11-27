@@ -9,7 +9,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:escaper",
+        "//Logger/lib:escaper",
         "@googletest//:gtest_main",
     ],
 )
@@ -23,7 +23,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:flush_controller",
+        "//Logger/lib:flush_controller",
         "@googletest//:gtest_main",
     ],
 )
@@ -37,7 +37,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:logger",
+        "//Logger/lib:logger",
         "//Common/lib:gtest_helper",
         "@googletest//:gtest_main",
     ],

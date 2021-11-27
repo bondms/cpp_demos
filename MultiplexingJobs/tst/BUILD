@@ -9,7 +9,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:multiplexing_jobs",
+        "//MultiplexingJobs/lib:multiplexing_jobs",
         "//Common/lib:event",
         "@googletest//:gtest_main",
     ],
@@ -24,7 +24,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:multiplexing_jobs",
+        "//MultiplexingJobs/lib:multiplexing_jobs",
         "@googletest//:gtest_main",
     ],
 )
@@ -38,7 +38,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:multiplexing_jobs",
+        "//MultiplexingJobs/lib:multiplexing_jobs",
         "//Common/lib:event",
         "@googletest//:gtest_main",
     ],
@@ -53,7 +53,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:multiplexing_jobs",
+        "//MultiplexingJobs/lib:multiplexing_jobs",
         "@googletest//:gtest_main",
     ],
 )

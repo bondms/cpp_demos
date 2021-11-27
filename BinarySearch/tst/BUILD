@@ -9,7 +9,7 @@ cc_test(
         "-Iexternal/gmock/include",
     ],
     deps = [
-        "//lib:binary_search",
+        "//BinarySearch/lib:binary_search",
         "@googletest//:gtest_main",
     ],
 )
