@@ -9,15 +9,29 @@ A collection of simple C++ demo programs that build using [Bazel](https://bazel.
 ![CI](https://github.com/bondms/CppDemos/workflows/CI/badge.svg)
 ![Super-Linter](https://github.com/bondms/CppDemos/workflows/Super-Linter/badge.svg)
 
-## AsyncAsioServer
+## Building
+
+To build all and run all unit tests:
+```
+bazel test $(bazel query //...)
+```
+
+To clean all:
+```
+bazel clean
+```
+
+## Projects
+
+### AsyncAsioServer
 
 Example of using ASIO asynchronously.
 
-## BinarySearch
+### BinarySearch
 
 Example self-implemented binary search with parameterized tests.
 
-## Common
+### Common
 
 Libraries shared between other projects, including:
 * Example implementation of an Event synchronisation object using C++ std::condition_variable.
@@ -26,49 +40,49 @@ Libraries shared between other projects, including:
 * RAII handle.
 * Scope exit.
 
-## ConsumerProducer
+### ConsumerProducer
 
 Example use of C++ threading primitives.
 
-## Gmock
+### Gmock
 
 Example use of Google's gmock framework.
 
-## Jsoncpp
+### Jsoncpp
 
 Example use of jsoncpp library.
 
-## Logger
+### Logger
 
 In progress: General purpose file logger with log-file rotation.
 
-## MultiplexingJobs
+### MultiplexingJobs
 
 In progress: Job taskers with concurrent start and complete threads running.
 
-## Odbc
+### Odbc
 
 Thin C++ around ODBC.
 
-## Realign
+### Realign
 
 Moves a left-aligned string in a buffer to be right-aligned returning an iterator to the new start position of the string.
 
 Uses a parameterized gtest unit test.
 
-## SharedPtr
+### SharedPtr
 
 Example usage of C++ std::shared_ptr.
 
-## Shuffle
+### Shuffle
 
 Non-repeating pseudo-random-number generation.
 
-## TurkishLocale
+### TurkishLocale
 
 Investigate the infamouse Turkish 'i' case conversion issue.
 
-## VariableLengthIntegerProtocol
+### VariableLengthIntegerProtocol
 
 Variable-length integer protocol with leading bit indicators for length (number of bytes).
 
