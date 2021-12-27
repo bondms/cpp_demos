@@ -12,4 +12,4 @@ std::string SlowNoninterruptableGet();
 std::string BadGetWithTimeout(std::chrono::milliseconds timeout);
 std::string GoodGetWithTimeout(std::chrono::milliseconds timeout);
 
-}  // namespace SharedPtr
+} // namespace SharedPtr

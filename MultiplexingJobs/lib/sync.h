@@ -8,11 +8,10 @@
 
 #include "MultiplexingJobs/lib/pool.h"
 
-template<typename JobData>
-struct Sync {
-    std::mutex mutex{};
-    std::condition_variable condition_variable{};
-    Pool<JobData> pool{};
-    bool quit{ false };
-    std::string error{};
+template <typename JobData> struct Sync {
+  std::mutex mutex{};
+  std::condition_variable condition_variable{};
+  Pool<JobData> pool{};
+  bool quit{false};
+  std::string error{};
 };

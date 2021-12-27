@@ -3,7 +3,7 @@
 #pragma once
 
 enum class State {
-    initial,
-    finished,
-    cancelled,
+  initial,
+  finished,
+  cancelled,
 };

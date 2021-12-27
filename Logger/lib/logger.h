@@ -10,32 +10,32 @@ namespace Logger {
 
 // TODO(MarkBond): Consider moving elsewhere.
 enum class Severity {
-    Error,
-    Warning,
-    Info,
-    Debug,
+  Error,
+  Warning,
+  Info,
+  Debug,
 };
-const char* AsString(Severity severity) noexcept;
+const char *AsString(Severity severity) noexcept;
 
 // TODO(MarkBond): Consider moving elsewhere.
 std::string MessageTimeStamp(
-    const std::chrono::system_clock::time_point& time_point) noexcept;
-std::filesystem::path FileNameTimeStamp(
-    const std::chrono::system_clock::time_point& time_point);
+    const std::chrono::system_clock::time_point &time_point) noexcept;
+std::filesystem::path
+FileNameTimeStamp(const std::chrono::system_clock::time_point &time_point);
 
 // Non thread-safe.
 // Ensure logger is initialised before spawning child threads that log.
 // rotation_size == 0 => No log rotation.
 // rotation_size > 0 => Log rotated shortly after file size in bytes exceeds
 // rotation_size.
-void Initialise(const std::filesystem::path& path, size_t rotation_size = 0);
+void Initialise(const std::filesystem::path &path, size_t rotation_size = 0);
 
 // Thread safe.
-void Log(Severity severity, const std::string& msg) noexcept;
+void Log(Severity severity, const std::string &msg) noexcept;
 
 enum class ErrorReporting {
-    ignoreError,
-    throwOnError,
+  ignoreError,
+  throwOnError,
 };
 
 // TODO(MarkBond): Confirm thread safe.
@@ -53,7 +53,7 @@ void Flush(ErrorReporting errorReporting);
 // required.
 void Close(ErrorReporting errorReporting);
 
-}  // namespace Logger
+} // namespace Logger
 
 #define LOG_SEVERITY(severity, msg) Logger::Log(severity, msg)
 
