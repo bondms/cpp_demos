@@ -9,9 +9,9 @@
 namespace {
 
 struct TestParameter {
-    const std::wstring input{};
-    const std::wstring output{};
-    const std::wstring value{};
+  const std::wstring input{};
+  const std::wstring output{};
+  const std::wstring value{};
 };
 
 TestParameter test_parameters[] = {
@@ -62,23 +62,21 @@ TestParameter test_parameters[] = {
     },
 };
 
-class TestFixture :
-    public ::testing::TestWithParam<TestParameter> {
-};
+class TestFixture : public ::testing::TestWithParam<TestParameter> {};
 
-}  // namespace
+} // namespace
 
-INSTANTIATE_TEST_SUITE_P(
-    simple, TestFixture, ::testing::ValuesIn(test_parameters));
+INSTANTIATE_TEST_SUITE_P(simple, TestFixture,
+                         ::testing::ValuesIn(test_parameters));
 
 TEST_P(TestFixture, simple) {
-    const auto & param{ GetParam() };
+  const auto &param{GetParam()};
 
-    auto data{ param.input };
-    const auto ret{ realign(data.begin(), data.end()) };
+  auto data{param.input};
+  const auto ret{realign(data.begin(), data.end())};
 
-    const auto & expected{ param.output };
+  const auto &expected{param.output};
 
-    EXPECT_EQ(expected, data);
-    EXPECT_EQ(param.value, std::wstring(ret, data.end()));
+  EXPECT_EQ(expected, data);
+  EXPECT_EQ(param.value, std::wstring(ret, data.end()));
 }

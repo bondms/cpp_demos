@@ -8,77 +8,70 @@
 
 namespace {
 
-template<std::int32_t max, typename Shuffler>
-void test(Shuffler & shuffler) {
-    std::bitset<max+1> bs{};
-    for ( std::int_fast32_t i = 0 ; i < (max * 2 + max / 2 + 1) ; ++i ) {
-        if ( 0 == i % (max + 1) ) {
-            bs.reset();
-        }
-        const auto v{ shuffler() };
-        auto r{ bs[v] };
-        EXPECT_FALSE(r);
-        r = true;
+template <std::int32_t max, typename Shuffler> void test(Shuffler &shuffler) {
+  std::bitset<max + 1> bs{};
+  for (std::int_fast32_t i = 0; i < (max * 2 + max / 2 + 1); ++i) {
+    if (0 == i % (max + 1)) {
+      bs.reset();
     }
+    const auto v{shuffler()};
+    auto r{bs[v]};
+    EXPECT_FALSE(r);
+    r = true;
+  }
 }
 
-}  // namespace
+} // namespace
 
 TEST(ShuffleTest, Simple_ShuffleMillion) {
-    Shuffle::Simple<std::int_fast32_t> shuffler{ 999'999 };
-    test<999'999>(shuffler);
+  Shuffle::Simple<std::int_fast32_t> shuffler{999'999};
+  test<999'999>(shuffler);
 }
 
 TEST(ShuffleTest, Simple_FullRangeOfType) {
-    Shuffle::Simple<std::uint8_t> shuffler{
-        std::numeric_limits<std::uint8_t>::max()
-    };
-    test<std::numeric_limits<std::uint8_t>::max()>(shuffler);
+  Shuffle::Simple<std::uint8_t> shuffler{
+      std::numeric_limits<std::uint8_t>::max()};
+  test<std::numeric_limits<std::uint8_t>::max()>(shuffler);
 }
 
 TEST(ShuffleTest, Simple_Zero) {
-    Shuffle::Simple<int> shuffler{ 0 };
-    EXPECT_EQ(0, shuffler());
-    EXPECT_EQ(0, shuffler());
+  Shuffle::Simple<int> shuffler{0};
+  EXPECT_EQ(0, shuffler());
+  EXPECT_EQ(0, shuffler());
 }
 
 TEST(ShuffleTest, Simple_Negative) {
-    EXPECT_THROW(
-        Shuffle::Simple<int>{ static_cast<std::vector<int>::size_type>(-1) },
-        std::logic_error);
+  EXPECT_THROW(
+      Shuffle::Simple<int>{static_cast<std::vector<int>::size_type>(-1)},
+      std::logic_error);
 }
 
 TEST(ShuffleTest, Simple_MaxLimit) {
-    EXPECT_THROW(
-        Shuffle::Simple<std::size_t>{ std::numeric_limits<std::size_t>::max() },
-        std::logic_error);
-    EXPECT_NO_THROW(
-        Shuffle::Simple<std::size_t>{
-            std::numeric_limits<std::size_t>::max() - 1
-        });
+  EXPECT_THROW(
+      Shuffle::Simple<std::size_t>{std::numeric_limits<std::size_t>::max()},
+      std::logic_error);
+  EXPECT_NO_THROW(Shuffle::Simple<std::size_t>{
+      std::numeric_limits<std::size_t>::max() - 1});
 }
 
 TEST(ShuffleTest, LowMem_ShuffleMillion) {
-    Shuffle::LowMem<std::int_least32_t, 999'999> shuffler{};
-    test<shuffler.max()>(shuffler);
+  Shuffle::LowMem<std::int_least32_t, 999'999> shuffler{};
+  test<shuffler.max()>(shuffler);
 }
 
 TEST(ShuffleTest, LowMem_FullRangeOfType) {
-    Shuffle::LowMem<
-        std::uint8_t, std::numeric_limits<std::uint8_t>::max()
-    > shuffler{};
-    test<shuffler.max()>(shuffler);
+  Shuffle::LowMem<std::uint8_t, std::numeric_limits<std::uint8_t>::max()>
+      shuffler{};
+  test<shuffler.max()>(shuffler);
 }
 
 TEST(ShuffleTest, LowMem_Zero) {
-    Shuffle::LowMem<int, 0> shuffler{};
-    EXPECT_EQ(0, shuffler());
-    EXPECT_EQ(0, shuffler());
+  Shuffle::LowMem<int, 0> shuffler{};
+  EXPECT_EQ(0, shuffler());
+  EXPECT_EQ(0, shuffler());
 }
 
 TEST(ShuffleTest, LowMem_MaxLimit) {
-    EXPECT_NO_THROW(
-        Shuffle::Simple<
-            std::size_t
-        >{std::numeric_limits<std::size_t>::max() - 1});
+  EXPECT_NO_THROW(Shuffle::Simple<std::size_t>{
+      std::numeric_limits<std::size_t>::max() - 1});
 }

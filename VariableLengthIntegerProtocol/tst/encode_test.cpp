@@ -7,25 +7,20 @@
 namespace {
 
 struct Parameters {
-    Parameters(size_t _input, std::vector<uint8_t> _expected) :
-        input{ _input },
-        expected{ _expected }
-    {
-    }
+  Parameters(size_t _input, std::vector<uint8_t> _expected)
+      : input{_input}, expected{_expected} {}
 
-    size_t input;
-    std::vector<uint8_t> expected;
+  size_t input;
+  std::vector<uint8_t> expected;
 };
 
-class EncodeTestFixture :
-    public testing::TestWithParam<Parameters> {
-};
+class EncodeTestFixture : public testing::TestWithParam<Parameters> {};
 
-}  // namespace
+} // namespace
 
 TEST_P(EncodeTestFixture, Simple) {
-    auto param{ GetParam() };
-    EXPECT_EQ(param.expected, Encode(param.input));
+  auto param{GetParam()};
+  EXPECT_EQ(param.expected, Encode(param.input));
 }
 
 Parameters parameterValues[] = {
@@ -46,11 +41,8 @@ Parameters parameterValues[] = {
     Parameters(size_t{0x1200AB}, std::vector<uint8_t>{0xD2, 0x00, 0xAB}),
     Parameters(size_t{0x1FFFFF}, std::vector<uint8_t>{0xDF, 0xFF, 0xFF}),
     Parameters(size_t{0x200000}, std::vector<uint8_t>{0xE0, 0x20, 0x00, 0x00}),
-    Parameters(size_t{0xFFFFFFF}, std::vector<uint8_t>{0xEF, 0xFF, 0xFF, 0xFF})
-};
+    Parameters(size_t{0xFFFFFFF},
+               std::vector<uint8_t>{0xEF, 0xFF, 0xFF, 0xFF})};
 
-INSTANTIATE_TEST_SUITE_P(
-    EncodeTestInstantiation,
-    EncodeTestFixture,
-    testing::ValuesIn(parameterValues)
-);
+INSTANTIATE_TEST_SUITE_P(EncodeTestInstantiation, EncodeTestFixture,
+                         testing::ValuesIn(parameterValues));

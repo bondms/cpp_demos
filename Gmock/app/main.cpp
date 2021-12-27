@@ -9,33 +9,32 @@
 #include "Gmock/lib/notifier.h"
 
 int main() {
-    try {
-        Notifier notifier{std::cout};
-        Account account{notifier};
+  try {
+    Notifier notifier{std::cout};
+    Account account{notifier};
 
-        while ( true ) {
-            int amount{};
-            std::cin >> amount;
+    while (true) {
+      int amount{};
+      std::cin >> amount;
 
-            if ( 0 == amount ) {
-                break;
-            }
+      if (0 == amount) {
+        break;
+      }
 
-            if ( amount < 0 ) {
-                account.withdraw(std::abs(amount));
-            } else {
-                account.deposit(amount);
-            }
+      if (amount < 0) {
+        account.withdraw(std::abs(amount));
+      } else {
+        account.deposit(amount);
+      }
 
-            std::cout << "Current balance: " << account.balance() << std::endl;
-        }
-
-        std::cout << "Final balance: " << account.balance() << std::endl;
-
-        return EXIT_SUCCESS;
+      std::cout << "Current balance: " << account.balance() << std::endl;
     }
-    catch ( const std::exception & e ) {
-        std::cerr << "Error: " << e.what() << std::endl;
-    }
-    return EXIT_FAILURE;
+
+    std::cout << "Final balance: " << account.balance() << std::endl;
+
+    return EXIT_SUCCESS;
+  } catch (const std::exception &e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+  }
+  return EXIT_FAILURE;
 }

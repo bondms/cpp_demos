@@ -10,43 +10,39 @@
 
 using ConsumerProducer::Consumer;
 
-TEST(ConsumerTest, DefaultConstructed) {
-    Consumer<bool> consumer{};
-}
+TEST(ConsumerTest, DefaultConstructed) { Consumer<bool> consumer{}; }
 
 TEST(ConsumerTest, Empty) {
-    unsigned int count{ 0 };
+  unsigned int count{0};
 
-    Consumer<bool> consumer{ [&](bool) {
-         ++count;
-    } };
+  Consumer<bool> consumer{[&](bool) { ++count; }};
 
-    EXPECT_EQ(0, count);
+  EXPECT_EQ(0, count);
 }
 
 TEST(ConsumerTest, Simple) {
-    unsigned int true_count{ 0 };
-    unsigned int false_count{ 0 };
+  unsigned int true_count{0};
+  unsigned int false_count{0};
 
-    Event event{Event::Mode::manualReset, Event::State::nonSignalled};
+  Event event{Event::Mode::manualReset, Event::State::nonSignalled};
 
-    Consumer<bool> consumer{ [&](bool b) {
-        if (b) {
-            ++true_count;
-        } else {
-            ++false_count;
-            event.Signal();
-        }
-    } };
+  Consumer<bool> consumer{[&](bool b) {
+    if (b) {
+      ++true_count;
+    } else {
+      ++false_count;
+      event.Signal();
+    }
+  }};
 
-    consumer.push(true);
-    consumer.push(true);
-    consumer.push(false);
+  consumer.push(true);
+  consumer.push(true);
+  consumer.push(false);
 
-    event.Wait();
+  event.Wait();
 
-    EXPECT_EQ(2, true_count);
-    EXPECT_EQ(1, false_count);
+  EXPECT_EQ(2, true_count);
+  EXPECT_EQ(1, false_count);
 }
 
 // Use the the following arguments to run this test:
@@ -54,17 +50,15 @@ TEST(ConsumerTest, Simple) {
 // * --gtest_also_run_disabled_tests arguments
 // The test should terminate rather than complete with either a pass or fail.
 TEST(ConsumerTest, DISABLED_TerminatesOnException) {
-    try {
-        Consumer<bool> consumer{ [](bool) {
-            throw std::runtime_error("Test exception");
-        } };
+  try {
+    Consumer<bool> consumer{
+        [](bool) { throw std::runtime_error("Test exception"); }};
 
-        consumer.push(true);
+    consumer.push(true);
 
-        Event event{Event::Mode::manualReset, Event::State::nonSignalled};
-        event.Wait();
-    }
-    catch (const std::exception &) {
-    }
-    ADD_FAILURE() << "Program execution should not reach here";
+    Event event{Event::Mode::manualReset, Event::State::nonSignalled};
+    event.Wait();
+  } catch (const std::exception &) {
+  }
+  ADD_FAILURE() << "Program execution should not reach here";
 }
