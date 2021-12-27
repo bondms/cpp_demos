@@ -15,4 +15,4 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build & test
-      run: bazel test $(bazel query //...)
+      run: "bazel test $(bazel query //...)"
