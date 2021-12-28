@@ -52,7 +52,8 @@ int main() {
   try {
     std::cout << "Current C locale\n";
     for (const auto from : test_characters) {
-      const auto to{std::towupper(from)};
+      const auto to{
+          static_cast<wchar_t>(std::towupper(static_cast<wint_t>(from)))};
       std::cout << "From " << as_string(from) << " to " << as_string(to)
                 << '\n';
     }
@@ -61,7 +62,8 @@ int main() {
       std::cout << "Locale set globally: " << locale_name << '\n';
       std::setlocale(LC_ALL, locale_name);
       for (const auto from : test_characters) {
-        const auto to{std::towupper(from)};
+        const auto to{
+            static_cast<wchar_t>(std::towupper(static_cast<wint_t>(from)))};
         std::cout << "From " << as_string(from) << " to " << as_string(to)
                   << '\n';
       }

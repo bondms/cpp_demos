@@ -8,14 +8,14 @@
 
 namespace {
 
-template <std::int32_t max, typename Shuffler> void test(Shuffler &shuffler) {
+template <std::uint32_t max, typename Shuffler> void test(Shuffler &shuffler) {
   std::bitset<max + 1> bs{};
   for (std::int_fast32_t i = 0; i < (max * 2 + max / 2 + 1); ++i) {
     if (0 == i % (max + 1)) {
       bs.reset();
     }
     const auto v{shuffler()};
-    auto r{bs[v]};
+    auto r{bs[static_cast<size_t>(v)]};
     EXPECT_FALSE(r);
     r = true;
   }
@@ -42,6 +42,14 @@ TEST(ShuffleTest, Simple_Zero) {
 
 TEST(ShuffleTest, Simple_Negative) {
   EXPECT_THROW(Shuffle::Simple<int>{-1}, std::logic_error);
+}
+
+TEST(ShuffleTest, Simple_MaxLimit) {
+  EXPECT_THROW(
+      Shuffle::Simple<std::size_t>{std::numeric_limits<std::size_t>::max()},
+      std::logic_error);
+  EXPECT_NO_THROW(Shuffle::Simple<std::size_t>{
+      std::numeric_limits<std::size_t>::max() - 1});
 }
 
 TEST(ShuffleTest, LowMem_ShuffleMillion) {

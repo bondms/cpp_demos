@@ -20,13 +20,16 @@ template <typename T> class Simple {
 public:
   explicit Simple(T max) : max_{max} {
     if (max < 0) {
-      throw std::logic_error{"Invalid max"};
+      throw std::logic_error{"Invalid max (negative)"};
+    }
+    if (static_cast<size_t>(max) == std::numeric_limits<size_t>::max()) {
+      throw std::logic_error{"Invalid max (too large)"};
     }
   }
 
   T operator()() {
     if (v_.empty()) {
-      v_.resize(max_ + 1);
+      v_.resize(static_cast<size_t>(max_) + 1);
       std::iota(v_.begin(), v_.end(), 0);
       std::shuffle(v_.begin(), v_.end(), rand_);
     }
@@ -54,10 +57,10 @@ public:
     --remaining_;
     while (true) {
       auto r = dist_(rand_);
-      if (0 != bitset_[r]) {
+      if (0 != bitset_[static_cast<size_t>(r)]) {
         continue;
       }
-      bitset_[r] = true;
+      bitset_[static_cast<size_t>(r)] = true;
       return r;
     }
   }
