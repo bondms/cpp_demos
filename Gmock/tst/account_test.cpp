@@ -6,11 +6,14 @@
 
 namespace {
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
 class Notifier_Mock : public Notifier_Interface {
 public:
   MOCK_METHOD1(deposit_made, void(unsigned int));
   MOCK_METHOD1(withdrawal_made, void(unsigned int));
 };
+#pragma GCC diagnostic pop
 
 } // namespace
 
