@@ -13,14 +13,13 @@ namespace Shuffle {
 
 template <typename T> class Simple {
   using vec = std::vector<T>;
-  using size_type = typename vec::size_type;
   std::mt19937 rand_{std::random_device{}()};
   vec v_{};
-  const size_type max_;
+  const T max_;
 
 public:
-  explicit Simple(typename std::vector<T>::size_type max) : max_{max} {
-    if ((max < 0) || (max >= std::numeric_limits<size_type>::max())) {
+  explicit Simple(T max) : max_{max} {
+    if (max < 0) {
       throw std::logic_error{"Invalid max"};
     }
   }

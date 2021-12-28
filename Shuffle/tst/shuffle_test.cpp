@@ -42,16 +42,8 @@ TEST(ShuffleTest, Simple_Zero) {
 
 TEST(ShuffleTest, Simple_Negative) {
   EXPECT_THROW(
-      Shuffle::Simple<int>{static_cast<std::vector<int>::size_type>(-1)},
+      Shuffle::Simple<int>{-1},
       std::logic_error);
-}
-
-TEST(ShuffleTest, Simple_MaxLimit) {
-  EXPECT_THROW(
-      Shuffle::Simple<std::size_t>{std::numeric_limits<std::size_t>::max()},
-      std::logic_error);
-  EXPECT_NO_THROW(Shuffle::Simple<std::size_t>{
-      std::numeric_limits<std::size_t>::max() - 1});
 }
 
 TEST(ShuffleTest, LowMem_ShuffleMillion) {
