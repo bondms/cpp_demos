@@ -23,7 +23,8 @@ build --cxxopt='-Wshadow'
 build --cxxopt='-Wunused'
 build --linkopt='-pthread'
 
+build --per_file_copt=.*\.(cc|cpp),-googletest/.*@-Wsign-conversion
+
 # TODO(MarkBond): Enable these with exclusion for third-party code.
 # build --cxxopt='-Weffc++'
-# build --cxxopt='-Wsign-conversion'
 # build --cxxopt='-Wuseless-cast'
