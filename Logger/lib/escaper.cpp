@@ -73,7 +73,7 @@ std::string Escaped(const std::string &raw) {
     ++it;
     it = result.insert(it, escaped.begin(), escaped.end());
 
-    // Continue from after the instered escaped sequence.
+    // Continue from after the inserted escaped sequence.
     it += escaped.size();
   }
 
