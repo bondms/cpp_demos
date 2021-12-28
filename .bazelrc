@@ -1,8 +1,31 @@
+# Recommended compiler options from
+# https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
+
+build --cxxopt='-pedantic'
 build --cxxopt='-std=c++17'
 build --cxxopt='-Wall'
+build --cxxopt='-Wcast-align'
+build --cxxopt='-Wdouble-promotion'
+build --cxxopt='-Wduplicated-branches'
+build --cxxopt='-Wduplicated-cond'
 build --cxxopt='-Werror'
 build --cxxopt='-Wextra'
+build --cxxopt='-Wformat=2'
+build --cxxopt='-Wlogical-op'
+build --cxxopt='-Wmisleading-indentation'
 build --cxxopt='-Wnon-virtual-dtor'
+build --cxxopt='-Wnull-dereference'
+build --cxxopt='-Wold-style-cast'
+build --cxxopt='-Woverloaded-virtual'
 build --cxxopt='-Wpedantic'
 build --cxxopt='-Wshadow'
+build --cxxopt='-Wunused'
 build --linkopt='-pthread'
+
+# build --cxxopt='-Wconversion'
+# build --cxxopt='-Wsign-conversion'
+# build --cxxopt='-Wuseless-cast'
+# build --cxxopt='-Weffc++'
+
+# build --cxxopt='-Wlifetime'
+# build --cxxopt='-Weverything'
