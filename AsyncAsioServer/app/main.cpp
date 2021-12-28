@@ -54,6 +54,8 @@ public:
 };
 
 class TcpServer {
+  constexpr static asio::ip::port_type port_{8013};
+
   asio::io_context &io_context_;
   tcp::acceptor acceptor_;
 
@@ -80,7 +82,8 @@ class TcpServer {
 public:
   explicit TcpServer(asio::io_context &io_context)
       : io_context_{io_context}, acceptor_{io_context,
-                                           tcp::endpoint{tcp::v4(), 8013}} {
+                                           tcp::endpoint{tcp::v4(), port_}} {
+    std::cout << "Listening on port: " << port_ << std::endl;
     start_accept();
   }
 };
