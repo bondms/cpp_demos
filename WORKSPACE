@@ -2,23 +2,23 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "googletest",
-    url = "https://github.com/google/googletest/archive/release-1.10.0.zip",
-    strip_prefix = "googletest-release-1.10.0",
-    sha256 = "94c634d499558a76fa649edb13721dce6e98fb1e7018dfaeba3cd7a083945e91",
+    url = "https://github.com/google/googletest/archive/release-1.11.0.zip",
+    strip_prefix = "googletest-release-1.11.0",
+    sha256 = "353571c2440176ded91c2de6d6cd88ddd41401d14692ec1f99e35d013feda55a",
 )
 
 http_archive(
     name = "jsoncpp",
-    url = "https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.4.zip",
+    url = "https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.5.zip",
     build_file = "@//:jsoncpp.BUILD",
-    strip_prefix = "jsoncpp-1.9.4",
-    sha256 = "6da6cdc026fe042599d9fce7b06ff2c128e8dd6b8b751fca91eb022bce310880",
+    strip_prefix = "jsoncpp-1.9.5",
+    sha256 = "a074e1b38083484e8e07789fd683599d19da8bb960959c83751cd0284bdf2043",
 )
 
 http_archive(
     name = "asio",
-    url = "https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-18-2.zip",
+    url = "https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-21-0.zip",
     build_file = "@//:asio.BUILD",
-    strip_prefix = "asio-asio-1-18-2",
-    sha256 = "9071370beb50f4e974042a2a8604e761397cc34a2021a49b5712571b5e1536d7",
+    strip_prefix = "asio-asio-1-21-0",
+    sha256 = "2edd7af3b5aa5746a0e552dfcd68b47d765a81695c4479c70027a378851a1bdc",
 )
