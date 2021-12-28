@@ -22,9 +22,9 @@ int main() {
       }
 
       if (amount < 0) {
-        account.withdraw(std::abs(amount));
+        account.withdraw(static_cast<unsigned int>(std::abs(amount)));
       } else {
-        account.deposit(amount);
+        account.deposit(static_cast<unsigned int>(amount));
       }
 
       std::cout << "Current balance: " << account.balance() << std::endl;
