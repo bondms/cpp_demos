@@ -41,9 +41,7 @@ TEST(ShuffleTest, Simple_Zero) {
 }
 
 TEST(ShuffleTest, Simple_Negative) {
-  EXPECT_THROW(
-      Shuffle::Simple<int>{-1},
-      std::logic_error);
+  EXPECT_THROW(Shuffle::Simple<int>{-1}, std::logic_error);
 }
 
 TEST(ShuffleTest, LowMem_ShuffleMillion) {
