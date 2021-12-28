@@ -20,7 +20,7 @@ class TcpConnection : public std::enable_shared_from_this<TcpConnection> {
   struct PrivateConstruction {};
 
   tcp::socket socket_;
-  std::string message_;
+  std::string message_{};
 
   void handle_write(const asio::error_code & /*error*/,
                     size_t /*bytes_transferred*/) {}
