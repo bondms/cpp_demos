@@ -8,13 +8,29 @@
 
 #include "AsyncAsioServer/lib/tcp_connection.h"
 
+#include <chrono>
 #include <ctime>
 #include <iostream>
+
+using namespace std::chrono_literals;
 
 void TcpConnection::handle_write(const asio::error_code &error,
                                  size_t bytes_transferred) {
   if (!error) {
     std::cout << "Sent bytes: " << bytes_transferred << std::endl;
+
+    timer_ = std::make_unique<asio::steady_timer>(io_context_, 10s);
+    timer_->async_wait([shared_this = shared_from_this()](
+                           const asio::error_code &timer_error) {
+      if (!timer_error) {
+        std::cout << "Timer expired; closing connection." << std::endl;
+        return;
+      }
+
+      std::cerr << "Error waiting for timer, value: " << timer_error.value()
+                << std::endl;
+    });
+
     return;
   }
 
@@ -22,7 +38,7 @@ void TcpConnection::handle_write(const asio::error_code &error,
 }
 
 TcpConnection::TcpConnection(PrivateConstruction, asio::io_context &io_context)
-    : socket_{io_context} {}
+    : io_context_{io_context}, socket_{io_context} {}
 
 TcpConnection::SharedPointer
 TcpConnection::create(asio::io_context &io_context) {
