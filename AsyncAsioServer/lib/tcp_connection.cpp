@@ -12,7 +12,7 @@
 #include <ctime>
 #include <iostream>
 
-using namespace std::chrono_literals;
+using std::chrono_literals::operator""s;
 
 void TcpConnection::handle_write(const asio::error_code &error,
                                  size_t bytes_transferred) {
