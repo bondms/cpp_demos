@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include <asio.hpp>
+
 #include <memory>
 #include <string>
-
-#include <asio.hpp>
 
 class TcpConnection : public std::enable_shared_from_this<TcpConnection> {
   struct PrivateConstruction {};

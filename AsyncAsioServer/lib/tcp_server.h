@@ -8,11 +8,9 @@
 
 #pragma once
 
-#include <mutex>
-
 #include "AsyncAsioServer/lib/tcp_connection.h"
 
-#include <asio.hpp>
+#include <mutex>
 
 class TcpServer {
   constexpr static asio::ip::port_type port_{8013};

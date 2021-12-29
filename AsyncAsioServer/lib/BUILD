@@ -24,7 +24,6 @@ cc_library(
     ],
     deps = [
         "tcp_connection",
-        "@asio",
     ],
     visibility = ["//:__subpackages__"],
 )
