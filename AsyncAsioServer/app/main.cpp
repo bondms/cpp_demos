@@ -11,6 +11,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <thread>
 
 #include <asio.hpp>
 
@@ -74,9 +75,8 @@ class TcpServer {
                      const asio::error_code &error) {
     if (!error) {
       new_connection->start();
+      start_accept();
     }
-
-    start_accept();
   }
 
 public:
@@ -86,6 +86,8 @@ public:
     std::cout << "Listening on port: " << port_ << std::endl;
     start_accept();
   }
+
+  void shutdown() { acceptor_.close(); }
 };
 
 int main() {
@@ -94,9 +96,19 @@ int main() {
   try {
     asio::io_context io_context{};
     TcpServer server{io_context};
-    io_context.run();
+
+    std::thread worker{[&]() { io_context.run(); }};
+
+    std::cout << "Enter 'q' and press return to quit." << std::endl;
+    char ch{};
+    while ('q' != ch) {
+      std::cin >> ch;
+    }
 
     std::cout << "Shutting down..." << std::endl;
+    server.shutdown();
+    worker.join();
+
     return EXIT_SUCCESS;
   } catch (const std::exception &e) {
     std::cerr << "Error: " << e.what() << std::endl;
