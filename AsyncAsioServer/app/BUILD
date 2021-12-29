@@ -6,7 +6,7 @@ cc_binary(
         "main.cpp",
     ],
     deps = [
-        "@asio",
+        "//AsyncAsioServer/lib:tcp_server",
     ],
     visibility = ["//visibility:public"],
 )
