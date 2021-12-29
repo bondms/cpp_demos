@@ -10,6 +10,7 @@
 #include <ctime>
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <thread>
 
@@ -64,11 +65,13 @@ class TcpServer {
 
   asio::io_context &io_context_;
   tcp::acceptor acceptor_;
+  std::mutex mutex_{};
 
   void start_accept() {
     TcpConnection::SharedPointer new_connection{
         TcpConnection::create(io_context_)};
 
+    std::lock_guard<std::mutex> lock{mutex_};
     acceptor_.async_accept(
         new_connection->socket(),
         [this, new_connection](const asio::error_code &error) {
@@ -106,7 +109,10 @@ public:
     start_accept();
   }
 
-  void shutdown() { acceptor_.close(); }
+  void shutdown() {
+    std::lock_guard<std::mutex> lock{mutex_};
+    acceptor_.close();
+  }
 };
 
 int main() {
