@@ -41,9 +41,10 @@ void TcpServer::handle_accept(TcpConnection::SharedPointer new_connection,
   start_accept();
 }
 
-explicit TcpServer::TcpServer(asio::io_context &io_context)
+TcpServer::TcpServer(asio::io_context &io_context)
     : io_context_{io_context}, acceptor_{io_context,
-                                         tcp::endpoint{tcp::v4(), port_}} {
+                                         asio::ip::tcp::endpoint{
+                                             asio::ip::tcp::v4(), port_}} {
   std::cout << "Listening on port: " << port_ << std::endl;
 
   std::cout << "Accept first connection." << std::endl;
