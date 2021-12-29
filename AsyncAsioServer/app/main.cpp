@@ -23,8 +23,14 @@ class TcpConnection : public std::enable_shared_from_this<TcpConnection> {
   tcp::socket socket_;
   std::string message_{};
 
-  void handle_write(const asio::error_code & /*error*/,
-                    size_t /*bytes_transferred*/) {}
+  void handle_write(const asio::error_code &error, size_t bytes_transferred) {
+    if (!error) {
+      std::cout << "Sent bytes: " << bytes_transferred << std::endl;
+      return;
+    }
+
+    std::cerr << "Error sending, value: " << error.value() << std::endl;
+  }
 
 public:
   TcpConnection(PrivateConstruction, asio::io_context &io_context)
@@ -42,8 +48,7 @@ public:
     const time_t now{std::time(0)};
     message_ = std::ctime(&now);
 
-    std::cout << "Connection accepted; sending message: " << message_
-              << std::flush;
+    std::cout << "Sending message: " << message_ << std::flush;
 
     asio::async_write(
         socket_, asio::buffer(message_),
@@ -73,10 +78,22 @@ class TcpServer {
 
   void handle_accept(TcpConnection::SharedPointer new_connection,
                      const asio::error_code &error) {
-    if (!error) {
-      new_connection->start();
-      start_accept();
+    if (asio::error::operation_aborted == error.value()) {
+      std::cout << "Aborting accept for new connection." << std::endl;
+      // Return without starting a fresh accept to allow clean shutdown.
+      return;
     }
+
+    if (!error) {
+      std::cout << "Connection accepted." << std::endl;
+      new_connection->start();
+    } else {
+      std::cerr << "Error accepting connection, value: " << error.value()
+                << std::endl;
+    }
+
+    std::cout << "Accept next connection." << std::endl;
+    start_accept();
   }
 
 public:
@@ -84,6 +101,8 @@ public:
       : io_context_{io_context}, acceptor_{io_context,
                                            tcp::endpoint{tcp::v4(), port_}} {
     std::cout << "Listening on port: " << port_ << std::endl;
+
+    std::cout << "Accept first connection." << std::endl;
     start_accept();
   }
 
@@ -105,9 +124,13 @@ int main() {
       std::cin >> ch;
     }
 
-    std::cout << "Shutting down..." << std::endl;
+    std::cout << "Signalling server to shut down." << std::endl;
     server.shutdown();
+
+    std::cout << "Waiting to server to shut down." << std::endl;
     worker.join();
+
+    std::cout << "Clean shutdown." << std::endl;
 
     return EXIT_SUCCESS;
   } catch (const std::exception &e) {
