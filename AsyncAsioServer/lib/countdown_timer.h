@@ -8,24 +8,26 @@
 
 using std::chrono_literals::operator""s;
 
-template <typename WaitHandler> class CountdownTimer {
-  WaitHandler handler_{};
+class CountdownTimer {
+  asio::steady_timer timer_;
 
-  asio::steady_timer timer_{};
   int value_{};
 
-  void on_timer(const asio::error_code &error) {
+  template <typename WaitHandler>
+  void on_timer(WaitHandler &&handler, const asio::error_code &error) {
     if (!error) {
       --value_;
       std::cout << "Countdown: " << value_ << std::endl;
-      handler_(value_);
+      handler(value_);
       if (0 == value_) {
         return;
       }
 
       timer_.expires_after(1s);
-      timer_.async_wait(
-          [this](const asio::error_code &next_error) { on_timer(next_error); });
+      timer_.async_wait([this, handler = std::forward(handler)](
+                            const asio::error_code &next_error) {
+        on_timer(handler, next_error);
+      });
     }
 
     std::cerr << "Error waiting for timer, value: " << error.value()
@@ -33,14 +35,16 @@ template <typename WaitHandler> class CountdownTimer {
   }
 
 public:
-  CountdownTimer() {}
+  CountdownTimer(asio::io_context &io_context) : timer_{io_context} {}
 
+  template <typename WaitHandler>
   void initiate(int start_from, WaitHandler &&handler) {
-    handler_ = std::forward(handler);
     value_ = start_from;
 
     timer_.expires_after(1s);
     timer_.async_wait(
-        [this](const asio::error_code &error) { on_timer(error); });
+        [this, handler = std::forward(handler)](const asio::error_code &error) {
+          on_timer(handler, error);
+        });
   }
 };

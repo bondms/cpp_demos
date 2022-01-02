@@ -21,7 +21,7 @@ void TcpConnection::handle_write(const asio::error_code &error,
 }
 
 TcpConnection::TcpConnection(PrivateConstruction, asio::io_context &io_context)
-    : socket_{io_context} {}
+    : socket_{io_context}, countdown_timer_{io_context} {}
 
 TcpConnection::SharedPointer
 TcpConnection::create(asio::io_context &io_context) {
