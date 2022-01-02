@@ -24,8 +24,7 @@ class CountdownTimer {
       }
 
       timer_.expires_after(1s);
-      timer_.async_wait([this, handler](
-                            const asio::error_code &next_error) {
+      timer_.async_wait([this, handler](const asio::error_code &next_error) {
         on_timer(handler, next_error);
       });
     }
@@ -42,9 +41,8 @@ public:
     value_ = start_from;
 
     timer_.expires_after(1s);
-    timer_.async_wait(
-        [this, handler](const asio::error_code &error) {
-          on_timer(handler, error);
-        });
+    timer_.async_wait([this, handler](const asio::error_code &error) {
+      on_timer(handler, error);
+    });
   }
 };
