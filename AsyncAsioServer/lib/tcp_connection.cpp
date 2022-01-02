@@ -32,8 +32,17 @@ TcpConnection::create(asio::io_context &io_context) {
 asio::ip::tcp::socket &TcpConnection::socket() { return socket_; }
 
 void TcpConnection::start() {
-  const time_t now{std::time(0)};
-  message_ = std::ctime(&now);
+  const time_t now{std::time(nullptr)};
+  char buffer[100];
+  const auto length{ std::strftime(buffer, std::size(buffer), "%F %T%n", std::localtime(&now)) };
+  if (0 == length) {
+    std::cerr << "Error formatting timestamp" << std::endl;
+    message_ = "Error formatting timestamp\n";
+  }
+  else
+  {
+    message_ = std::string(buffer, length);
+  }
 
   std::cout << "Sending message: " << message_ << std::flush;
 
