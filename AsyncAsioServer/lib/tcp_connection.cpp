@@ -32,13 +32,14 @@ asio::ip::tcp::socket &TcpConnection::socket() { return socket_; }
 
 void TcpConnection::start() {
   std::cout << "Initiating countdown." << std::endl;
-  countdown_timer_.initiate(10, [shared_this = shared_from_this()](int value) {
-    message_ = std::to_string(value) + "\n";
-    asio::async_write(
-        socket_, asio::buffer(message_),
-        [shared_this = shared_from_this()](const asio::error_code &error,
-                                           size_t bytes_transferred) {
-          shared_this->handle_write(error, bytes_transferred);
-        });
-  });
+  countdown_timer_.initiate(
+      10, [this, shared_this = shared_from_this()](int value) {
+        message_ = std::to_string(value) + "\n";
+        asio::async_write(
+            socket_, asio::buffer(message_),
+            [shared_this = shared_from_this()](const asio::error_code &error,
+                                               size_t bytes_transferred) {
+              shared_this->handle_write(error, bytes_transferred);
+            });
+      });
 }

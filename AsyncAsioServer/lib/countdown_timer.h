@@ -9,7 +9,7 @@
 using std::chrono_literals::operator""s;
 
 template <typename WaitHandler> class CountdownTimer {
-  WaitHandler handler_;
+  WaitHandler handler_{};
 
   asio::steady_timer timer_{};
   int value_{};
