@@ -20,16 +20,6 @@ void TcpConnection::handle_write(const asio::error_code &error,
   std::cerr << "Error sending, value: " << error.value() << std::endl;
 }
 
-void TcpConnection::OnCountdownTick(int value) {
-  message_ = std::to_string(value) + "\n";
-  asio::async_write(
-      socket_, asio::buffer(message_),
-      [shared_this = shared_from_this()](const asio::error_code &error,
-                                         size_t bytes_transferred) {
-        shared_this->handle_write(error, bytes_transferred);
-      });
-}
-
 TcpConnection::TcpConnection(PrivateConstruction, asio::io_context &io_context)
     : socket_{io_context} {}
 
@@ -42,5 +32,13 @@ asio::ip::tcp::socket &TcpConnection::socket() { return socket_; }
 
 void TcpConnection::start() {
   std::cout << "Initiating countdown." << std::endl;
-  countdown_.initiate(10);
+  countdown_timer_.initiate(10, [shared_this = shared_from_this()](int value){
+    message_ = std::to_string(value) + "\n";
+    asio::async_write(
+        socket_, asio::buffer(message_),
+        [shared_this = shared_from_this()](const asio::error_code &error,
+                                          size_t bytes_transferred) {
+          shared_this->handle_write(error, bytes_transferred);
+        });
+  });
 }

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "AsyncAsioServer/lib/countdown.h"
+#include "AsyncAsioServer/lib/countdown_timer.h"
 
 #include <string>
 
@@ -19,9 +19,9 @@ class TcpConnection : public CountdownClientInterface,
   struct PrivateConstruction {};
 
   asio::ip::tcp::socket socket_;
-  std::string message_{};
 
-  Countdown countdown_{*this};
+  CountdownTimer countdown_timer_{};
+  std::string message_{};
 
   void handle_write(const asio::error_code &error, size_t bytes_transferred);
 

@@ -5,14 +5,15 @@
 #include "AsyncAsioServer/lib/countdown_client_interface.h"
 
 #include <iostream>
-#include <memory>
 
 #include <asio.hpp>
 
-template <typename WaitHandler> class CountdownTimer {
-  asio::io_context &io_context_;
+using std::chrono_literals::operator""s;
+
+class CountdownTimer {
   WaitHandler handler_;
-  std::unique_ptr<asio::steady_timer> timer_{};
+
+  asio::steady_timer timer_{};
   int value_{};
 
   void on_timer(const asio::error_code &error) {
@@ -24,7 +25,8 @@ template <typename WaitHandler> class CountdownTimer {
         return;
       }
 
-      timer_->async_wait(
+      timer_.expires_after(1s);
+      timer_.async_wait(
           [this](const asio::error_code &error) { on_timer(error); });
     }
 
@@ -33,15 +35,15 @@ template <typename WaitHandler> class CountdownTimer {
   }
 
 public:
-  explicit CountdownTimer(asio::io_context &io_context, WaitHandler &&handler)
-      : io_context_{io_context}, handler_{std::forward(handler)} {}
+  CountdownTimer() {}
 
-  void initiate(int start_from) {
+  template <typename WaitHandler>
+  void initiate(int start_from, WaitHandler &&handler) {
+    handler_ = std::forward(handler);
     value_ = start_from;
-    timer_ = std::make_unique<asio::steady_timer>(
-        io_context_, std::chrono::seconds(start_from));
 
-    timer_->async_wait(
+    timer_.expires_after(1s);
+    timer_.async_wait(
         [this](const asio::error_code &error) { on_timer(error); });
   }
 };
