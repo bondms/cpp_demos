@@ -10,7 +10,6 @@ cc_library(
     "tcp_connection.h",
   ],
   deps = [
-    "countdown",
     "@asio",
   ],
 )

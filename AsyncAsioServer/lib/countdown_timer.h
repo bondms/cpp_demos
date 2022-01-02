@@ -2,14 +2,13 @@
 
 #pragma once
 
-#include "AsyncAsioServer/lib/countdown_client_interface.h"
-
 #include <iostream>
 
 #include <asio.hpp>
 
 using std::chrono_literals::operator""s;
 
+template <typename WaitHandler>
 class CountdownTimer {
   WaitHandler handler_;
 
@@ -17,7 +16,7 @@ class CountdownTimer {
   int value_{};
 
   void on_timer(const asio::error_code &error) {
-    if (!timer_error) {
+    if (!error) {
       --value_;
       std::cout << "Countdown: " << value_ << std::endl;
       handler_(value);
@@ -30,14 +29,13 @@ class CountdownTimer {
           [this](const asio::error_code &error) { on_timer(error); });
     }
 
-    std::cerr << "Error waiting for timer, value: " << timer_error.value()
+    std::cerr << "Error waiting for timer, value: " << error.value()
               << std::endl;
   }
 
 public:
   CountdownTimer() {}
 
-  template <typename WaitHandler>
   void initiate(int start_from, WaitHandler &&handler) {
     handler_ = std::forward(handler);
     value_ = start_from;
