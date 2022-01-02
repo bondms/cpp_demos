@@ -29,9 +29,6 @@ private:
   void handle_write(const asio::error_code &error, size_t bytes_transferred);
 
 public:
-  // CountdownClientInterface.
-  void OnCountdownTick(int value) override;
-
   TcpConnection(PrivateConstruction, asio::io_context &io_context);
 
   static SharedPointer create(asio::io_context &io_context);
