@@ -8,19 +8,27 @@
 
 #pragma once
 
-#include <memory>
+#include "AsyncAsioServer/lib/countdown.h"
+
 #include <string>
 
 #include <asio.hpp>
 
-class TcpConnection : public std::enable_shared_from_this<TcpConnection> {
+class TcpConnection : public CountdownClientInterface,
+                      public std::enable_shared_from_this<TcpConnection> {
   struct PrivateConstruction {};
 
   asio::ip::tcp::socket socket_;
+  std::string message_{};
+
+  Countdown countdown_{*this};
 
   void handle_write(const asio::error_code &error, size_t bytes_transferred);
 
 public:
+  // CountdownClientInterface.
+  void OnCountdownTick(int value) override;
+
   TcpConnection(PrivateConstruction, asio::io_context &io_context);
 
   using SharedPointer = std::shared_ptr<TcpConnection>;

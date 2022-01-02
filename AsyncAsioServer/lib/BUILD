@@ -7,6 +7,7 @@ cc_library(
   ],
   hdrs = [
     "countdown.h",
+    "countdown_client_interface.h",
   ],
 )
 
@@ -19,6 +20,7 @@ cc_library(
     "tcp_connection.h",
   ],
   deps = [
+    "countdown",
     "@asio",
   ],
 )
