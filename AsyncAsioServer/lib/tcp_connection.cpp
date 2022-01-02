@@ -33,14 +33,14 @@ asio::ip::tcp::socket &TcpConnection::socket() { return socket_; }
 
 void TcpConnection::start() {
   const time_t now{std::time(nullptr)};
-  char buffer[100];
-  const auto length{ std::strftime(buffer, std::size(buffer), "%F %T%n", std::localtime(&now)) };
+  constexpr auto &example_date_time_stamp{"2022-01-02 10:48:00\n"};
+  char buffer[std::size(example_date_time_stamp)];
+  const auto length{std::strftime(buffer, std::size(buffer), "%F %T%n",
+                                  std::localtime(&now))};
   if (0 == length) {
     std::cerr << "Error formatting timestamp" << std::endl;
     message_ = "Error formatting timestamp\n";
-  }
-  else
-  {
+  } else {
     message_ = std::string(buffer, length);
   }
 
