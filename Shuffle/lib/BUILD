@@ -1,9 +1,9 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
-    name = "shuffle",
-    hdrs = [
-        "shuffle.h",
-    ],
-    visibility = ["//:__subpackages__"],
+  name = "shuffle",
+  hdrs = [
+    "shuffle.h",
+  ],
+  visibility = ["//:__subpackages__"],
 )
