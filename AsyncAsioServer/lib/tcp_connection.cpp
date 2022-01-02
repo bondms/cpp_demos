@@ -8,9 +8,10 @@
 
 #include "AsyncAsioServer/lib/tcp_connection.h"
 
+#include <time.h>
+
 #include <ctime>
 #include <iostream>
-#include <time.h>
 
 void TcpConnection::handle_write(const asio::error_code &error,
                                  size_t bytes_transferred) {
