@@ -1,6 +1,16 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
+    name = "countdown",
+    srcs = [
+        "countdown.cpp",
+    ],
+    hdrs = [
+        "countdown.h",
+    ],
+)
+
+cc_library(
     name = "tcp_connection",
     srcs = [
         "tcp_connection.cpp",
