@@ -10,6 +10,7 @@
 
 #include <ctime>
 #include <iostream>
+#include <time.h>
 
 void TcpConnection::handle_write(const asio::error_code &error,
                                  size_t bytes_transferred) {
@@ -35,13 +36,19 @@ void TcpConnection::start() {
   const time_t now{std::time(nullptr)};
   constexpr auto &example_date_time_stamp{"2022-01-02 10:48:00\n"};
   char buffer[std::size(example_date_time_stamp)];
-  const auto length{std::strftime(buffer, std::size(buffer), "%F %T%n",
-                                  std::localtime(&now))};
-  if (0 == length) {
-    std::cerr << "Error formatting timestamp" << std::endl;
-    message_ = "Error formatting timestamp\n";
+  struct tm tm_now {};
+  if (nullptr == localtime_r(&now, &tm_now)) {
+    std::cerr << "Error determining local time" << std::endl;
+    message_ = "Error determining local time\n";
   } else {
-    message_ = std::string(buffer, length);
+    const auto length{
+        std::strftime(buffer, std::size(buffer), "%F %T%n", &tm_now)};
+    if (0 == length) {
+      std::cerr << "Error formatting timestamp" << std::endl;
+      message_ = "Error formatting timestamp\n";
+    } else {
+      message_ = std::string(buffer, length);
+    }
   }
 
   std::cout << "Sending message: " << message_ << std::flush;
