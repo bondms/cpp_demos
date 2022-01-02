@@ -36,7 +36,8 @@ asio::ip::tcp::socket &TcpConnection::socket() { return socket_; }
 void TcpConnection::start() {
   const time_t now{std::time(nullptr)};
   constexpr auto &example_date_time_stamp{"2022-01-02 10:48:00\n"};
-  char buffer[std::size(example_date_time_stamp)];
+  constexpr auto kBufferSize{std::size(example_date_time_stamp)};
+  char buffer[kBufferSize];
   struct tm tm_now {};
   if (nullptr == localtime_r(&now, &tm_now)) {
     std::cerr << "Error determining local time" << std::endl;
