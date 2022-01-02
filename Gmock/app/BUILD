@@ -9,5 +9,4 @@ cc_binary(
         "//Gmock/lib:account",
         "//Gmock/lib:notifier",
     ],
-    visibility = ["//visibility:public"],
 )

@@ -8,5 +8,4 @@ cc_binary(
     deps = [
         "//Shuffle/lib:shuffle",
     ],
-    visibility = ["//visibility:public"],
 )

@@ -8,5 +8,4 @@ cc_binary(
     deps = [
         "//AsyncAsioServer/lib:tcp_server",
     ],
-    visibility = ["//visibility:public"],
 )

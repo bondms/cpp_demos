@@ -8,5 +8,4 @@ cc_binary(
     deps = [
         "@jsoncpp",
     ],
-    visibility = ["//visibility:public"],
 )
