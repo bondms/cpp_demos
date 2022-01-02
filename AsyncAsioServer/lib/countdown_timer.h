@@ -8,8 +8,7 @@
 
 using std::chrono_literals::operator""s;
 
-template <typename WaitHandler>
-class CountdownTimer {
+template <typename WaitHandler> class CountdownTimer {
   WaitHandler handler_;
 
   asio::steady_timer timer_{};
@@ -19,14 +18,14 @@ class CountdownTimer {
     if (!error) {
       --value_;
       std::cout << "Countdown: " << value_ << std::endl;
-      handler_(value);
+      handler_(value_);
       if (0 == value_) {
         return;
       }
 
       timer_.expires_after(1s);
       timer_.async_wait(
-          [this](const asio::error_code &error) { on_timer(error); });
+          [this](const asio::error_code &next_error) { on_timer(next_error); });
     }
 
     std::cerr << "Error waiting for timer, value: " << error.value()

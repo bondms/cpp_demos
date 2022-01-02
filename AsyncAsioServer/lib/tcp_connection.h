@@ -14,13 +14,16 @@
 
 #include <asio.hpp>
 
-class TcpConnection : public CountdownClientInterface,
-                      public std::enable_shared_from_this<TcpConnection> {
+class TcpConnection : public std::enable_shared_from_this<TcpConnection> {
+public:
+  using SharedPointer = std::shared_ptr<TcpConnection>;
+
+private:
   struct PrivateConstruction {};
 
   asio::ip::tcp::socket socket_;
 
-  CountdownTimer countdown_timer_{};
+  CountdownTimer<SharedPointer> countdown_timer_{};
   std::string message_{};
 
   void handle_write(const asio::error_code &error, size_t bytes_transferred);
@@ -30,8 +33,6 @@ public:
   void OnCountdownTick(int value) override;
 
   TcpConnection(PrivateConstruction, asio::io_context &io_context);
-
-  using SharedPointer = std::shared_ptr<TcpConnection>;
 
   static SharedPointer create(asio::io_context &io_context);
 
