@@ -21,9 +21,9 @@ int main() {
 
     std::thread worker{[&]() { io_context.run(); }};
 
-    std::cout << "Enter 'q' and press return to quit." << std::endl;
     char ch{};
     while ('q' != ch) {
+      std::cout << "Enter 'q' and press return to quit." << std::endl;
       std::cin >> ch;
     }
 
