@@ -24,7 +24,7 @@ class CountdownTimer {
       }
 
       timer_.expires_after(1s);
-      timer_.async_wait([this, handler = std::forward(handler)](
+      timer_.async_wait([this, handler](
                             const asio::error_code &next_error) {
         on_timer(handler, next_error);
       });
@@ -38,12 +38,12 @@ public:
   CountdownTimer(asio::io_context &io_context) : timer_{io_context} {}
 
   template <typename WaitHandler>
-  void initiate(int start_from, WaitHandler &&handler) {
+  void initiate(int start_from, WaitHandler handler) {
     value_ = start_from;
 
     timer_.expires_after(1s);
     timer_.async_wait(
-        [this, handler = std::forward(handler)](const asio::error_code &error) {
+        [this, handler](const asio::error_code &error) {
           on_timer(handler, error);
         });
   }

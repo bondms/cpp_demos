@@ -18,7 +18,7 @@ class TcpConnection : public std::enable_shared_from_this<TcpConnection> {
   struct PrivateConstruction {};
 
   asio::ip::tcp::socket socket_;
-  CountdownTimer<SharedPointer> countdown_timer_;
+  CountdownTimer countdown_timer_;
 
   std::string message_{};
 
