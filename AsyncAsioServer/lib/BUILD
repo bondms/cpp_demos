@@ -21,7 +21,6 @@ cc_library(
   deps = [
     "@asio",
   ],
-  visibility = ["//:__subpackages__"],
 )
 
 cc_library(
