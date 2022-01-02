@@ -1,19 +1,9 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
-  name = "countdown",
-  srcs = [
-    "countdown.cpp",
-  ],
-  hdrs = [
-    "countdown.h",
-    "countdown_client_interface.h",
-  ],
-)
-
-cc_library(
   name = "tcp_connection",
   srcs = [
+    "countdown_timer.h",
     "tcp_connection.cpp",
   ],
   hdrs = [
