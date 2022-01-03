@@ -14,7 +14,7 @@ Console::~Console() { input_.close(); }
 
 void Console::async_wait_for_quit() {
   std::cout << "Enter 'q' and press return to quit." << std::endl;
-  input_buffer_.prepare(2);
+  input_buffer_.prepare(1);
 
   asio::async_read_until(
       input_, input_buffer_, '\n',
