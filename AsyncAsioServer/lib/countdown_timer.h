@@ -42,6 +42,10 @@ public:
   template <typename WaitHandler>
   void initiate(int start_from, std::chrono::milliseconds interval,
                 WaitHandler handler) {
+    if (start_from <= 0) {
+      return;
+    }
+
     aborted_ = false;
     interval_ = interval;
     value_ = start_from;

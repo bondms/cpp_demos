@@ -4,6 +4,8 @@
 
 #include <gmock/gmock.h>
 
+#include <limits>
+
 using std::chrono_literals::operator""h;
 using std::chrono_literals::operator""ms;
 using std::chrono_literals::operator""s;
@@ -25,6 +27,46 @@ TEST_F(CountdownTimerTestFixture, Simple) {
   io_context.run();
 
   EXPECT_THAT(counts, testing::ElementsAre(4, 3, 2, 1, 0));
+}
+
+TEST_F(CountdownTimerTestFixture, StartFromZero) {
+  asio::io_context io_context{};
+
+  std::vector<int> counts{};
+
+  CountdownTimer timer{io_context};
+  timer.initiate(0, 1ms, [&](int value) { counts.push_back(value); });
+
+  io_context.run();
+
+  EXPECT_TRUE(counts.empty());
+}
+
+TEST_F(CountdownTimerTestFixture, StartFromNegative) {
+  asio::io_context io_context{};
+
+  std::vector<int> counts{};
+
+  CountdownTimer timer{io_context};
+  timer.initiate(-5, 1ms, [&](int value) { counts.push_back(value); });
+
+  io_context.run();
+
+  EXPECT_TRUE(counts.empty());
+}
+
+TEST_F(CountdownTimerTestFixture, StartFromMaxNegative) {
+  asio::io_context io_context{};
+
+  std::vector<int> counts{};
+
+  CountdownTimer timer{io_context};
+  timer.initiate(std::numeric_limits<int>::min(), 1ms,
+                 [&](int value) { counts.push_back(value); });
+
+  io_context.run();
+
+  EXPECT_TRUE(counts.empty());
 }
 
 TEST_F(CountdownTimerTestFixture, abort_MidSequence) {
