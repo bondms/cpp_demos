@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include "AsyncAsioServer/lib/countdown_timer.h"
-
+#include <memory>
 #include <string>
+
+#include "AsyncAsioServer/lib/countdown_timer.h"
 
 #include <asio.hpp>
 

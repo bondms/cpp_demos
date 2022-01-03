@@ -35,7 +35,7 @@ class CountdownTimer {
   }
 
 public:
-  CountdownTimer(asio::io_context &io_context) : timer_{io_context} {}
+  explicit CountdownTimer(asio::io_context &io_context) : timer_{io_context} {}
 
   template <typename WaitHandler> void initiate(WaitHandler handler) {
     value_ = 10;
