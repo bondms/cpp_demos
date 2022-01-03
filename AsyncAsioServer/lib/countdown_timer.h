@@ -13,6 +13,10 @@ class CountdownTimer {
 
   template <typename WaitHandler>
   void on_timer(WaitHandler handler, const asio::error_code &error) {
+    if (asio::error::operation_aborted == error.value()) {
+      return;
+    }
+
     if (error) {
       throw std::runtime_error{"Error waiting for timer, value: " +
                                std::to_string(error.value())};
@@ -41,4 +45,6 @@ public:
       on_timer(handler, error);
     });
   }
+
+  void abort() { timer_.cancel(); }
 };

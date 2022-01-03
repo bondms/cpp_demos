@@ -12,12 +12,14 @@
 
 void TcpConnection::handle_write(const asio::error_code &error,
                                  size_t bytes_transferred) {
-  if (!error) {
-    std::cout << "Sent bytes: " << bytes_transferred << std::endl;
+  if (error) {
+    std::cerr << "Aborting countdown on error sending, value: " << error.value()
+              << std::endl;
+    countdown_timer_.abort();
     return;
   }
 
-  std::cerr << "Error sending, value: " << error.value() << std::endl;
+  std::cout << "Sent bytes: " << bytes_transferred << std::endl;
 }
 
 TcpConnection::TcpConnection(PrivateConstruction, asio::io_context &io_context)
