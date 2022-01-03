@@ -16,4 +16,6 @@ class Console {
 
 public:
   Console(asio::io_context &io_context, TcpServer &server);
+
+  void async_wait_for_quit();
 };
