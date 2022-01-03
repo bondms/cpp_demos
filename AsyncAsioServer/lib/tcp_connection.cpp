@@ -25,7 +25,7 @@ void TcpConnection::handle_write(const asio::error_code &error,
 }
 
 TcpConnection::TcpConnection(PrivateConstruction, asio::io_context &io_context)
-    : socket_{io_context}, countdown_timer_{io_context, 1s} {}
+    : socket_{io_context}, countdown_timer_{io_context} {}
 
 TcpConnection::SharedPointer
 TcpConnection::create(asio::io_context &io_context) {
@@ -37,7 +37,7 @@ asio::ip::tcp::socket &TcpConnection::socket() { return socket_; }
 void TcpConnection::start() {
   std::cout << "Initiating countdown." << std::endl;
   countdown_timer_.initiate(
-      [this, shared_this = shared_from_this()](int value) {
+      10, 1s, [this, shared_this = shared_from_this()](int value) {
         std::cout << "Countdown: " << value << std::endl;
         message_ = std::to_string(value) + "\n";
         asio::async_write(

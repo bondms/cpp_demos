@@ -9,9 +9,9 @@
 class CountdownTimer {
   asio::steady_timer timer_;
 
-  std::chrono::milliseconds interval_;
+  bool aborted_{};
+  std::chrono::milliseconds interval_{};
   int value_{};
-  bool aborted_{false};
 
   template <typename WaitHandler>
   void on_timer(WaitHandler handler, const asio::error_code &error) {
@@ -37,12 +37,14 @@ class CountdownTimer {
   }
 
 public:
-  CountdownTimer(asio::io_context &io_context,
-                 std::chrono::milliseconds interval)
-      : timer_{io_context}, interval_{interval} {}
+  explicit CountdownTimer(asio::io_context &io_context) : timer_{io_context} {}
 
-  template <typename WaitHandler> void initiate(WaitHandler handler) {
-    value_ = 10;
+  template <typename WaitHandler>
+  void initiate(int start_from, std::chrono::milliseconds interval,
+                WaitHandler handler) {
+    aborted_ = false;
+    interval_ = interval;
+    value_ = start_from;
 
     timer_.expires_after(interval_);
     timer_.async_wait([this, handler](const asio::error_code &error) {
