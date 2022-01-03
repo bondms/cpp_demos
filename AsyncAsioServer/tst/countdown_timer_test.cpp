@@ -239,7 +239,7 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_Simple) {
 // }
 
 TEST_F(CountdownTimerTestFixture,
-       CallbackWithCapture_ReferencedIsNotMovedOrCopied) {
+       CallbackWithCapture_ReferencedNotMovedOrCopied) {
   asio::io_context io_context{};
 
   CountdownTimer timer{io_context};
