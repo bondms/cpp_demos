@@ -49,6 +49,4 @@ TcpServer::TcpServer(asio::io_context &io_context)
   start_accept();
 }
 
-void TcpServer::shutdown() {
-  acceptor_.close();
-}
+void TcpServer::shutdown() { acceptor_.close(); }
