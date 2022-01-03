@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <iostream>
+#include <utility>
 
 #include <asio.hpp>
 
@@ -14,33 +14,29 @@ class CountdownTimer {
   int value_{};
 
   template <typename WaitHandler>
-  void on_timer(WaitHandler &&handler, const asio::error_code &error) {
-    if (!error) {
-      --value_;
-      std::cout << "Countdown: " << value_ << std::endl;
-      handler(value_);
-      if (0 == value_) {
-        return;
-      }
+  void on_timer(WaitHandler handler, const asio::error_code &error) {
+    if (error) {
+      throw std::runtime_error{"Error waiting for timer, value: " +
+                               std::to_string(error.value())};
+    }
 
-      timer_.expires_after(1s);
-      timer_.async_wait([this, handler](const asio::error_code &next_error) {
-        on_timer(handler, next_error);
-      });
-
+    --value_;
+    handler(value_);
+    if (0 == value_) {
       return;
     }
 
-    std::cerr << "Error waiting for timer, value: " << error.value()
-              << std::endl;
+    timer_.expires_after(1s);
+    timer_.async_wait([this, handler](const asio::error_code &next_error) {
+      on_timer(handler, next_error);
+    });
   }
 
 public:
   CountdownTimer(asio::io_context &io_context) : timer_{io_context} {}
 
-  template <typename WaitHandler>
-  void initiate(int start_from, WaitHandler handler) {
-    value_ = start_from;
+  template <typename WaitHandler> void initiate(WaitHandler handler) {
+    value_ = 10;
 
     timer_.expires_after(1s);
     timer_.async_wait([this, handler](const asio::error_code &error) {

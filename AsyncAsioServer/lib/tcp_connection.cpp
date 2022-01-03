@@ -33,7 +33,8 @@ asio::ip::tcp::socket &TcpConnection::socket() { return socket_; }
 void TcpConnection::start() {
   std::cout << "Initiating countdown." << std::endl;
   countdown_timer_.initiate(
-      10, [this, shared_this = shared_from_this()](int value) {
+      [this, shared_this = shared_from_this()](int value) {
+        std::cout << "Countdown: " << value << std::endl;
         message_ = std::to_string(value) + "\n";
         asio::async_write(
             socket_, asio::buffer(message_),
