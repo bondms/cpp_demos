@@ -140,6 +140,7 @@ TEST_F(CountdownTimerTestFixture, WaitsForInterval_Slow) {
 //   io_context.run();
 // }
 
+// TODO(MarkBond): ...
 // TEST_F(CountdownTimerTestFixture, NonMoveableCapture) {
 //   asio::io_context io_context{};
 
@@ -154,19 +155,22 @@ TEST_F(CountdownTimerTestFixture, WaitsForInterval_Slow) {
 //   };
 //   S s{};
 
-//   timer.initiate(5, 1ms, [s = std::move(s)](int) {});
+//   timer.initiate(5, 1ms, [s](int) {});
 
 //   io_context.run();
 // }
 
+// TODO(MarkBond): ...
 // TEST_F(CountdownTimerTestFixture, MoveableAndCopyableCaptureIsMoved) {
 //   asio::io_context io_context{};
 
 //   CountdownTimer timer{io_context};
 
 //   struct S {
-//     S(S &){throw std::runtime_error{"Copy constructor called"}};
-//     S &operator=(S &){throw std::runtime_error{"Copy assigment called"}};
+//     S() = default;
+
+//     S(S &) { throw std::runtime_error{"Copy constructor called"}; }
+//     S &operator=(S &) { throw std::runtime_error{"Copy assigment called"}; }
 
 //     S(S &&) = default;
 //     S &operator=(S &&) = default;
