@@ -14,7 +14,6 @@ void TcpServer::start_accept() {
   TcpConnection::SharedPointer new_connection{
       TcpConnection::create(io_context_)};
 
-  std::lock_guard<std::mutex> lock{mutex_};
   acceptor_.async_accept(new_connection->socket(),
                          [this, new_connection](const asio::error_code &error) {
                            this->handle_accept(new_connection, error);
@@ -51,6 +50,5 @@ TcpServer::TcpServer(asio::io_context &io_context)
 }
 
 void TcpServer::shutdown() {
-  std::lock_guard<std::mutex> lock{mutex_};
   acceptor_.close();
 }

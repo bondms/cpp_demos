@@ -10,14 +10,11 @@
 
 #include "AsyncAsioServer/lib/tcp_connection.h"
 
-#include <mutex>
-
 class TcpServer {
   constexpr static asio::ip::port_type port_{8013};
 
   asio::io_context &io_context_;
   asio::ip::tcp::acceptor acceptor_;
-  std::mutex mutex_{};
 
   void start_accept();
 
