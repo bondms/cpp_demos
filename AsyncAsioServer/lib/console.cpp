@@ -9,7 +9,7 @@ Console::Console(asio::io_context &io_context, TcpServer &server)
                                                        ::dup(STDIN_FILENO)} {
   std::cout << "Press any key to quit." << std::endl;
 
-  input_.read_some(
+  input_.async_read_some(
       asio::buffer(&data_, sizeof(data_)),
       [&](const asio::error_code &error, std::size_t /*bytes_transferred*/) {
         if (error) {
