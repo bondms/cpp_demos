@@ -19,12 +19,12 @@ TEST_F(CountdownTimerTestFixture, Simple) {
 
   std::vector<int> counts{};
 
-  CountdownTimer timer{io_context, 1ms};
-  timer.initiate([&](int value) { counts.push_back(value); });
+  CountdownTimer timer{io_context};
+  timer.initiate(5, 1ms, [&](int value) { counts.push_back(value); });
 
   io_context.run();
 
-  EXPECT_THAT(counts, testing::ElementsAre(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+  EXPECT_THAT(counts, testing::ElementsAre(4, 3, 2, 1, 0));
 }
 
 TEST_F(CountdownTimerTestFixture, abort_MidSequence) {
@@ -32,9 +32,9 @@ TEST_F(CountdownTimerTestFixture, abort_MidSequence) {
 
   std::vector<int> counts{};
 
-  CountdownTimer timer{io_context, 1ms};
-  timer.initiate([&](int value) {
-    if (5 == value) {
+  CountdownTimer timer{io_context};
+  timer.initiate(10, 1ms, [&](int value) {
+    if (6 == value) {
       timer.abort();
       return;
     }
@@ -43,7 +43,7 @@ TEST_F(CountdownTimerTestFixture, abort_MidSequence) {
 
   io_context.run();
 
-  EXPECT_THAT(counts, testing::ElementsAre(9, 8, 7, 6));
+  EXPECT_THAT(counts, testing::ElementsAre(9, 8, 7));
 }
 
 TEST_F(CountdownTimerTestFixture, abort_Early) {
@@ -51,8 +51,8 @@ TEST_F(CountdownTimerTestFixture, abort_Early) {
 
   std::vector<int> counts{};
 
-  CountdownTimer timer{io_context, 1h};
-  timer.initiate([&](int value) { counts.push_back(value); });
+  CountdownTimer timer{io_context};
+  timer.initiate(10, 1h, [&](int value) { counts.push_back(value); });
 
   asio::post([&] { timer.abort(); });
 
@@ -66,8 +66,8 @@ TEST_F(CountdownTimerTestFixture, WaitsForInterval_Slow) {
 
   auto previous{std::chrono::steady_clock::now()};
 
-  CountdownTimer timer{io_context, 1s};
-  timer.initiate([&](int /*value*/) {
+  CountdownTimer timer{io_context};
+  timer.initiate(3, 1s, [&](int /*value*/) {
     const auto current{std::chrono::steady_clock::now()};
     EXPECT_GE(current, previous + 1s);
     previous = current;
