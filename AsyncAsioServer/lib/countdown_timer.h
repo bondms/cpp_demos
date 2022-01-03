@@ -55,7 +55,7 @@ public:
     timer_.expires_after(interval_);
     timer_.async_wait(
         [this, capture = std::move(capture)](const asio::error_code &error) {
-          on_timer(capture.handler, error);
+          on_timer(std::move(capture.handler), error);
         });
   }
 
