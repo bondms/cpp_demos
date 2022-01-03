@@ -25,7 +25,7 @@ bazel clean
 
 ### AsyncAsioServer
 
-Example of using ASIO asynchronously.
+A counter timer based on the daytime server example of using ASIO asynchronously.
 
 ### BinarySearch
 
