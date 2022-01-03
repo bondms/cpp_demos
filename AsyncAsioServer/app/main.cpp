@@ -8,8 +8,8 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <thread>
 
+#include "AsyncAsioServer/lib/console.h"
 #include "AsyncAsioServer/lib/tcp_server.h"
 
 int main() {
@@ -19,28 +19,9 @@ int main() {
   try {
     asio::io_context io_context{};
     TcpServer server{io_context};
+    Console console{io_context, server};
 
-    std::thread worker{[&]() {
-      try {
-        std::cout << "Worker thread ID: " << std::this_thread::get_id()
-                  << std::endl;
-        io_context.run();
-      } catch (const std::exception &e) {
-        std::cerr << "Worker exception: " << e.what() << std::endl;
-      }
-    }};
-
-    char ch{};
-    while ('q' != ch) {
-      std::cout << "Enter 'q' and press return to quit." << std::endl;
-      std::cin >> ch;
-    }
-
-    std::cout << "Signalling server to shut down." << std::endl;
-    server.shutdown();
-
-    std::cout << "Waiting to server to shut down." << std::endl;
-    worker.join();
+    io_context.run();
 
     std::cout << "Clean shutdown." << std::endl;
 
