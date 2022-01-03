@@ -118,8 +118,25 @@ TEST_F(CountdownTimerTestFixture, WaitsForInterval_Slow) {
   io_context.run();
 }
 
+TEST_F(CountdownTimerTestFixture, CallbackWithCapture_Simple) {
+  asio::io_context io_context{};
+
+  CountdownTimer timer{io_context};
+
+  struct S {};
+  S s{};
+
+  timer.initiate(5, 1ms, [addr = std::addressof(s), s](int) {
+    if (addr == std::addressof(s)) {
+      throw std::runtime_error{"Matched address"};
+    }
+  });
+
+  io_context.run();
+}
+
 // TODO(MarkBond): ...
-// TEST_F(CountdownTimerTestFixture, NonCopyableCapture) {
+// TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonCopyable) {
 //   asio::io_context io_context{};
 
 //   CountdownTimer timer{io_context};
@@ -139,7 +156,7 @@ TEST_F(CountdownTimerTestFixture, WaitsForInterval_Slow) {
 // }
 
 // TODO(MarkBond): ...
-// TEST_F(CountdownTimerTestFixture, NonMoveableCapture) {
+// TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonMoveable) {
 //   asio::io_context io_context{};
 
 //   CountdownTimer timer{io_context};
@@ -153,13 +170,18 @@ TEST_F(CountdownTimerTestFixture, WaitsForInterval_Slow) {
 //   };
 //   S s{};
 
-//   timer.initiate(5, 1ms, [s](int) {});
+//   timer.initiate(5, 1ms, [addr = std::addressof(s), s](int) {
+//     if (addr == std::addressof(s)) {
+//       throw std::runtime_error{"Matched address"};
+//     }
+//   });
 
 //   io_context.run();
 // }
 
 // TODO(MarkBond): ...
-// TEST_F(CountdownTimerTestFixture, MoveableAndCopyableCaptureIsMoved) {
+// TEST_F(CountdownTimerTestFixture,
+// CallbackWithCapture_MoveableAndCopyableIsMoved) {
 //   asio::io_context io_context{};
 
 //   CountdownTimer timer{io_context};
@@ -180,7 +202,8 @@ TEST_F(CountdownTimerTestFixture, WaitsForInterval_Slow) {
 //   io_context.run();
 // }
 
-TEST_F(CountdownTimerTestFixture, ReferencedCaptureIsNotMovedOrCopied1) {
+TEST_F(CountdownTimerTestFixture,
+       CallbackWithCapture_ReferencedIsNotMovedOrCopied) {
   asio::io_context io_context{};
 
   CountdownTimer timer{io_context};
@@ -206,7 +229,7 @@ TEST_F(CountdownTimerTestFixture, ReferencedCaptureIsNotMovedOrCopied1) {
 }
 
 TEST_F(CountdownTimerTestFixture,
-       ReferencedCaptureDoesNotNeedToBeMoveableOrCopyable) {
+       CallbackWithCapture_ReferencedNotMoveableOrCopyable) {
   asio::io_context io_context{};
 
   CountdownTimer timer{io_context};
