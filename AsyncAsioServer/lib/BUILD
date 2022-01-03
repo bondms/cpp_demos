@@ -9,7 +9,7 @@ cc_library(
     "console.h",
   ],
   deps = [
-    "@tcp_server",
+    "tcp_server",
   ],
   visibility = ["//:__subpackages__"],
 )

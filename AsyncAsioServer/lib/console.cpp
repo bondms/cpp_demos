@@ -10,8 +10,8 @@ Console::Console(asio::io_context &io_context, TcpServer &server)
   std::cout << "Press any key to quit." << std::endl;
 
   input_.read_some(
-      asio::buffer{data_, sizeof(data_)},
-      [](const asio::error_code &error, std::size_t bytes_transferred) {
+      asio::buffer(&data_, sizeof(data_)),
+      [&](const asio::error_code &error, std::size_t /*bytes_transferred*/) {
         if (error) {
           std::cerr << "Error reading from standard input: " << error.value()
                     << std::endl;

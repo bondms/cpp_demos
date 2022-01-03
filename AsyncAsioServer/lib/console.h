@@ -2,13 +2,15 @@
 
 #pragma once
 
+#include "AsyncAsioServer/lib/tcp_server.h"
+
 #include <asio.hpp>
 
 class Console {
   asio::io_context &io_context_;
   TcpServer &server_;
 
-  posix::stream_descriptor input_;
+  asio::posix::stream_descriptor input_;
 
   char data_{};
 
