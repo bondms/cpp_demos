@@ -6,6 +6,7 @@
 
 using std::chrono_literals::operator""h;
 using std::chrono_literals::operator""ms;
+using std::chrono_literals::operator""s;
 
 namespace {
 
@@ -13,7 +14,7 @@ class CountdownTimerTestFixture : public testing::Test {};
 
 } // namespace
 
-TEST_F(CountdownTimerTestFixture, simple) {
+TEST_F(CountdownTimerTestFixture, Simple) {
   asio::io_context io_context{};
 
   std::vector<int> counts{};
@@ -26,7 +27,7 @@ TEST_F(CountdownTimerTestFixture, simple) {
   EXPECT_THAT(counts, testing::ElementsAre(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
 }
 
-TEST_F(CountdownTimerTestFixture, abort_mid_sequence) {
+TEST_F(CountdownTimerTestFixture, abort_MidSequence) {
   asio::io_context io_context{};
 
   std::vector<int> counts{};
@@ -45,7 +46,7 @@ TEST_F(CountdownTimerTestFixture, abort_mid_sequence) {
   EXPECT_THAT(counts, testing::ElementsAre(9, 8, 7, 6));
 }
 
-TEST_F(CountdownTimerTestFixture, abort_early) {
+TEST_F(CountdownTimerTestFixture, abort_Early) {
   asio::io_context io_context{};
 
   std::vector<int> counts{};
@@ -58,4 +59,19 @@ TEST_F(CountdownTimerTestFixture, abort_early) {
   io_context.run();
 
   EXPECT_TRUE(counts.empty());
+}
+
+TEST_F(CountdownTimerTestFixture, WaitsForInterval_Slow) {
+  asio::io_context io_context{};
+
+  auto previous{std::chrono::steady_clock::now()};
+
+  CountdownTimer timer{io_context, 1s};
+  timer.initiate([&](int /*value*/) {
+    const auto current{std::chrono::steady_clock::now()};
+    EXPECT_GE(current, previous + 1s);
+    previous = current;
+  });
+
+  io_context.run();
 }
