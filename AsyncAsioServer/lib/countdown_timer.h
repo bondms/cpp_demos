@@ -3,6 +3,7 @@
 #pragma once
 
 #include <chrono>
+#include <tuple>
 #include <utility>
 
 #include <asio.hpp>
@@ -48,15 +49,12 @@ public:
     interval_ = interval;
     value_ = start_from;
 
-    struct {
-      WaitHandler handler;
-    } capture{std::forward<WaitHandler>(handler)};
-
     timer_.expires_after(interval_);
-    timer_.async_wait(
-        [this, capture = std::move(capture)](const asio::error_code &error) {
-          on_timer(std::move(capture.handler), error);
-        });
+    timer_.async_wait([this, capture = std::tuple<WaitHandler>(
+                                 std::forward<WaitHandler>(handler))](
+                          const asio::error_code &error) {
+      on_timer(std::move(std::get<0>(capture)), error);
+    });
   }
 
   void abort() {
