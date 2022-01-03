@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <utility>
-
 #include <asio.hpp>
 
 using std::chrono_literals::operator""s;
