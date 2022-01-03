@@ -174,7 +174,11 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonCopyable) {
   };
   S s{};
 
-  timer.initiate(5, 1ms, [s = std::move(s)](int) {});
+  timer.initiate(5, 1ms, [addr = std::addressof(s), s = std::move(s)](int) {
+    if (addr == std::addressof(s)) {
+      throw std::runtime_error{"Matched address"};
+    }
+  });
 
   io_context.run();
 }
@@ -203,7 +207,7 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonMoveable) {
 }
 
 TEST_F(CountdownTimerTestFixture,
-CallbackWithCapture_MoveableAndCopyableIsMoved) {
+       CallbackWithCapture_MoveableAndCopyableIsMoved) {
   asio::io_context io_context{};
 
   CountdownTimer timer{io_context};
@@ -219,7 +223,11 @@ CallbackWithCapture_MoveableAndCopyableIsMoved) {
   };
   S s{};
 
-  timer.initiate(5, 1ms, [s = std::move(s)](int) {});
+  timer.initiate(5, 1ms, [addr = std::addressof(s), s = std::move(s)](int) {
+    if (addr == std::addressof(s)) {
+      throw std::runtime_error{"Matched address"};
+    }
+  });
 
   io_context.run();
 }
