@@ -21,9 +21,13 @@ int main() {
     TcpServer server{io_context};
 
     std::thread worker{[&]() {
-      std::cout << "Worker thread ID: " << std::this_thread::get_id()
-                << std::endl;
-      io_context.run();
+      try {
+        std::cout << "Worker thread ID: " << std::this_thread::get_id()
+                  << std::endl;
+        io_context.run();
+      } catch (const std::exception &e) {
+        std::cerr << "Worker exception: " << e.what() << std::endl;
+      }
     }};
 
     char ch{};
@@ -42,7 +46,7 @@ int main() {
 
     return EXIT_SUCCESS;
   } catch (const std::exception &e) {
-    std::cerr << "Error: " << e.what() << std::endl;
+    std::cerr << "Main exception: " << e.what() << std::endl;
   }
 
   return EXIT_FAILURE;

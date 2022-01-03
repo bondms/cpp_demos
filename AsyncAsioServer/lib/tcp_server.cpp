@@ -25,7 +25,6 @@ void TcpServer::handle_accept(TcpConnection::SharedPointer new_connection,
                               const asio::error_code &error) {
   if (asio::error::operation_aborted == error.value()) {
     std::cout << "Aborting accept for new connection." << std::endl;
-    // Return without starting a fresh accept to allow clean shutdown.
     return;
   }
 

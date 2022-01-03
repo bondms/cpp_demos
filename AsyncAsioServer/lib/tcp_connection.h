@@ -11,12 +11,16 @@
 #include <memory>
 #include <string>
 
+#include "AsyncAsioServer/lib/countdown_timer.h"
+
 #include <asio.hpp>
 
 class TcpConnection : public std::enable_shared_from_this<TcpConnection> {
   struct PrivateConstruction {};
 
   asio::ip::tcp::socket socket_;
+  CountdownTimer countdown_timer_;
+
   std::string message_{};
 
   void handle_write(const asio::error_code &error, size_t bytes_transferred);
@@ -25,7 +29,6 @@ public:
   TcpConnection(PrivateConstruction, asio::io_context &io_context);
 
   using SharedPointer = std::shared_ptr<TcpConnection>;
-
   static SharedPointer create(asio::io_context &io_context);
 
   asio::ip::tcp::socket &socket();
