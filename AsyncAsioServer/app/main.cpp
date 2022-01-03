@@ -14,12 +14,17 @@
 
 int main() {
   std::cout << "Starting..." << std::endl;
+  std::cout << "Main thread ID: " << std::this_thread::get_id() << std::endl;
 
   try {
     asio::io_context io_context{};
     TcpServer server{io_context};
 
-    std::thread worker{[&]() { io_context.run(); }};
+    std::thread worker{[&]() {
+      std::cout << "Worker thread ID: " << std::this_thread::get_id()
+                << std::endl;
+      io_context.run();
+    }};
 
     char ch{};
     while ('q' != ch) {
