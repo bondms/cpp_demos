@@ -33,9 +33,10 @@ class CountdownTimer {
     }
 
     timer_.expires_after(interval_);
-    timer_.async_wait([this, handler = std::forward<WaitHandler>(handler)](
+    timer_.async_wait([this, capture = std::tuple<WaitHandler>(
+                                 std::forward<WaitHandler>(handler))](
                           const asio::error_code &next_error) {
-      on_timer(std::forward<WaitHandler>(handler), next_error);
+      on_timer(std::move(std::get<0>(capture)), next_error);
     });
   }
 
@@ -45,6 +46,10 @@ public:
   template <typename WaitHandler>
   void initiate(int start_from, std::chrono::milliseconds interval,
                 WaitHandler &&handler) {
+    if (start_from <= 0) {
+      return;
+    }
+
     aborted_ = false;
     interval_ = interval;
     value_ = start_from;
