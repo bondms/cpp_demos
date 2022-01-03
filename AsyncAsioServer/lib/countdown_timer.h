@@ -11,10 +11,11 @@ class CountdownTimer {
 
   std::chrono::milliseconds interval_;
   int value_{};
+  bool aborted_{false};
 
   template <typename WaitHandler>
   void on_timer(WaitHandler handler, const asio::error_code &error) {
-    if (asio::error::operation_aborted == error.value()) {
+    if (aborted_) {
       return;
     }
 
@@ -49,5 +50,8 @@ public:
     });
   }
 
-  void abort() { timer_.cancel(); }
+  void abort() {
+    aborted_ = true;
+    timer_.cancel();
+  }
 };

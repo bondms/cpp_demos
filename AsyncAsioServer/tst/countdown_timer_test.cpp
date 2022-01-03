@@ -24,3 +24,22 @@ TEST_F(CountdownTimerTestFixture, simple) {
 
   EXPECT_THAT(counts, testing::ElementsAre(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
 }
+
+TEST_F(CountdownTimerTestFixture, aborting) {
+  asio::io_context io_context{};
+
+  std::vector<int> counts{};
+
+  CountdownTimer timer{io_context, 1ms};
+  timer.initiate([&](int value) {
+    if (5 == value) {
+      timer.abort();
+      return;
+    }
+    counts.push_back(value);
+  });
+
+  io_context.run();
+
+  EXPECT_THAT(counts, testing::ElementsAre(9, 8, 7, 6));
+}
