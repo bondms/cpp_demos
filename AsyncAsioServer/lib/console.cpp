@@ -14,6 +14,7 @@ Console::~Console() { input_.close(); }
 
 void Console::async_wait_for_quit() {
   std::cout << "Enter 'q' and press return to quit." << std::endl;
+  input_buffer_.consume(input_buffer_.size());
   input_buffer_.prepare(1);
 
   asio::async_read_until(
@@ -29,7 +30,6 @@ void Console::async_wait_for_quit() {
         }
 
         if (2 != bytes_transferred) {
-          input_buffer_.consume(input_buffer_.size());
           async_wait_for_quit();
           return;
         }
@@ -39,7 +39,6 @@ void Console::async_wait_for_quit() {
         is.get(ch);
 
         if ('q' != ch) {
-          input_buffer_.consume(input_buffer_.size());
           async_wait_for_quit();
           return;
         }
