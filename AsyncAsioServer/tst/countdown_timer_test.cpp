@@ -205,7 +205,8 @@ TEST_F(CountdownTimerTestFixture, ReferencedCaptureIsNotMovedOrCopied1) {
   io_context.run();
 }
 
-TEST_F(CountdownTimerTestFixture, ReferencedCaptureDoesNotNeedToBeMoveableOrCopyable) {
+TEST_F(CountdownTimerTestFixture,
+       ReferencedCaptureDoesNotNeedToBeMoveableOrCopyable) {
   asio::io_context io_context{};
 
   CountdownTimer timer{io_context};
