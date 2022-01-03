@@ -4,8 +4,6 @@
 
 #include "AsyncAsioServer/lib/tcp_server.h"
 
-#include <asio.hpp>
-
 class Console {
   asio::io_context &io_context_;
   TcpServer &server_;

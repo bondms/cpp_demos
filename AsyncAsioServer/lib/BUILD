@@ -15,16 +15,28 @@ cc_library(
 )
 
 cc_library(
+  name = "countdown_timer",
+  srcs = [
+  ],
+  hdrs = [
+    "countdown_timer.h",
+  ],
+  deps = [
+    "@asio",
+  ],
+  visibility = ["//:__subpackages__"],
+)
+
+cc_library(
   name = "tcp_connection",
   srcs = [
-    "countdown_timer.h",
     "tcp_connection.cpp",
   ],
   hdrs = [
     "tcp_connection.h",
   ],
   deps = [
-    "@asio",
+    "countdown_timer",
   ],
 )
 
