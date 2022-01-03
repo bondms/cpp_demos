@@ -3,6 +3,7 @@
 #pragma once
 
 #include <chrono>
+#include <utility>
 
 #include <asio.hpp>
 
@@ -14,7 +15,7 @@ class CountdownTimer {
   int value_{};
 
   template <typename WaitHandler>
-  void on_timer(WaitHandler handler, const asio::error_code &error) {
+  void on_timer(WaitHandler&& handler, const asio::error_code &error) {
     if (aborted_) {
       return;
     }
@@ -31,8 +32,8 @@ class CountdownTimer {
     }
 
     timer_.expires_after(interval_);
-    timer_.async_wait([this, handler](const asio::error_code &next_error) {
-      on_timer(handler, next_error);
+    timer_.async_wait([this, handler = std::forward<WaitHandler>(handler)](const asio::error_code &next_error) {
+      on_timer(std::forward<WaitHandler>(handler), next_error);
     });
   }
 
@@ -41,14 +42,16 @@ public:
 
   template <typename WaitHandler>
   void initiate(int start_from, std::chrono::milliseconds interval,
-                WaitHandler handler) {
+                WaitHandler&& handler) {
     aborted_ = false;
     interval_ = interval;
     value_ = start_from;
 
+    struct { WaitHandler handler; } cap{std::forward<WaitHandler>(handler)};
+
     timer_.expires_after(interval_);
-    timer_.async_wait([this, handler](const asio::error_code &error) {
-      on_timer(handler, error);
+    timer_.async_wait([this, cap = std::move(cap)](const asio::error_code &error) {
+      on_timer(cap.handler, error);
     });
   }
 
