@@ -14,7 +14,7 @@ Console::~Console() { input_.close(); }
 
 void Console::async_wait_for_quit() {
   std::cout << "Enter 'q' and press return to quit." << std::endl;
-  input_buffer_.prepare(512);
+  input_buffer_.prepare(2);
 
   asio::async_read_until(
       input_, input_buffer_, '\n',
@@ -35,11 +35,6 @@ void Console::async_wait_for_quit() {
         }
 
         std::istream is(&input_buffer_);
-        // std::string s{};
-        // is >> s;
-
-        // std::cout << "s='" << s << "'." << std::endl;
-
         char ch{};
         is.get(ch);
 
