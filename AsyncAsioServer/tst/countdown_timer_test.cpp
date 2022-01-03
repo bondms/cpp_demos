@@ -4,6 +4,7 @@
 
 #include <gmock/gmock.h>
 
+using std::chrono_literals::operator""h;
 using std::chrono_literals::operator""ms;
 
 namespace {
@@ -25,7 +26,7 @@ TEST_F(CountdownTimerTestFixture, simple) {
   EXPECT_THAT(counts, testing::ElementsAre(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
 }
 
-TEST_F(CountdownTimerTestFixture, aborting) {
+TEST_F(CountdownTimerTestFixture, abort_mid_sequence) {
   asio::io_context io_context{};
 
   std::vector<int> counts{};
@@ -42,4 +43,19 @@ TEST_F(CountdownTimerTestFixture, aborting) {
   io_context.run();
 
   EXPECT_THAT(counts, testing::ElementsAre(9, 8, 7, 6));
+}
+
+TEST_F(CountdownTimerTestFixture, abort_early) {
+  asio::io_context io_context{};
+
+  std::vector<int> counts{};
+
+  CountdownTimer timer{io_context, 1h};
+  timer.initiate([&](int value) { counts.push_back(value); });
+
+  asio::post([&] { timer.abort(); });
+
+  io_context.run();
+
+  EXPECT_TRUE(counts.empty());
 }
