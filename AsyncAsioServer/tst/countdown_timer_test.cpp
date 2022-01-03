@@ -181,3 +181,24 @@ TEST_F(CountdownTimerTestFixture, WaitsForInterval_Slow) {
 
 //   io_context.run();
 // }
+
+TEST_F(CountdownTimerTestFixture, ReferencedCaptureIsNotMoved) {
+  asio::io_context io_context{};
+
+  CountdownTimer timer{io_context};
+
+  struct S {
+    S() = default;
+
+    S(S &) = default;
+    S &operator=(S &) = default;
+
+    S(S &&) { throw std::runtime_error{"Move constructor called"}; }
+    S &operator=(S &&) { throw std::runtime_error{"Move assigment called"}; }
+  };
+  S s{};
+
+  timer.initiate(5, 1ms, [&s](int) {});
+
+  io_context.run();
+}
