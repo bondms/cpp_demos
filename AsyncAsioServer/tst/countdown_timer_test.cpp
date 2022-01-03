@@ -143,6 +143,8 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_Simple) {
 //   struct S {
 //     S() = default;
 
+//     ~S() = default;
+
 //     S(S &) = default;
 //     S &operator=(S &) = default;
 
