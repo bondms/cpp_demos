@@ -15,13 +15,10 @@ Console::~Console() { input_.close(); }
 void Console::async_wait_for_quit() {
   std::cout << "Enter 'q' and press return to quit." << std::endl;
   input_buffer_.consume(input_buffer_.size());
-  input_buffer_.prepare(1);
 
   asio::async_read_until(
       input_, input_buffer_, '\n',
       [&](const asio::error_code &error, std::size_t bytes_transferred) {
-        input_buffer_.commit(bytes_transferred);
-
         if (error) {
           std::cerr << "Error reading from standard input: " << error.value()
                     << std::endl;
