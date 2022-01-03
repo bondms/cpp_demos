@@ -6,6 +6,7 @@ cc_binary(
     "main.cpp",
   ],
   deps = [
+    "//AsyncAsioServer/lib:console",
     "//AsyncAsioServer/lib:tcp_server",
   ],
 )

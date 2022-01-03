@@ -1,6 +1,20 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
+  name = "console",
+  srcs = [
+    "console.cpp",
+  ],
+  hdrs = [
+    "console.h",
+  ],
+  deps = [
+    "@tcp_server",
+  ],
+  visibility = ["//:__subpackages__"],
+)
+
+cc_library(
   name = "tcp_connection",
   srcs = [
     "countdown_timer.h",
