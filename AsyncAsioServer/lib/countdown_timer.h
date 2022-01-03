@@ -27,6 +27,8 @@ class CountdownTimer {
       timer_.async_wait([this, handler](const asio::error_code &next_error) {
         on_timer(handler, next_error);
       });
+
+      return;
     }
 
     std::cerr << "Error waiting for timer, value: " << error.value()
