@@ -135,33 +135,6 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_Simple) {
   io_context.run();
 }
 
-TEST_F(CountdownTimerTestFixture, CallbackWithCapture_SimpleWithDefaults) {
-  asio::io_context io_context{};
-
-  CountdownTimer timer{io_context};
-
-  struct S {
-    S() = default;
-
-    ~S() = default;
-
-    S(const S &) = default;
-    S &operator=(const S &) = default;
-
-    S(S &&) = default;
-    S &operator=(S &&) = default;
-  };
-  S s{};
-
-  timer.initiate(5, 1ms, [addr = std::addressof(s), s](int) {
-    if (addr == std::addressof(s)) {
-      throw std::runtime_error{"Matched address"};
-    }
-  });
-
-  io_context.run();
-}
-
 TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonCopyable) {
   asio::io_context io_context{};
 
