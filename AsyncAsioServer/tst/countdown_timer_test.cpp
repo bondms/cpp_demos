@@ -127,9 +127,7 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_Simple) {
   S s{};
 
   timer.initiate(5, 1ms, [addr = std::addressof(s), s](int) {
-    if (addr == std::addressof(s)) {
-      throw std::runtime_error{"Matched address"};
-    }
+    EXPECT_NE(addr, std::addressof(s));
   });
 
   io_context.run();
@@ -150,9 +148,7 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonCopyable) {
   S s{};
 
   timer.initiate(5, 1ms, [addr = std::addressof(s), s = std::move(s)](int) {
-    if (addr == std::addressof(s)) {
-      throw std::runtime_error{"Matched address"};
-    }
+    EXPECT_NE(addr, std::addressof(s));
   });
 
   io_context.run();
@@ -173,9 +169,7 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonMoveable) {
   S s{};
 
   timer.initiate(5, 1ms, [addr = std::addressof(s), s](int) {
-    if (addr == std::addressof(s)) {
-      throw std::runtime_error{"Matched address"};
-    }
+    EXPECT_NE(addr, std::addressof(s));
   });
 
   io_context.run();
@@ -201,9 +195,7 @@ TEST_F(CountdownTimerTestFixture,
   S s{};
 
   timer.initiate(5, 1ms, [addr = std::addressof(s), s = std::move(s)](int) {
-    if (addr == std::addressof(s)) {
-      throw std::runtime_error{"Matched address"};
-    }
+    EXPECT_NE(addr, std::addressof(s));
   });
 
   io_context.run();
@@ -227,9 +219,7 @@ TEST_F(CountdownTimerTestFixture,
   S s{};
 
   timer.initiate(5, 1ms, [addr = std::addressof(s), &s](int) {
-    if (addr != std::addressof(s)) {
-      throw std::runtime_error{"Mismatched address"};
-    }
+    EXPECT_EQ(addr, std::addressof(s));
   });
 
   io_context.run();
@@ -251,9 +241,7 @@ TEST_F(CountdownTimerTestFixture,
   S s{};
 
   timer.initiate(5, 1ms, [addr = std::addressof(s), &s](int) {
-    if (addr != std::addressof(s)) {
-      throw std::runtime_error{"Mismatched address"};
-    }
+    EXPECT_EQ(addr, std::addressof(s));
   });
 
   io_context.run();
