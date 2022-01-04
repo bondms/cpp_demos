@@ -6,8 +6,8 @@ A collection of simple C++ demo programs that build using [Bazel](https://bazel.
 
 ## Status
 
-![CI](https://github.com/bondms/CppDemos/workflows/CI/badge.svg)
-![Super-Linter](https://github.com/bondms/CppDemos/workflows/Super-Linter/badge.svg)
+![CI](https://github.com/bondms/cpp_demos/workflows/CI/badge.svg)
+![Super-Linter](https://github.com/bondms/cpp_demos/workflows/Super-Linter/badge.svg)
 
 ## Building
 
