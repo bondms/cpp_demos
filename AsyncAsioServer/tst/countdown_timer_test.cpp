@@ -184,9 +184,10 @@ TEST_F(CountdownTimerTestFixture,
   struct S {
     S() = default;
 
-    S(const S &) { throw std::runtime_error{"Copy constructor called"}; }
+    S(const S &) { ADD_FAILURE() << "Copy constructor called"; }
     S &operator=(const S &) {
-      throw std::runtime_error{"Copy assigment called"};
+      ADD_FAILURE() << "Copy assigment called";
+      return *this;
     }
 
     S(S &&) = default;
@@ -210,11 +211,17 @@ TEST_F(CountdownTimerTestFixture,
   struct S {
     S() = default;
 
-    S(S &) { throw std::runtime_error{"Copy constructor called"}; }
-    S &operator=(S &) { throw std::runtime_error{"Copy assigment called"}; }
+    S(S &) { ADD_FAILURE() << "Copy assigment called"; }
+    S &operator=(S &) {
+      ADD_FAILURE() << "Copy assigment called";
+      return *this;
+    }
 
-    S(S &&) { throw std::runtime_error{"Move constructor called"}; }
-    S &operator=(S &&) { throw std::runtime_error{"Move assigment called"}; }
+    S(S &&) { ADD_FAILURE() << "Move constructor called"; }
+    S &operator=(S &&) {
+      ADD_FAILURE() << "Move assigment called";
+      return *this;
+    }
   };
   S s{};
 
