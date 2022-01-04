@@ -135,33 +135,32 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_Simple) {
   io_context.run();
 }
 
-// TODO(MarkBond): ...
-// TEST_F(CountdownTimerTestFixture, CallbackWithCapture_SimpleWithDefaults) {
-//   asio::io_context io_context{};
+TEST_F(CountdownTimerTestFixture, CallbackWithCapture_SimpleWithDefaults) {
+  asio::io_context io_context{};
 
-//   CountdownTimer timer{io_context};
+  CountdownTimer timer{io_context};
 
-//   struct S {
-//     S() = default;
+  struct S {
+    S() = default;
 
-//     ~S() = default;
+    ~S() = default;
 
-//     S(S &) = default;
-//     S &operator=(S &) = default;
+    S(const S &) = default;
+    S &operator=(const S &) = default;
 
-//     S(S &&) = default;
-//     S &operator=(S &&) = default;
-//   };
-//   S s{};
+    S(S &&) = default;
+    S &operator=(S &&) = default;
+  };
+  S s{};
 
-//   timer.initiate(5, 1ms, [addr = std::addressof(s), s](int) {
-//     if (addr == std::addressof(s)) {
-//       throw std::runtime_error{"Matched address"};
-//     }
-//   });
+  timer.initiate(5, 1ms, [addr = std::addressof(s), s](int) {
+    if (addr == std::addressof(s)) {
+      throw std::runtime_error{"Matched address"};
+    }
+  });
 
-//   io_context.run();
-// }
+  io_context.run();
+}
 
 // TODO(MarkBond): ...
 // TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonCopyable) {
@@ -170,8 +169,8 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_Simple) {
 //   CountdownTimer timer{io_context};
 
 //   struct S {
-//     S(S &) = delete;
-//     S &operator=(S &) = delete;
+//     S(const S &) = delete;
+//     S &operator=(const S &) = delete;
 
 //     S(S &&) = default;
 //     S &operator=(S &&) = default;
@@ -194,8 +193,8 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_Simple) {
 //   CountdownTimer timer{io_context};
 
 //   struct S {
-//     S(S &) = default;
-//     S &operator=(S &) = default;
+//     S(const S &) = default;
+//     S &operator=(const S &) = default;
 
 //     S(S &&) = delete;
 //     S &operator=(S &&) = delete;
@@ -221,8 +220,10 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_Simple) {
 //   struct S {
 //     S() = default;
 
-//     S(S &) { throw std::runtime_error{"Copy constructor called"}; }
-//     S &operator=(S &) { throw std::runtime_error{"Copy assigment called"}; }
+//     S(const S &) { throw std::runtime_error{"Copy constructor called"}; }
+//     S &operator=(const S &) {
+//       throw std::runtime_error{"Copy assigment called"};
+//     }
 
 //     S(S &&) = default;
 //     S &operator=(S &&) = default;
