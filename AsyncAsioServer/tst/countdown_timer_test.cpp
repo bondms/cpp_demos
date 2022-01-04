@@ -162,29 +162,28 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_SimpleWithDefaults) {
   io_context.run();
 }
 
-// TODO(MarkBond): ...
-// TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonCopyable) {
-//   asio::io_context io_context{};
+TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonCopyable) {
+  asio::io_context io_context{};
 
-//   CountdownTimer timer{io_context};
+  CountdownTimer timer{io_context};
 
-//   struct S {
-//     S(const S &) = delete;
-//     S &operator=(const S &) = delete;
+  struct S {
+    S(const S &) = delete;
+    S &operator=(const S &) = delete;
 
-//     S(S &&) = default;
-//     S &operator=(S &&) = default;
-//   };
-//   S s{};
+    S(S &&) = default;
+    S &operator=(S &&) = default;
+  };
+  S s{};
 
-//   timer.initiate(5, 1ms, [addr = std::addressof(s), s = std::move(s)](int) {
-//     if (addr == std::addressof(s)) {
-//       throw std::runtime_error{"Matched address"};
-//     }
-//   });
+  timer.initiate(5, 1ms, [addr = std::addressof(s), s = std::move(s)](int) {
+    if (addr == std::addressof(s)) {
+      throw std::runtime_error{"Matched address"};
+    }
+  });
 
-//   io_context.run();
-// }
+  io_context.run();
+}
 
 TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonMoveable) {
   asio::io_context io_context{};
@@ -209,34 +208,33 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonMoveable) {
   io_context.run();
 }
 
-// TODO(MarkBond): ...
-// TEST_F(CountdownTimerTestFixture,
-//        CallbackWithCapture_MoveableAndCopyableIsMoved) {
-//   asio::io_context io_context{};
+TEST_F(CountdownTimerTestFixture,
+       CallbackWithCapture_MoveableAndCopyableIsMoved) {
+  asio::io_context io_context{};
 
-//   CountdownTimer timer{io_context};
+  CountdownTimer timer{io_context};
 
-//   struct S {
-//     S() = default;
+  struct S {
+    S() = default;
 
-//     S(const S &) { throw std::runtime_error{"Copy constructor called"}; }
-//     S &operator=(const S &) {
-//       throw std::runtime_error{"Copy assigment called"};
-//     }
+    S(const S &) { throw std::runtime_error{"Copy constructor called"}; }
+    S &operator=(const S &) {
+      throw std::runtime_error{"Copy assigment called"};
+    }
 
-//     S(S &&) = default;
-//     S &operator=(S &&) = default;
-//   };
-//   S s{};
+    S(S &&) = default;
+    S &operator=(S &&) = default;
+  };
+  S s{};
 
-//   timer.initiate(5, 1ms, [addr = std::addressof(s), s = std::move(s)](int) {
-//     if (addr == std::addressof(s)) {
-//       throw std::runtime_error{"Matched address"};
-//     }
-//   });
+  timer.initiate(5, 1ms, [addr = std::addressof(s), s = std::move(s)](int) {
+    if (addr == std::addressof(s)) {
+      throw std::runtime_error{"Matched address"};
+    }
+  });
 
-//   io_context.run();
-// }
+  io_context.run();
+}
 
 TEST_F(CountdownTimerTestFixture,
        CallbackWithCapture_ReferencedNotMovedOrCopied) {
