@@ -186,28 +186,29 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonCopyable) {
   io_context.run();
 }
 
-TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonMoveable) {
-  asio::io_context io_context{};
+// TODO(MarkBond): ...
+// TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonMoveable) {
+//   asio::io_context io_context{};
 
-  CountdownTimer timer{io_context};
+//   CountdownTimer timer{io_context};
 
-  struct S {
-    S(S &) = default;
-    S &operator=(S &) = default;
+//   struct S {
+//     S(S &) = default;
+//     S &operator=(S &) = default;
 
-    S(S &&) = delete;
-    S &operator=(S &&) = delete;
-  };
-  S s{};
+//     S(S &&) = delete;
+//     S &operator=(S &&) = delete;
+//   };
+//   S s{};
 
-  timer.initiate(5, 1ms, [addr = std::addressof(s), s](int) {
-    if (addr == std::addressof(s)) {
-      throw std::runtime_error{"Matched address"};
-    }
-  });
+//   timer.initiate(5, 1ms, [addr = std::addressof(s), s](int) {
+//     if (addr == std::addressof(s)) {
+//       throw std::runtime_error{"Matched address"};
+//     }
+//   });
 
-  io_context.run();
-}
+//   io_context.run();
+// }
 
 TEST_F(CountdownTimerTestFixture,
        CallbackWithCapture_MoveableAndCopyableIsMoved) {
