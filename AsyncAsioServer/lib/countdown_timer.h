@@ -33,13 +33,10 @@ class CountdownTimer {
     }
 
     timer_.expires_after(interval_);
-    timer_.async_wait(
-        [this, capture = std::make_tuple(std::forward<WaitHandler>(handler))](
-            const asio::error_code &next_error) mutable {
-          // TODO(MarkBond): Can this forward be replaced by move? If not,
-          // confirm with a test.
-          on_timer(std::forward<WaitHandler>(std::get<0>(capture)), next_error);
-        });
+    timer_.async_wait([this, capture = std::make_tuple(std::move(handler))](
+                          const asio::error_code &next_error) mutable {
+      on_timer(std::get<0>(capture), next_error);
+    });
   }
 
 public:
@@ -57,13 +54,10 @@ public:
     value_ = start_from;
 
     timer_.expires_after(interval_);
-    timer_.async_wait(
-        [this, capture = std::make_tuple(std::forward<WaitHandler>(handler))](
-            const asio::error_code &error) mutable {
-          // TODO(MarkBond): Can this forward be replaced by move? If not,
-          // confirm with a test.
-          on_timer(std::forward<WaitHandler>(std::get<0>(capture)), error);
-        });
+    timer_.async_wait([this, capture = std::make_tuple(std::move(handler))](
+                          const asio::error_code &error) mutable {
+      on_timer(std::get<0>(capture), error);
+    });
   }
 
   void abort() {
