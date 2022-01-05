@@ -33,9 +33,10 @@ class CountdownTimer {
     }
 
     timer_.expires_after(interval_);
-    timer_.async_wait([this, capture = std::make_tuple(std::move(handler))](
+    timer_.async_wait([this, capture = std::tuple<WaitHandler>(
+                                 std::forward<WaitHandler>(handler))](
                           const asio::error_code &next_error) mutable {
-      on_timer(std::get<0>(capture), next_error);
+      on_timer(std::forward<WaitHandler>(std::get<0>(capture)), next_error);
     });
   }
 
@@ -54,9 +55,10 @@ public:
     value_ = start_from;
 
     timer_.expires_after(interval_);
-    timer_.async_wait([this, capture = std::make_tuple(std::move(handler))](
+    timer_.async_wait([this, capture = std::tuple<WaitHandler>(
+                                 std::forward<WaitHandler>(handler))](
                           const asio::error_code &error) mutable {
-      on_timer(std::get<0>(capture), error);
+      on_timer(std::forward<WaitHandler>(std::get<0>(capture)), error);
     });
   }
 

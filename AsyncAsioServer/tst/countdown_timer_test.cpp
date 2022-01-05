@@ -265,6 +265,8 @@ TEST_F(CountdownTimerTestFixture, Callback_lvalue) {
 
   callback(5);
   io_context.run();
+
+  // TODO(MarkBond): Is this valid? Has the callback been moved from?
   callback(10);
 
   EXPECT_THAT(counts, testing::ElementsAre(5, 4, 3, 2, 1, 0, 10));
@@ -286,9 +288,8 @@ TEST_F(CountdownTimerTestFixture, Callback_NonCopyableByReference) {
     Callback(const Callback &) = delete;
     Callback &operator=(const Callback &) = delete;
 
-    // TODO(MarkBond): Can't be deleted since it's used within CountdownTimer.
-    Callback(Callback &&) noexcept = default;
-    Callback &operator=(Callback &&) noexcept = default;
+    Callback(Callback &&) noexcept = delete;
+    Callback &operator=(Callback &&) noexcept = delete;
 
     void operator()(int value) { counts_.push_back(value); }
   };
@@ -298,9 +299,6 @@ TEST_F(CountdownTimerTestFixture, Callback_NonCopyableByReference) {
 
   callback(5);
   io_context.run();
-
-  // TODO(MarkBond): Since move operations are used, this is probably
-  // invalidated.
   callback(10);
 
   EXPECT_THAT(counts, testing::ElementsAre(5, 4, 3, 2, 1, 0, 10));
@@ -367,10 +365,7 @@ TEST_F(CountdownTimerTestFixture, Callback_NonCopyableByMove) {
 //   EXPECT_THAT(counts, testing::ElementsAre(5, 4, 3, 2, 1, 0));
 // }
 
-// Not expected to work.
-// The CountdownTimer has not transfer the callback (through either move or
-// copy) from one task to the next.
-//
+// TODO(MarkBond): Possible by reference?
 // TEST_F(CountdownTimerTestFixture, Callback_NonCopyableNonMoveable) {
 //   asio::io_context io_context{};
 
