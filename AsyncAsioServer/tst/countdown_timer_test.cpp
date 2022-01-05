@@ -142,8 +142,8 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonCopyable) {
     S(const S &) = delete;
     S &operator=(const S &) = delete;
 
-    S(S &&) = default;
-    S &operator=(S &&) = default;
+    S(S &&) noexcept = default;
+    S &operator=(S &&) noexcept = default;
   };
   S s{};
 
@@ -163,8 +163,8 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonMoveable) {
     S(const S &) = default;
     S &operator=(const S &) = default;
 
-    S(S &&) = delete;
-    S &operator=(S &&) = delete;
+    S(S &&) noexcept = delete;
+    S &operator=(S &&) noexcept = delete;
   };
   S s{};
 
@@ -190,8 +190,8 @@ TEST_F(CountdownTimerTestFixture,
       return *this;
     }
 
-    S(S &&) = default;
-    S &operator=(S &&) = default;
+    S(S &&) noexcept = default;
+    S &operator=(S &&) noexcept = default;
   };
   S s{};
 
@@ -217,8 +217,8 @@ TEST_F(CountdownTimerTestFixture,
       return *this;
     }
 
-    S(S &&) { ADD_FAILURE() << "Move constructor called"; }
-    S &operator=(S &&) {
+    S(S &&) noexcept { ADD_FAILURE() << "Move constructor called"; }
+    S &operator=(S &&) noexcept {
       ADD_FAILURE() << "Move assigment called";
       return *this;
     }
@@ -242,8 +242,8 @@ TEST_F(CountdownTimerTestFixture,
     S(const S &) = delete;
     S &operator=(const S &) = delete;
 
-    S(S &&) = delete;
-    S &operator=(S &&) = delete;
+    S(S &&) noexcept = delete;
+    S &operator=(S &&) noexcept = delete;
   };
   S s{};
 
