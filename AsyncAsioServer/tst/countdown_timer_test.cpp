@@ -211,8 +211,8 @@ TEST_F(CountdownTimerTestFixture,
   struct S {
     S() = default;
 
-    S(S &) { ADD_FAILURE() << "Copy assigment called"; }
-    S &operator=(S &) {
+    S(const S &) { ADD_FAILURE() << "Copy assigment called"; }
+    S &operator=(const S &) {
       ADD_FAILURE() << "Copy assigment called";
       return *this;
     }
@@ -239,8 +239,8 @@ TEST_F(CountdownTimerTestFixture,
   CountdownTimer timer{io_context};
 
   struct S {
-    S(S &) = delete;
-    S &operator=(S &) = delete;
+    S(const S &) = delete;
+    S &operator=(const S &) = delete;
 
     S(S &&) = delete;
     S &operator=(S &&) = delete;
