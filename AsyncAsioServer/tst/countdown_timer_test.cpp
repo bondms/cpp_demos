@@ -265,14 +265,12 @@ TEST_F(CountdownTimerTestFixture, Callback_lvalue) {
 
   callback(5);
   io_context.run();
-
-  // TODO(MarkBond): Is this valid? Has the callback been moved from?
   callback(10);
 
   EXPECT_THAT(counts, testing::ElementsAre(5, 4, 3, 2, 1, 0, 10));
 }
 
-TEST_F(CountdownTimerTestFixture, Callback_NonCopyableByReference) {
+TEST_F(CountdownTimerTestFixture, Callback_NonCopyableNonMoveableByReference) {
   asio::io_context io_context{};
 
   std::vector<int> counts{};
@@ -304,7 +302,7 @@ TEST_F(CountdownTimerTestFixture, Callback_NonCopyableByReference) {
   EXPECT_THAT(counts, testing::ElementsAre(5, 4, 3, 2, 1, 0, 10));
 }
 
-TEST_F(CountdownTimerTestFixture, Callback_NonCopyableByMove) {
+TEST_F(CountdownTimerTestFixture, Callback_NonCopyableNonMoveableByRvalue) {
   asio::io_context io_context{};
 
   std::vector<int> counts{};
@@ -320,6 +318,7 @@ TEST_F(CountdownTimerTestFixture, Callback_NonCopyableByMove) {
     Callback(const Callback &) = delete;
     Callback &operator=(const Callback &) = delete;
 
+    // TODO(MarkBond): Non-moveable?
     Callback(Callback &&) noexcept = default;
     Callback &operator=(Callback &&) noexcept = default;
 
@@ -331,66 +330,3 @@ TEST_F(CountdownTimerTestFixture, Callback_NonCopyableByMove) {
 
   EXPECT_THAT(counts, testing::ElementsAre(4, 3, 2, 1, 0));
 }
-
-// TODO(MarkBond): Make this work.
-// TEST_F(CountdownTimerTestFixture, Callback_NonMoveable) {
-//   asio::io_context io_context{};
-
-//   std::vector<int> counts{};
-
-//   CountdownTimer timer{io_context};
-
-//   class Callback {
-//     std::vector<int> &counts_;
-
-//   public:
-//     explicit Callback(std::vector<int> &counts) : counts_{counts} {}
-
-//     Callback(const Callback &) = default;
-//     Callback &operator=(const Callback &) = default;
-
-//     Callback(Callback &&) noexcept = delete;
-//     Callback &operator=(Callback &&) noexcept = delete;
-
-//     void operator()(int value) { counts_.push_back(value); }
-//   };
-
-//   Callback callback{counts};
-//   callback(5);
-//   // TODO(MarkBond): Why move an non-moveable callback?
-//   timer.initiate(5, 1ms, std::move(callback));
-
-//   io_context.run();
-
-//   EXPECT_THAT(counts, testing::ElementsAre(5, 4, 3, 2, 1, 0));
-// }
-
-// TODO(MarkBond): Possible by reference?
-// TEST_F(CountdownTimerTestFixture, Callback_NonCopyableNonMoveable) {
-//   asio::io_context io_context{};
-
-//   std::vector<int> counts{};
-
-//   CountdownTimer timer{io_context};
-
-//   class Callback {
-//     std::vector<int> &counts_;
-
-//   public:
-//     explicit Callback(std::vector<int> &counts) : counts_{counts} {}
-
-//     Callback(const Callback &) = delete;
-//     Callback &operator=(const Callback &) = delete;
-
-//     Callback(Callback &&) noexcept = delete;
-//     Callback &operator=(Callback &&) noexcept = delete;
-
-//     void operator()(int value) { counts_.push_back(value); }
-//   };
-
-//   timer.initiate(5, 1ms, Callback{counts});
-
-//   io_context.run();
-
-//   EXPECT_THAT(counts, testing::ElementsAre(4, 3, 2, 1, 0));
-// }
