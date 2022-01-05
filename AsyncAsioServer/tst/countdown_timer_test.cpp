@@ -253,3 +253,6 @@ TEST_F(CountdownTimerTestFixture,
 
   io_context.run();
 }
+
+// TODO(MarkBond): Test that the callback itself (not a captured member) is not moved inappropriately.
+// Probably highlights issue of using move rather than forward in the CountdownTimer.
