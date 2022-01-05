@@ -302,7 +302,7 @@ TEST_F(CountdownTimerTestFixture, Callback_NonCopyableNonMoveableByReference) {
   EXPECT_THAT(counts, testing::ElementsAre(5, 4, 3, 2, 1, 0, 10));
 }
 
-TEST_F(CountdownTimerTestFixture, Callback_NonCopyableNonMoveableByRvalue) {
+TEST_F(CountdownTimerTestFixture, Callback_NonCopyableByRvalue) {
   asio::io_context io_context{};
 
   std::vector<int> counts{};
@@ -318,7 +318,6 @@ TEST_F(CountdownTimerTestFixture, Callback_NonCopyableNonMoveableByRvalue) {
     Callback(const Callback &) = delete;
     Callback &operator=(const Callback &) = delete;
 
-    // TODO(MarkBond): Non-moveable?
     Callback(Callback &&) noexcept = default;
     Callback &operator=(Callback &&) noexcept = default;
 
