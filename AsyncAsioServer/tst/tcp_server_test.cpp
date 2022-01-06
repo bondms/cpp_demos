@@ -10,8 +10,6 @@ namespace {
 
 class TcpServerTestFixture : public testing::Test {};
 
-constexpr static asio::ip::port_type port{8013};
-
 } // namespace
 
 TEST_F(TcpServerTestFixture, Simple) {
@@ -22,7 +20,7 @@ TEST_F(TcpServerTestFixture, Simple) {
   asio::ip::tcp::socket client_socket{io_context};
   client_socket.open(asio::ip::tcp::v4());
   client_socket.async_connect(
-      asio::ip::tcp::endpoint{asio::ip::tcp::v4(), 8013},
+      asio::ip::tcp::endpoint{asio::ip::tcp::v4(), TcpServer::port},
       [](const asio::error_code & /*error*/) {});
 
   std::vector<char> data(10, '\0');
