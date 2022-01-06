@@ -16,6 +16,7 @@ TEST_F(TcpConnectionTestFixture, Simple) {
   auto connection{TcpConnection::create(io_context)};
   connection->socket().open(asio::ip::tcp::v4());
   connection->socket().bind(asio::ip::tcp::endpoint{asio::ip::tcp::v4(), 8013});
+  connection->socket().wait(asio::ip::tcp::socket::wait_write);
 
   asio::ip::tcp::socket client_socket{io_context};
   client_socket.open(asio::ip::tcp::v4());
