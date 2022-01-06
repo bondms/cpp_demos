@@ -26,7 +26,7 @@ TEST_F(TcpServerTestFixture, Simple) {
   std::string actual{};
   std::vector<char> buffer(8, '\0');
 
-  std::function<void()> async_read_from_client = [&]() {
+  std::function<void()> async_read_from_client{[&]() {
     client_socket.async_read_some(
         asio::buffer(buffer, buffer.size()),
         [&](const asio::error_code &error, std::size_t bytes_transferred) {
@@ -44,11 +44,10 @@ TEST_F(TcpServerTestFixture, Simple) {
                     std::back_inserter(actual));
           async_read_from_client();
         });
-  };
+  }};
 
   async_read_from_client();
   io_context.run();
 
-  constexpr auto &expected{"9\n8\n7\n6\5\n4\n3\n2\n1\n0\n"};
-  EXPECT_EQ(expected, actual);
+  EXPECT_EQ("9\n8\n7\n6\n5\n4\n3\n2\n1\n0\n", actual);
 }
