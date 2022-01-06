@@ -15,20 +15,6 @@ cc_test(
 )
 
 cc_test(
-  name = "tcp_connection_test",
-  srcs = [
-    "tcp_connection_test.cpp",
-  ],
-  copts = [
-    "-Iexternal/gmock/include",
-  ],
-  deps = [
-    "//AsyncAsioServer/lib:tcp_connection",
-    "@googletest//:gtest_main",
-  ],
-)
-
-cc_test(
   name = "tcp_server_test",
   srcs = [
     "tcp_server_test.cpp",

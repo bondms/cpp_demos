@@ -25,13 +25,13 @@ TEST_F(TcpServerTestFixture, Simple) {
 
   std::vector<char> data(1024, '\0');
   client_socket.async_read_some(
-      asio::buffer(data, 1024), [&](const asio::error_code & error,
-                                          std::size_t bytes_transferred) {
-                                            if(error) {
-                                              ADD_FAILURE() << "Error: " << error.value();
-                                              server.shutdown();
-                                              return;
-                                            }
+      asio::buffer(data, 1024),
+      [&](const asio::error_code &error, std::size_t bytes_transferred) {
+        if (error) {
+          ADD_FAILURE() << "Error: " << error.value();
+          server.shutdown();
+          return;
+        }
         EXPECT_THAT(data, testing::ElementsAre('a', 'b', 'c'));
         EXPECT_GT(bytes_transferred, 0);
         server.shutdown();
