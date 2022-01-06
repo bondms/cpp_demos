@@ -18,10 +18,11 @@ TEST_F(TcpConnectionTestFixture, Simple) {
   connection->socket().bind(asio::ip::tcp::endpoint{asio::ip::tcp::v4(), 8013});
 
   asio::ip::tcp::socket client_socket{io_context};
+  client_socket.open(asio::ip::tcp::v4());
   // client_socket.connect(asio::ip::tcp::endpoint{asio::ip::tcp::v4(), 8013});
 
   std::vector<char> data(10, '\0');
-  client_socket.async_read_some(
-      asio::buffer(data, data.size()),
-      [](const asio::error_code &/*error*/, std::size_t /*bytes_transferred*/) {  });
+  client_socket.async_read_some(asio::buffer(data, data.size()),
+                                [](const asio::error_code & /*error*/,
+                                   std::size_t /*bytes_transferred*/) {});
 }
