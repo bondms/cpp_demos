@@ -31,7 +31,10 @@ TEST_F(TcpServerTestFixture, Simple) {
         asio::buffer(buffer, buffer.size()),
         [&](const asio::error_code &error, std::size_t bytes_transferred) {
           if (error) {
-            ADD_FAILURE() << "Error: " << error.value();
+            if (asio::error::misc_errors::eof != error.value()) {
+              ADD_FAILURE()
+                  << "Error (" << error.value() << "): " << error.message();
+            }
             server.shutdown();
             return;
           }
