@@ -2,7 +2,7 @@
 
 #include "AsyncAsioServer/lib/tcp_server.h"
 
-#include <thread>
+#include <vector>
 
 #include <gmock/gmock.h>
 
@@ -23,11 +23,17 @@ TEST_F(TcpServerTestFixture, Simple) {
       asio::ip::tcp::endpoint{asio::ip::tcp::v4(), TcpServer::port},
       [](const asio::error_code & /*error*/) {});
 
-  std::vector<char> data(10, '\0');
+  std::vector<char> data(1024, '\0');
   client_socket.async_read_some(
-      asio::buffer(data, data.size()), [&](const asio::error_code & /*error*/,
-                                          std::size_t /*bytes_transferred*/) {
+      asio::buffer(data, 1024), [&](const asio::error_code & error,
+                                          std::size_t bytes_transferred) {
+                                            if(error) {
+                                              ADD_FAILURE() << "Error: " << error.value();
+                                              server.shutdown();
+                                              return;
+                                            }
         EXPECT_THAT(data, testing::ElementsAre('a', 'b', 'c'));
+        EXPECT_GT(bytes_transferred, 0);
         server.shutdown();
       });
 
