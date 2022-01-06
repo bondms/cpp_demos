@@ -30,5 +30,7 @@ TEST_F(TcpServerTestFixture, Simple) {
                                 [](const asio::error_code & /*error*/,
                                    std::size_t /*bytes_transferred*/) {});
 
+  asio::post([&] { server.shutdown(); });
+
   io_context.run();
 }
