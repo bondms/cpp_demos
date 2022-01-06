@@ -23,19 +23,28 @@ TEST_F(TcpServerTestFixture, Simple) {
       asio::ip::tcp::endpoint{asio::ip::tcp::v4(), TcpServer::port},
       [](const asio::error_code & /*error*/) {});
 
-  std::vector<char> data(1024, '\0');
+  std::string actual{};
+  std::vector<char> buffer(8, '\0');
   client_socket.async_read_some(
-      asio::buffer(data, 1024),
+      asio::buffer(buffer, buffer.size()),
       [&](const asio::error_code &error, std::size_t bytes_transferred) {
         if (error) {
           ADD_FAILURE() << "Error: " << error.value();
           server.shutdown();
           return;
         }
-        EXPECT_THAT(data, testing::ElementsAre('a', 'b', 'c'));
         EXPECT_GT(bytes_transferred, 0);
+        EXPECT_LE(bytes_transferred, buffer.size());
+        std::copy(buffer.begin(),
+                  buffer.begin() +
+                      static_cast<std::vector<char>::difference_type>(
+                          bytes_transferred),
+                  std::back_inserter(actual));
         server.shutdown();
       });
 
   io_context.run();
+
+  constexpr auto &expected{"9\n8\n7\n6\5\n4\n3\n2\n1\n0\n"};
+  EXPECT_EQ(expected, actual);
 }
