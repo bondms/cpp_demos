@@ -2,8 +2,6 @@
 
 #include "AsyncAsioServer/lib/tcp_server.h"
 
-#include <vector>
-
 #include <gmock/gmock.h>
 
 namespace {
