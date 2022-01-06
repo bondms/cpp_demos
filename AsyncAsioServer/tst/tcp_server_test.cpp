@@ -60,3 +60,5 @@ TEST_F(TcpServerTestFixture, Simple) {
 // * Introduce a slow test which uses a smaller start_from but a reasonable
 // interval and checks the time is at least as long as expected.
 // * Check for error in async_connect.
+// * Test handling of multiple concucurrent clients.
+// * Test handling when a client disconnects early.
