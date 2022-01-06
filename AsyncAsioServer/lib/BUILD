@@ -38,6 +38,7 @@ cc_library(
   deps = [
     "countdown_timer",
   ],
+  visibility = ["//:__subpackages__"],
 )
 
 cc_library(
