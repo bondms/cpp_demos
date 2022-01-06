@@ -62,3 +62,6 @@ TEST_F(TcpServerTestFixture, Simple) {
 // * Check for error in async_connect.
 // * Test handling of multiple concucurrent clients.
 // * Test handling when a client disconnects early.
+// * Use std::array rather than std::vector.
+// * Eliminate use of std::string, simply populate the vector/array (ensuring
+// it's large enough).
