@@ -21,11 +21,25 @@ To clean all:
 bazel clean
 ```
 
+## TODO
+
+* Improve cross-platform support:
+  * Eliminate ..._r functions.
+  * Reconsider #includes and folder layouts.
+  * Provide alternative compiler options in .bazelrc.
+  * Investigate compiler differences:
+    * msdev eliminates default constructor when an =default copy constructor is provided. gcc does not.
+    * gcc and clang eliminate the const reference copy operators when =default non-const are provided. msdev does not.
+
 ## Projects
 
 ### AsyncAsioServer
 
-A counter timer based on the daytime server example of using ASIO asynchronously.
+A counter timer based on the daytime server example of using ASIO asynchronously. Features:
+* Clean shutdown.
+* Clean handling of client errors (e.g. disconnecting before the server).
+* Single thread resource usage.
+* Automated testing of both the CountdownTimer unit and the TcpServer component.
 
 ### BinarySearch
 

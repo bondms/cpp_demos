@@ -13,3 +13,17 @@ cc_test(
     "@googletest//:gtest_main",
   ],
 )
+
+cc_test(
+  name = "tcp_server_test",
+  srcs = [
+    "tcp_server_test.cpp",
+  ],
+  copts = [
+    "-Iexternal/gmock/include",
+  ],
+  deps = [
+    "//AsyncAsioServer/lib:tcp_server",
+    "@googletest//:gtest_main",
+  ],
+)

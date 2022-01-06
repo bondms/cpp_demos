@@ -11,8 +11,6 @@
 #include "AsyncAsioServer/lib/tcp_connection.h"
 
 class TcpServer {
-  constexpr static asio::ip::port_type port_{8013};
-
   asio::io_context &io_context_;
   asio::ip::tcp::acceptor acceptor_;
 
@@ -22,6 +20,8 @@ class TcpServer {
                      const asio::error_code &error);
 
 public:
+  constexpr static asio::ip::port_type port{8013};
+
   explicit TcpServer(asio::io_context &io_context);
 
   void shutdown();
