@@ -112,3 +112,5 @@ TEST_F(TcpServerTestFixture, AbortAfterFirst) {
 // * Test handling of multiple concucurrent clients.
 // * Test with a large start_from. Generate the expected output with a helper
 // function.
+// * Test re-connect after disconnect.
+// * Test server remains available for new connection after last disconnection.
