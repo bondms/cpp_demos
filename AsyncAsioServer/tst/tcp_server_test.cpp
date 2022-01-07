@@ -18,7 +18,6 @@ TEST_F(TcpServerTestFixture, Simple) {
   TcpServer server{io_context, 3, 1ms};
 
   asio::ip::tcp::socket client_socket{io_context};
-  client_socket.open(asio::ip::tcp::v4());
   client_socket.async_connect(
       asio::ip::tcp::endpoint{asio::ip::tcp::v4(), TcpServer::port},
       [](const asio::error_code &error) {
@@ -69,5 +68,4 @@ TEST_F(TcpServerTestFixture, Simple) {
 // large enough).
 // * Test with a large start_from. Generate the expected output with a helper
 // function.
-// * Why is asio::ip::tcp::v4() specified twice on the client connection?
 // * How does the client connection know to use localhost?
