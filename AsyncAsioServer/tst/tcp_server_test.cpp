@@ -28,13 +28,17 @@ TEST_F(TcpServerTestFixture, Simple) {
         }
       });
 
-  std::string actual{};
-  std::array<char, 8> buffer{};
+  constexpr auto &expected{"2\n1\n0\n"};
+  std::array<char, std::size(expected) + 1> buffer{};
+  auto it{buffer.begin()};
 
   std::function<void()> async_read_from_client{[&]() {
+    const auto remaining_size{
+        static_cast<std::size_t>(std::distance(it, buffer.end()))};
     client_socket.async_read_some(
-        asio::buffer(buffer, buffer.size()),
-        [&](const asio::error_code &error, std::size_t bytes_transferred) {
+        asio::buffer(it, remaining_size),
+        [&, remaining_size](const asio::error_code &error,
+                            std::size_t bytes_transferred) {
           if (error) {
             if (asio::error::misc_errors::eof != error.value()) {
               ADD_FAILURE()
@@ -44,12 +48,13 @@ TEST_F(TcpServerTestFixture, Simple) {
             return;
           }
           EXPECT_GT(bytes_transferred, 0);
-          EXPECT_LE(bytes_transferred, buffer.size());
+          EXPECT_LE(bytes_transferred, remaining_size);
+          it += bytes_transferred;
           std::copy(buffer.begin(),
                     buffer.begin() +
-                        static_cast<std::vector<char>::difference_type>(
+                        static_cast<decltype(buffer)::difference_type>(
                             bytes_transferred),
-                    std::back_inserter(actual));
+                    it);
           async_read_from_client();
         });
   }};
@@ -57,7 +62,7 @@ TEST_F(TcpServerTestFixture, Simple) {
   async_read_from_client();
   io_context.run();
 
-  EXPECT_EQ("2\n1\n0\n", actual);
+  EXPECT_EQ(expected, std::string(buffer.begin(), it));
 }
 
 // TODO(MarkBond):
@@ -65,7 +70,5 @@ TEST_F(TcpServerTestFixture, Simple) {
 // interval and checks the time is at least as long as expected.
 // * Test handling of multiple concucurrent clients.
 // * Test handling when a client disconnects early.
-// * Eliminate use of std::string, simply populate the array (ensuring it's
-// large enough).
 // * Test with a large start_from. Generate the expected output with a helper
 // function.
