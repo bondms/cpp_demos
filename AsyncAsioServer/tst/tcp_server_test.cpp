@@ -89,32 +89,36 @@ TEST_F(TcpServerTestFixture, MultipleClients) {
   };
   std::array<Buffer, client_sockets.size()> buffers{};
 
-  auto remaining{client_sockets.size()};
+  auto remaining_clients{client_sockets.size()};
 
   for (std::size_t i = 0; i < client_sockets.size(); ++i) {
-    std::function<void()> async_read_from_client{[&]() {
-      const auto remaining_size{static_cast<std::size_t>(
-          std::distance(buffers[i].it, buffers[i].data.end()))};
-      client_sockets[i].async_read_some(
-          asio::buffer(buffers[i].it, remaining_size),
-          [&, remaining_size](const asio::error_code &error,
-                              std::size_t bytes_transferred) {
-            if (error) {
-              if (asio::error::misc_errors::eof != error.value()) {
-                ADD_FAILURE()
-                    << "Error (" << error.value() << "): " << error.message();
-              }
-              if (0 == --remaining) {
-                server.shutdown();
-              }
-              return;
-            }
-            EXPECT_GT(bytes_transferred, 0);
-            EXPECT_LE(bytes_transferred, remaining_size);
-            buffers[i].it += bytes_transferred;
-            async_read_from_client();
-          });
-    }};
+    std::function<void()> async_read_from_client{
+        [&it = buffers[i].it, &data = buffers[i].data,
+         &client_socket = client_sockets[i], &remaining_clients, &server,
+         &async_read_from_client]() {
+          const auto remaining_size{
+              static_cast<std::size_t>(std::distance(it, data.end()))};
+          client_socket.async_read_some(
+              asio::buffer(it, remaining_size),
+              [remaining_size, &remaining_clients, &server, &it,
+               &async_read_from_client](const asio::error_code &error,
+                                        std::size_t bytes_transferred) {
+                if (error) {
+                  if (asio::error::misc_errors::eof != error.value()) {
+                    ADD_FAILURE() << "Error (" << error.value()
+                                  << "): " << error.message();
+                  }
+                  if (0 == --remaining_clients) {
+                    server.shutdown();
+                  }
+                  return;
+                }
+                EXPECT_GT(bytes_transferred, 0);
+                EXPECT_LE(bytes_transferred, remaining_size);
+                it += bytes_transferred;
+                async_read_from_client();
+              });
+        }};
 
     async_read_from_client();
   }
