@@ -19,7 +19,8 @@ TEST_F(TcpServerTestFixture, Simple) {
 
   asio::ip::tcp::socket client_socket{io_context};
   client_socket.async_connect(
-      asio::ip::tcp::endpoint{asio::ip::tcp::v4(), TcpServer::port},
+      asio::ip::tcp::endpoint{asio::ip::address::from_string("127.0.0.1"),
+                              TcpServer::port},
       [](const asio::error_code &error) {
         if (error) {
           ADD_FAILURE() << "Error (" << error.value()
@@ -68,4 +69,3 @@ TEST_F(TcpServerTestFixture, Simple) {
 // large enough).
 // * Test with a large start_from. Generate the expected output with a helper
 // function.
-// * How does the client connection know to use localhost?
