@@ -21,7 +21,12 @@ TEST_F(TcpServerTestFixture, Simple) {
   client_socket.open(asio::ip::tcp::v4());
   client_socket.async_connect(
       asio::ip::tcp::endpoint{asio::ip::tcp::v4(), TcpServer::port},
-      [](const asio::error_code & /*error*/) {});
+      [](const asio::error_code &error) {
+        if (error) {
+          ADD_FAILURE() << "Error (" << error.value()
+                        << "): " << error.message();
+        }
+      });
 
   std::string actual{};
   std::array<char, 8> buffer{};
@@ -58,7 +63,6 @@ TEST_F(TcpServerTestFixture, Simple) {
 // TODO(MarkBond):
 // * Introduce a slow test which uses a smaller start_from but a reasonable
 // interval and checks the time is at least as long as expected.
-// * Check for error in async_connect.
 // * Test handling of multiple concucurrent clients.
 // * Test handling when a client disconnects early.
 // * Eliminate use of std::string, simply populate the array (ensuring it's
