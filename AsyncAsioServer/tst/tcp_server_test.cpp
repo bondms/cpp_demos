@@ -104,8 +104,8 @@ TEST_F(TcpServerTestFixture, MultipleClients) {
                 ADD_FAILURE()
                     << "Error (" << error.value() << "): " << error.message();
               }
-              if ( 0 == --remaining ){
-              server.shutdown();
+              if (0 == --remaining) {
+                server.shutdown();
               }
               return;
             }
