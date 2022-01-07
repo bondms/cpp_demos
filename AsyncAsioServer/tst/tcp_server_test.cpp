@@ -50,11 +50,6 @@ TEST_F(TcpServerTestFixture, Simple) {
           EXPECT_GT(bytes_transferred, 0);
           EXPECT_LE(bytes_transferred, remaining_size);
           it += bytes_transferred;
-          std::copy(buffer.begin(),
-                    buffer.begin() +
-                        static_cast<decltype(buffer)::difference_type>(
-                            bytes_transferred),
-                    it);
           async_read_from_client();
         });
   }};
