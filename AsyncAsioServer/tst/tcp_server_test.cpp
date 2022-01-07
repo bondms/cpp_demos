@@ -88,8 +88,8 @@ TEST_F(TcpServerTestFixture, AbortAfterFirst) {
         [&, remaining_size](const asio::error_code &error,
                             std::size_t bytes_transferred) {
           if (error) {
-            ADD_FAILURE()
-                << "Error (" << error.value() << "): " << error.message();
+            ADD_FAILURE() << "Error (" << error.value()
+                          << "): " << error.message();
             server.shutdown();
             return;
           }
