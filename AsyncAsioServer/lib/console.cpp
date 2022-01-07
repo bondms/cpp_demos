@@ -46,5 +46,5 @@ void Console::async_wait_for_quit() {
 }
 
 // TODO(MarkBond):
-// *Provide Windows implementation for reading from the console.
-// * Fully understand reading from the console.
+// * Provide a Windows implementation.
+// * Fully understand.

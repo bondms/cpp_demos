@@ -22,7 +22,7 @@ TEST_F(TcpServerTestFixture, Simple) {
       [](const asio::error_code & /*error*/) {});
 
   std::string actual{};
-  std::vector<char> buffer(8, '\0');
+  std::array<char, 8> buffer{};
 
   std::function<void()> async_read_from_client{[&]() {
     client_socket.async_read_some(
@@ -62,9 +62,8 @@ TEST_F(TcpServerTestFixture, Simple) {
 // * Check for error in async_connect.
 // * Test handling of multiple concucurrent clients.
 // * Test handling when a client disconnects early.
-// * Use std::array rather than std::vector.
-// * Eliminate use of std::string, simply populate the vector/array (ensuring
-// it's large enough).
+// * Eliminate use of std::string, simply populate the array (ensuring it's
+// large enough).
 // * Use error.message() along with error.value() throughout the code where a
 // readable message is helpful.
 // * Test with a large start_from. Generate the expected output with a helper
