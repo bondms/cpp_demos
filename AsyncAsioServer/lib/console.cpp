@@ -20,7 +20,8 @@ void Console::async_wait_for_quit() {
       input_, input_buffer_, '\n',
       [&](const asio::error_code &error, std::size_t bytes_transferred) {
         if (error) {
-          std::cerr << "Error reading from standard input: " << error.value()
+          std::cerr << "Error " << error.value()
+                    << " reading from standard input: " << error.message()
                     << std::endl;
           server_.shutdown();
           return;

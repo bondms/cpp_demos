@@ -22,8 +22,8 @@ class CountdownTimer {
     }
 
     if (error) {
-      throw std::runtime_error{"Error waiting for timer, value: " +
-                               std::to_string(error.value())};
+      throw std::runtime_error{"Error " + std::to_string(error.value()) +
+                               " waiting for timer: " + error.message()};
     }
 
     --value_;

@@ -67,8 +67,6 @@ TEST_F(TcpServerTestFixture, Simple) {
 // * Test handling when a client disconnects early.
 // * Eliminate use of std::string, simply populate the array (ensuring it's
 // large enough).
-// * Use error.message() along with error.value() throughout the code where a
-// readable message is helpful.
 // * Test with a large start_from. Generate the expected output with a helper
 // function.
 // * Why is asio::ip::tcp::v4() specified twice on the client connection?

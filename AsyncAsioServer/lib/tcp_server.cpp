@@ -31,8 +31,8 @@ void TcpServer::handle_accept(TcpConnection::SharedPointer new_connection,
     std::cout << "Connection accepted." << std::endl;
     new_connection->start();
   } else {
-    std::cerr << "Error accepting connection, value: " << error.value()
-              << std::endl;
+    std::cerr << "Error " << error.value()
+              << " accepting connection: " << error.message() << std::endl;
   }
 
   std::cout << "Accept next connection." << std::endl;

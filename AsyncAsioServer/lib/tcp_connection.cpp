@@ -13,8 +13,8 @@
 void TcpConnection::handle_write(const asio::error_code &error,
                                  size_t bytes_transferred) {
   if (error) {
-    std::cerr << "Aborting countdown on error sending, value: " << error.value()
-              << std::endl;
+    std::cerr << "Aborting countdown on error " << error.value()
+              << " sending: " << error.message() << std::endl;
     countdown_timer_.abort();
     return;
   }
