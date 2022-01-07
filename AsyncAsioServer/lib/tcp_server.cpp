@@ -12,7 +12,7 @@
 
 void TcpServer::start_accept() {
   TcpConnection::SharedPointer new_connection{
-      TcpConnection::create(io_context_)};
+      TcpConnection::create(io_context_, start_from_, interval_)};
 
   acceptor_.async_accept(new_connection->socket(),
                          [this, new_connection](const asio::error_code &error) {
@@ -39,10 +39,12 @@ void TcpServer::handle_accept(TcpConnection::SharedPointer new_connection,
   start_accept();
 }
 
-TcpServer::TcpServer(asio::io_context &io_context)
+TcpServer::TcpServer(asio::io_context &io_context, int start_from,
+                     std::chrono::milliseconds interval)
     : io_context_{io_context}, acceptor_{io_context,
                                          asio::ip::tcp::endpoint{
-                                             asio::ip::tcp::v4(), port}} {
+                                             asio::ip::tcp::v4(), port}},
+      start_from_{start_from}, interval_{interval} {
   std::cout << "Listening on port: " << port << std::endl;
 
   std::cout << "Accept first connection." << std::endl;

@@ -4,6 +4,8 @@
 
 #include <gmock/gmock.h>
 
+using std::chrono_literals::operator""ms;
+
 namespace {
 
 class TcpServerTestFixture : public testing::Test {};
@@ -13,7 +15,7 @@ class TcpServerTestFixture : public testing::Test {};
 TEST_F(TcpServerTestFixture, Simple) {
   asio::io_context io_context{};
 
-  TcpServer server{io_context};
+  TcpServer server{io_context, 3, 1ms};
 
   asio::ip::tcp::socket client_socket{io_context};
   client_socket.open(asio::ip::tcp::v4());
@@ -50,13 +52,10 @@ TEST_F(TcpServerTestFixture, Simple) {
   async_read_from_client();
   io_context.run();
 
-  EXPECT_EQ("9\n8\n7\n6\n5\n4\n3\n2\n1\n0\n", actual);
+  EXPECT_EQ("2\n1\n0\n", actual);
 }
 
 // TODO(MarkBond):
-// * Make the server accept paramaters (which will pass through to the countdown
-// timer) to configure start_from and interval.
-// * For the simple test, use a smaller interval.
 // * Introduce a slow test which uses a smaller start_from but a reasonable
 // interval and checks the time is at least as long as expected.
 // * Check for error in async_connect.

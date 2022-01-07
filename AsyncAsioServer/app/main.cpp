@@ -12,13 +12,15 @@
 #include "AsyncAsioServer/lib/console.h"
 #include "AsyncAsioServer/lib/tcp_server.h"
 
+using std::chrono_literals::operator""s;
+
 int main() {
   std::cout << "Starting..." << std::endl;
   std::cout << "Main thread ID: " << std::this_thread::get_id() << std::endl;
 
   try {
     asio::io_context io_context{};
-    TcpServer server{io_context};
+    TcpServer server{io_context, 10, 1s};
     Console console{io_context, server};
 
     io_context.run();

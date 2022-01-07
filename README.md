@@ -21,7 +21,7 @@ To clean all:
 bazel clean
 ```
 
-## TODO
+## TODO(MarkBond)
 
 * Improve cross-platform support:
   * Eliminate ..._r functions.
@@ -30,6 +30,7 @@ bazel clean
   * Investigate compiler differences:
     * msdev eliminates default constructor when an =default copy constructor is provided. gcc does not.
     * gcc and clang eliminate the const reference copy operators when =default non-const are provided. msdev does not.
+  * Using statements for namespaces and specific chrono literals.
 
 ## Projects
 

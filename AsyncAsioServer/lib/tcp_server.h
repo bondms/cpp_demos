@@ -13,6 +13,8 @@
 class TcpServer {
   asio::io_context &io_context_;
   asio::ip::tcp::acceptor acceptor_;
+  int start_from_;
+  std::chrono::milliseconds interval_;
 
   void start_accept();
 
@@ -22,7 +24,8 @@ class TcpServer {
 public:
   constexpr static asio::ip::port_type port{8013};
 
-  explicit TcpServer(asio::io_context &io_context);
+  explicit TcpServer(asio::io_context &io_context, int start_from,
+                     std::chrono::milliseconds interval);
 
   void shutdown();
 };
