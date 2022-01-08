@@ -92,7 +92,7 @@ TEST_F(TcpServerTestFixture, MultipleClients) {
   auto remaining_clients{client_sockets.size()};
 
   for (std::size_t i = 0; i < client_sockets.size(); ++i) {
-    std::function<void()> async_read_from_client{[&]() {
+    std::function<void()> async_read_from_client{[&, i]() {
       const auto remaining_size{static_cast<std::size_t>(
           std::distance(buffers[i].it, buffers[i].data.end()))};
       client_sockets[i].async_read_some(
