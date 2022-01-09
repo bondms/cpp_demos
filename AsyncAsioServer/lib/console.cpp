@@ -48,4 +48,3 @@ void Console::async_wait_for_quit() {
 
 // TODO(MarkBond):
 // * Provide a Windows implementation.
-// * Fully understand.
