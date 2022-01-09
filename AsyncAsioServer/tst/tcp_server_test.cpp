@@ -281,9 +281,3 @@ TEST_F(TcpServerTestFixture, ReconnectAfterClientDisconnect) {
 
   EXPECT_EQ(expected, std::string(buffer.begin(), it));
 }
-
-// TODO(MarkBond):
-// * Introduce a slow test which uses a smaller start_from but a reasonable
-// interval and checks the time is at least as long as expected.
-// * Test with a large start_from. Generate the expected output with a helper
-// function.
