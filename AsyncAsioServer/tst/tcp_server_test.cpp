@@ -91,32 +91,32 @@ TEST_F(TcpServerTestFixture, MultipleClients) {
 
   auto remaining_clients{client_sockets.size()};
 
-  for (std::size_t i = 0; i < client_sockets.size(); ++i) {
-    std::function<void()> async_read_from_client{[&, i]() {
-      const auto remaining_size{static_cast<std::size_t>(
-          std::distance(buffers[i].it, buffers[i].data.end()))};
-      client_sockets[i].async_read_some(
-          asio::buffer(buffers[i].it, remaining_size),
-          [&, i, remaining_size](const asio::error_code &error,
-                              std::size_t bytes_transferred) {
-            if (error) {
-              if (asio::error::misc_errors::eof != error.value()) {
-                ADD_FAILURE()
-                    << "Error (" << error.value() << "): " << error.message();
-              }
-              if (0 == --remaining_clients) {
-                server.shutdown();
-              }
-              return;
+  std::function<void(std::size_t)> async_read_from_client{[&](std::size_t i) {
+    const auto remaining_size{static_cast<std::size_t>(
+        std::distance(buffers[i].it, buffers[i].data.end()))};
+    client_sockets[i].async_read_some(
+        asio::buffer(buffers[i].it, remaining_size),
+        [&, i, remaining_size](const asio::error_code &error,
+                               std::size_t bytes_transferred) {
+          if (error) {
+            if (asio::error::misc_errors::eof != error.value()) {
+              ADD_FAILURE()
+                  << "Error (" << error.value() << "): " << error.message();
             }
-            EXPECT_GT(bytes_transferred, 0);
-            EXPECT_LE(bytes_transferred, remaining_size);
-            buffers[i].it += bytes_transferred;
-            async_read_from_client();
-          });
-    }};
+            if (0 == --remaining_clients) {
+              server.shutdown();
+            }
+            return;
+          }
+          EXPECT_GT(bytes_transferred, 0);
+          EXPECT_LE(bytes_transferred, remaining_size);
+          buffers[i].it += bytes_transferred;
+          async_read_from_client(i);
+        });
+  }};
 
-    async_read_from_client();
+  for (std::size_t i = 0; i < client_sockets.size(); ++i) {
+    async_read_from_client(i);
   }
 
   io_context.run();
