@@ -97,7 +97,7 @@ TEST_F(TcpServerTestFixture, MultipleClients) {
           std::distance(buffers[i].it, buffers[i].data.end()))};
       client_sockets[i].async_read_some(
           asio::buffer(buffers[i].it, remaining_size),
-          [&, remaining_size](const asio::error_code &error,
+          [&, i, remaining_size](const asio::error_code &error,
                               std::size_t bytes_transferred) {
             if (error) {
               if (asio::error::misc_errors::eof != error.value()) {
