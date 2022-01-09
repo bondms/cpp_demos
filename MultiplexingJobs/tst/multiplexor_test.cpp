@@ -1,4 +1,4 @@
-// Copyright 2021 Mark Bond
+// Copyright 2021-2022 Mark Bond
 
 #include <gmock/gmock.h>
 
@@ -8,7 +8,7 @@
 
 #include "Common/lib/event.h"
 
-using std::chrono::operator""s;
+using std::chrono_literals::operator""s;
 
 TEST(MultiplexorTest, ConstructionAndDestruction) {
   auto nopInitiate = [](const std::string &) {};
