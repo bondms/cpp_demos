@@ -12,6 +12,8 @@ class Console {
 
   asio::streambuf input_buffer_{};
 
+  void async_wait_for_quit();
+
 public:
   Console(asio::io_context &io_context, TcpServer &server);
 
@@ -19,6 +21,4 @@ public:
   Console &operator=(const Console &) = delete;
 
   ~Console();
-
-  void async_wait_for_quit();
 };

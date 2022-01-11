@@ -4,14 +4,6 @@
 
 #include <iostream>
 
-Console::Console(asio::io_context &io_context, TcpServer &server)
-    : io_context_{io_context}, server_{server}, input_{io_context,
-                                                       ::dup(STDIN_FILENO)} {
-  async_wait_for_quit();
-}
-
-Console::~Console() { input_.close(); }
-
 void Console::async_wait_for_quit() {
   std::cout << "Enter 'q' and press return to quit." << std::endl;
   input_buffer_.consume(input_buffer_.size());
@@ -45,6 +37,14 @@ void Console::async_wait_for_quit() {
         server_.shutdown();
       });
 }
+
+Console::Console(asio::io_context &io_context, TcpServer &server)
+    : io_context_{io_context}, server_{server}, input_{io_context,
+                                                       ::dup(STDIN_FILENO)} {
+  async_wait_for_quit();
+}
+
+Console::~Console() { input_.close(); }
 
 // TODO(MarkBond):
 // * Provide a Windows implementation.
