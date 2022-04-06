@@ -11,4 +11,4 @@ HERE="$(readlink -f "$(dirname "$0")")"
 
 find "${HERE}/." \
     \( -name "*.cpp" -o -name "*.cc" -o -name "*.h" \) \
-    -print0 | xargs --null --max-args=1 clang-format -i -- || exit $?
+    -print0 | xargs --null clang-format -i -- || exit $?
