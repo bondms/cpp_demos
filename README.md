@@ -95,7 +95,7 @@ Non-repeating pseudo-random-number generation.
 
 ### TurkishLocale
 
-Investigate the infamouse Turkish 'i' case conversion issue.
+Investigate the infamous Turkish 'i' case conversion issue.
 
 ### VariableLengthIntegerProtocol
 
