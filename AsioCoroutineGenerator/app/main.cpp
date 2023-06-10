@@ -4,12 +4,13 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <asio.hpp>
+#include <asio/experimental/coro.hpp>
 
 #include <cstdlib>
 #include <iostream>
 #include <random>
 
-asio::awaitable<int> randomGenerator(int min, int max)
+asio::experimental::coro<int> randomGenerator(int min, int max)
 {
     std::random_device rd{};
     std::default_random_engine re{ rd() };
@@ -17,7 +18,7 @@ asio::awaitable<int> randomGenerator(int min, int max)
 
     while ( true )
     {
-        // co_yield uid(rd);
+        co_yield uid(rd);
     }
 }
 
