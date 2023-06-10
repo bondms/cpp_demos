@@ -2,9 +2,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "googletest",
-    url = "https://github.com/google/googletest/archive/release-1.11.0.zip",
-    strip_prefix = "googletest-release-1.11.0",
-    sha256 = "353571c2440176ded91c2de6d6cd88ddd41401d14692ec1f99e35d013feda55a",
+    url = "https://github.com/google/googletest/archive/release-1.12.1.zip",
+    strip_prefix = "googletest-release-1.12.1",
+    sha256 = "24564e3b712d3eb30ac9a85d92f7d720f60cc0173730ac166f27dda7fed76cb2",
 )
 
 http_archive(
@@ -17,8 +17,8 @@ http_archive(
 
 http_archive(
     name = "asio",
-    url = "https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-21-0.zip",
+    url = "https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-28-0.zip",
     build_file = "@//:asio.BUILD",
-    strip_prefix = "asio-asio-1-21-0",
-    sha256 = "2edd7af3b5aa5746a0e552dfcd68b47d765a81695c4479c70027a378851a1bdc",
+    strip_prefix = "asio-asio-1-28-0",
+    sha256 = "5c2af07ef73b42a2d48e34c0ecbf41cd40dc823bc681bf5833c129384999c963",
 )

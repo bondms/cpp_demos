@@ -1,4 +1,4 @@
-// Copyright 2021 Mark Bond
+// Copyright 2021-2023 Mark Bond
 
 #include "VariableLengthIntegerProtocol/lib/encode.h"
 
@@ -17,7 +17,7 @@ template <typename T> auto shift_left_byte(T &v) {
 
 } // namespace
 
-std::vector<uint8_t> Encode(size_t input) {
+std::vector<uint8_t> Encode(std::size_t input) {
   constexpr auto uint8sInInput{(sizeof(input) * CHAR_BIT) / 8};
 
   std::vector<uint8_t> result{};
