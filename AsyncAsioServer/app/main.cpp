@@ -1,4 +1,4 @@
-// Copyright 2021 Mark Bond
+// Copyright 2021-2023 Mark Bond
 //
 // Originally based on ASIO tutorial "An asynchronous TCP daytime server"
 // Copyright (c) 2003-2021 Christopher M. Kohlhoff (chris at kohlhoff dot com)
@@ -8,6 +8,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <thread>
 
 #include "AsyncAsioServer/lib/console.h"
 #include "AsyncAsioServer/lib/tcp_server.h"
