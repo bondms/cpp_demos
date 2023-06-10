@@ -62,9 +62,9 @@ int main() {
     asio::io_context io_context{};
 
     auto rg = randomGenerator(io_context, 0, 99);
-    auto o = oddifier(io_context, rg);
-    auto cg = countedGenerator(io_context, o, 20);
-    auto lp = linePrinter(io_context, cg);
+    auto cg = countedGenerator(io_context, rg, 20);
+    auto o = oddifier(io_context, cg);
+    auto lp = linePrinter(io_context, o);
 
     co_spawn(io_context, launcher(io_context, lp), asio::detached);
 
