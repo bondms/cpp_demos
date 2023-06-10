@@ -36,7 +36,7 @@ bazel clean
 
 ### AsioCoroutineGenerator
 
-A synchronous coroutine generator using ASIO.
+A synchronous coroutine generator using ASIO given the current limited availablity of std::generator.
 
 ### AsyncAsioServer
 
