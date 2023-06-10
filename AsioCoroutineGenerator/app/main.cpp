@@ -10,16 +10,15 @@
 #include <iostream>
 #include <random>
 
-asio::experimental::coro<int> randomGenerator(asio::any_io_executor, int min, int max)
-{
-    std::random_device rd{};
-    std::default_random_engine re{ rd() };
-    std::uniform_int_distribution<int> uid{ min, max };
+asio::experimental::coro<int> randomGenerator(asio::any_io_executor, int min,
+                                              int max) {
+  std::random_device rd{};
+  std::default_random_engine re{rd()};
+  std::uniform_int_distribution<int> uid{min, max};
 
-    while ( true )
-    {
-        co_yield uid(rd);
-    }
+  while (true) {
+    co_yield uid(rd);
+  }
 }
 
 int main() {
@@ -83,7 +82,8 @@ int main()
 {
     auto rg = randomGenerator(0, 99);
     auto o = oddifier(rg);
-    for ( const auto & i : countedGenerator<std::experimental::generator<int>>(o, 20) )
+    for ( const auto & i :
+countedGenerator<std::experimental::generator<int>>(o, 20) )
     {
         std::cout << i << '\n';
     }
@@ -92,11 +92,11 @@ int main()
 */
 
 /*
-#include <iostream>
 #include <asio.hpp>
-#include <asio/use_awaitable.hpp>
 #include <asio/co_spawn.hpp>
 #include <asio/detached.hpp>
+#include <asio/use_awaitable.hpp>
+#include <iostream>
 
 asio::awaitable<void> coroutine_generator(asio::io_context& io_context)
 {
