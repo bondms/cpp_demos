@@ -63,6 +63,11 @@ int main() {
 
     // co_spawn(io_context, p);
 
+    // co_spawn(io_context, p, [](std::exception_ptr)
+    // {
+    //     std::cout << "Lambda\n";
+    // });
+
     // co_spawn(p,[](std::exception_ptr)
     // {
     //     std::cout << "Lambda\n";
