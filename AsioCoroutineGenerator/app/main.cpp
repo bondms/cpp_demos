@@ -35,8 +35,9 @@ countedGenerator(asio::io_context &, asio::experimental::coro<T> &generator,
   }
 }
 
-template <typename G>
-asio::experimental::coro<int> oddifier(asio::io_context &, G &generator) {
+template <typename T>
+asio::experimental::coro<T> oddifier(asio::io_context &,
+                                     asio::experimental::coro<T> &generator) {
   while (auto n = co_await generator) {
     co_yield (*n % 2 == 0) ? *n + 1 : *n;
   }
