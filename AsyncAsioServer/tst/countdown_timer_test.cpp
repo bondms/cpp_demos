@@ -1,4 +1,4 @@
-// Copyright 2021 Mark Bond
+// Copyright 2021-2023 Mark Bond
 
 #include "AsyncAsioServer/lib/countdown_timer.h"
 
@@ -139,6 +139,8 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonCopyable) {
   CountdownTimer timer{io_context};
 
   struct S {
+    S() noexcept = default;
+
     S(const S &) = delete;
     S &operator=(const S &) = delete;
 
@@ -160,6 +162,8 @@ TEST_F(CountdownTimerTestFixture, CallbackWithCapture_NonMoveable) {
   CountdownTimer timer{io_context};
 
   struct S {
+    S() noexcept = default;
+
     S(const S &) = default;
     S &operator=(const S &) = default;
 
@@ -182,7 +186,7 @@ TEST_F(CountdownTimerTestFixture,
   CountdownTimer timer{io_context};
 
   struct S {
-    S() = default;
+    S() noexcept = default;
 
     S(const S &) { ADD_FAILURE() << "Copy constructor called"; }
     S &operator=(const S &) {
@@ -209,7 +213,7 @@ TEST_F(CountdownTimerTestFixture,
   CountdownTimer timer{io_context};
 
   struct S {
-    S() = default;
+    S() noexcept = default;
 
     S(const S &) { ADD_FAILURE() << "Copy assigment called"; }
     S &operator=(const S &) {
@@ -239,6 +243,8 @@ TEST_F(CountdownTimerTestFixture,
   CountdownTimer timer{io_context};
 
   struct S {
+    S() noexcept = default;
+
     S(const S &) = delete;
     S &operator=(const S &) = delete;
 

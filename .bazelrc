@@ -1,8 +1,9 @@
 # Recommended compiler options from
 # https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
 
+build --cxxopt='-fcoroutines'
 build --cxxopt='-pedantic'
-build --cxxopt='-std=c++17'
+build --cxxopt='-std=c++23'
 build --cxxopt='-Wall'
 build --cxxopt='-Wcast-align'
 build --cxxopt='-Wconversion'
