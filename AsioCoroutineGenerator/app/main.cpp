@@ -10,7 +10,7 @@
 #include <iostream>
 #include <random>
 
-asio::experimental::coro<int> randomGenerator(asio::any_io_executor, int min,
+asio::experimental::coro<int> randomGenerator(asio::io_context&, int min,
                                               int max) {
   std::random_device rd{};
   std::default_random_engine re{rd()};
@@ -22,7 +22,7 @@ asio::experimental::coro<int> randomGenerator(asio::any_io_executor, int min,
 }
 
 template <typename G>
-asio::experimental::coro<int> countedGenerator(asio::any_io_executor,
+asio::experimental::coro<int> countedGenerator(asio::io_context&,
                                                G &generator, int count) {
   auto it = generator.begin();
   for (auto i = 0; i < count; ++i) {
@@ -32,7 +32,7 @@ asio::experimental::coro<int> countedGenerator(asio::any_io_executor,
 }
 
 template <typename G>
-asio::experimental::coro<int> oddifier(asio::any_io_executor, G &generator) {
+asio::experimental::coro<int> oddifier(asio::io_context&, G &generator) {
   for (const auto &i : generator) {
     co_yield (i % 2 == 0) ? i + 1 : i;
   }
@@ -43,6 +43,14 @@ int main() {
 
   try {
     asio::io_context io_context{};
+
+    auto rg = randomGenerator(io_context, 0, 99);
+    // auto o = oddifier(io_context, rg);
+    // for ( const auto & i :
+    //     countedGenerator<std::experimental::generator<int>>(o, 20) )
+    // {
+    //     std::cout << i << '\n';
+    // }
 
     // co_spawn(io_context, listen(acceptor, target_endpoint), detached);
     io_context.run();
@@ -56,83 +64,3 @@ int main() {
 
   return EXIT_FAILURE;
 }
-
-/*
-#include <coroutine>
-#include <experimental/generator>
-#include <iostream>
-#include <random>
-
-std::experimental::generator<int> randomGenerator(int min, int max)
-{
-    std::random_device rd{};
-    std::default_random_engine re{ rd() };
-    std::uniform_int_distribution<int> uid{ min, max };
-
-    while ( true )
-    {
-        co_yield uid(rd);
-    }
-}
-
-template<typename G>
-std::experimental::generator<int> countedGenerator(G& generator, int count)
-{
-    auto it = generator.begin();
-    for ( auto i = 0 ; i < count ; ++i )
-    {
-        co_yield *it;
-        ++it;
-    }
-}
-
-template<typename G>
-std::experimental::generator<int> oddifier(G& generator)
-{
-    for ( const auto & i : generator )
-    {
-        co_yield (i%2==0) ? i+1 : i;
-    }
-}
-
-int main()
-{
-    auto rg = randomGenerator(0, 99);
-    auto o = oddifier(rg);
-    for ( const auto & i :
-countedGenerator<std::experimental::generator<int>>(o, 20) )
-    {
-        std::cout << i << '\n';
-    }
-    std::cout << "Done" << std::endl;
-}
-*/
-
-/*
-#include <asio.hpp>
-#include <asio/co_spawn.hpp>
-#include <asio/detached.hpp>
-#include <asio/use_awaitable.hpp>
-#include <iostream>
-
-asio::awaitable<void> coroutine_generator(asio::io_context& io_context)
-{
-    for (int i = 1; i <= 10; ++i)
-    {
-        co_await asio::steady_timer(io_context, std::chrono::seconds(1));
-        co_yield i;
-    }
-}
-
-int main()
-{
-    asio::io_context io_context;
-
-    asio::co_spawn(io_context, coroutine_generator(io_context),
-                   [](std::exception_ptr, auto) {});
-
-    io_context.run();
-
-    return 0;
-}
-*/
