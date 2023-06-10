@@ -24,10 +24,12 @@ asio::experimental::coro<int> randomGenerator(asio::io_context &, int min,
 template <typename G>
 asio::experimental::coro<int> countedGenerator(asio::io_context &, G &generator,
                                                int count) {
-  auto it = generator.begin();
-  for (auto i = 0; i < count; ++i) {
-    co_yield *it;
-    ++it;
+  while (--count >= 0) {
+    auto n = co_await generator;
+    if (!n) {
+      co_return;
+    }
+    co_yield *n;
   }
 }
 
@@ -35,6 +37,13 @@ template <typename G>
 asio::experimental::coro<int> oddifier(asio::io_context &, G &generator) {
   while (auto n = co_await generator) {
     co_yield (*n % 2 == 0) ? *n + 1 : *n;
+  }
+}
+
+template <typename G>
+asio::experimental::coro<int> printer(asio::io_context &, G &generator) {
+  while (auto n = co_await generator) {
+    std::cout << *n << '\n';
   }
 }
 
@@ -46,6 +55,8 @@ int main() {
 
     auto rg = randomGenerator(io_context, 0, 99);
     auto o = oddifier(io_context, rg);
+    auto cg = countedGenerator(io_context, o, 20);
+    auto p = printer(io_context, cg);
     // for ( const auto & i :
     //     countedGenerator<std::experimental::generator<int>>(o, 20) )
     // {
