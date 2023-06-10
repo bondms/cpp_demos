@@ -51,8 +51,7 @@ asio::experimental::coro<void> printer(asio::io_context &, G &generator) {
 }
 
 template <typename G>
-asio::awaitable<void> consumer(asio::io_context &, G &generator)
-{
+asio::awaitable<void> consumer(asio::io_context &, G &generator) {
   co_await generator.async_resume(asio::use_awaitable);
 }
 
@@ -67,34 +66,7 @@ int main() {
     auto cg = countedGenerator(io_context, o, 20);
     auto p = printer(io_context, cg);
 
-    // co_spawn(io_context, p);
-
-    // co_spawn(io_context, p, asio::detached);
-
     co_spawn(io_context, consumer(io_context, p), asio::detached);
-
-    // co_spawn(io_context, p, [](std::exception_ptr)
-    // {
-    //     std::cout << "Lambda\n";
-    // });
-
-    // co_spawn(p,[](std::exception_ptr)
-    // {
-    //     std::cout << "Lambda\n";
-    // });
-
-    // co_spawn(io_context, p, [](std::exception_ptr)
-    // {
-    //     std::cout << "Lambda\n";
-    // });
-
-    // for ( const auto & i :
-    //     countedGenerator<std::experimental::generator<int>>(o, 20) )
-    // {
-    //     std::cout << i << '\n';
-    // }
-
-    // co_spawn(io_context, listen(acceptor, target_endpoint), detached);
 
     io_context.run();
 
@@ -107,3 +79,56 @@ int main() {
 
   return EXIT_FAILURE;
 }
+
+// Once std::generator is widely available in C++23, this could be achieved
+// without ASIO:
+/*
+#include <coroutine>
+#include <experimental/generator>
+#include <iostream>
+#include <random>
+
+std::experimental::generator<int> randomGenerator(int min, int max)
+{
+    std::random_device rd{};
+    std::default_random_engine re{ rd() };
+    std::uniform_int_distribution<int> uid{ min, max };
+
+    while ( true )
+    {
+        co_yield uid(rd);
+    }
+}
+
+template<typename G>
+std::experimental::generator<int> countedGenerator(G& generator, int count)
+{
+    auto it = generator.begin();
+    for ( auto i = 0 ; i < count ; ++i )
+    {
+        co_yield *it;
+        ++it;
+    }
+}
+
+template<typename G>
+std::experimental::generator<int> oddifier(G& generator)
+{
+    for ( const auto & i : generator )
+    {
+        co_yield (i%2==0) ? i+1 : i;
+    }
+}
+
+int main()
+{
+    auto rg = randomGenerator(0, 99);
+    auto o = oddifier(rg);
+    for ( const auto & i :
+      countedGenerator<std::experimental::generator<int>>(o, 20) )
+    {
+        std::cout << i << '\n';
+    }
+    std::cout << "Done" << std::endl;
+}
+*/

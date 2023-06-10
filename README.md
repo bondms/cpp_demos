@@ -34,6 +34,10 @@ bazel clean
 
 ## Projects
 
+### AsioCoroutineGenerator
+
+A synchronous coroutine generator using ASIO.
+
 ### AsyncAsioServer
 
 A counter timer based on the daytime server example of using ASIO asynchronously. Features:
