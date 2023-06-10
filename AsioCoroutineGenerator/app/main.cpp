@@ -10,11 +10,11 @@
 #include <iostream>
 #include <random>
 
-asio::experimental::coro<int> randomGenerator(asio::io_context &, int min,
-                                              int max) {
+template <typename T>
+asio::experimental::coro<T> randomGenerator(asio::io_context &, T min, T max) {
   std::random_device rd{};
   std::default_random_engine re{rd()};
-  std::uniform_int_distribution<int> uid{min, max};
+  std::uniform_int_distribution<T> uid{min, max};
 
   while (true) {
     co_yield uid(rd);
