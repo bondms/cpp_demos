@@ -90,3 +90,32 @@ int main()
     std::cout << "Done" << std::endl;
 }
 */
+
+/*
+#include <iostream>
+#include <asio.hpp>
+#include <asio/use_awaitable.hpp>
+#include <asio/co_spawn.hpp>
+#include <asio/detached.hpp>
+
+asio::awaitable<void> coroutine_generator(asio::io_context& io_context)
+{
+    for (int i = 1; i <= 10; ++i)
+    {
+        co_await asio::steady_timer(io_context, std::chrono::seconds(1));
+        co_yield i;
+    }
+}
+
+int main()
+{
+    asio::io_context io_context;
+
+    asio::co_spawn(io_context, coroutine_generator(io_context),
+                   [](std::exception_ptr, auto) {});
+
+    io_context.run();
+
+    return 0;
+}
+*/
