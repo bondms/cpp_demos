@@ -31,6 +31,13 @@ asio::experimental::coro<int> countedGenerator(asio::any_io_executor,
   }
 }
 
+template <typename G>
+asio::experimental::coro<int> oddifier(asio::any_io_executor, G &generator) {
+  for (const auto &i : generator) {
+    co_yield (i % 2 == 0) ? i + 1 : i;
+  }
+}
+
 int main() {
   std::cout << "Starting..." << std::endl;
 
