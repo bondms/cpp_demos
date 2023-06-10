@@ -10,7 +10,7 @@
 #include <iostream>
 #include <random>
 
-asio::experimental::coro<int> randomGenerator(int min, int max)
+asio::experimental::coro<int> randomGenerator(asio::any_io_executor, int min, int max)
 {
     std::random_device rd{};
     std::default_random_engine re{ rd() };
