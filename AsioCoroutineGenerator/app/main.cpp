@@ -21,6 +21,16 @@ asio::experimental::coro<int> randomGenerator(asio::any_io_executor, int min,
   }
 }
 
+template <typename G>
+asio::experimental::coro<int> countedGenerator(asio::any_io_executor,
+                                               G &generator, int count) {
+  auto it = generator.begin();
+  for (auto i = 0; i < count; ++i) {
+    co_yield *it;
+    ++it;
+  }
+}
+
 int main() {
   std::cout << "Starting..." << std::endl;
 
