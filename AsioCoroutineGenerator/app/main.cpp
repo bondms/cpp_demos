@@ -57,6 +57,19 @@ int main() {
     auto o = oddifier(io_context, rg);
     auto cg = countedGenerator(io_context, o, 20);
     auto p = printer(io_context, cg);
+
+    // co_spawn(io_context, p);
+
+    // co_spawn(p,[](std::exception_ptr)
+    // {
+    //     std::cout << "Lambda\n";
+    // });
+
+    // co_spawn(io_context, p, [](std::exception_ptr)
+    // {
+    //     std::cout << "Lambda\n";
+    // });
+
     // for ( const auto & i :
     //     countedGenerator<std::experimental::generator<int>>(o, 20) )
     // {
@@ -64,6 +77,7 @@ int main() {
     // }
 
     // co_spawn(io_context, listen(acceptor, target_endpoint), detached);
+
     io_context.run();
 
     std::cout << "Clean shutdown." << std::endl;
