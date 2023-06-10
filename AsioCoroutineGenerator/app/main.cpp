@@ -10,7 +10,7 @@
 #include <iostream>
 #include <random>
 
-asio::experimental::coro<int> randomGenerator(asio::io_context&, int min,
+asio::experimental::coro<int> randomGenerator(asio::io_context &, int min,
                                               int max) {
   std::random_device rd{};
   std::default_random_engine re{rd()};
@@ -22,8 +22,8 @@ asio::experimental::coro<int> randomGenerator(asio::io_context&, int min,
 }
 
 template <typename G>
-asio::experimental::coro<int> countedGenerator(asio::io_context&,
-                                               G &generator, int count) {
+asio::experimental::coro<int> countedGenerator(asio::io_context &, G &generator,
+                                               int count) {
   auto it = generator.begin();
   for (auto i = 0; i < count; ++i) {
     co_yield *it;
@@ -32,9 +32,8 @@ asio::experimental::coro<int> countedGenerator(asio::io_context&,
 }
 
 template <typename G>
-asio::experimental::coro<int> oddifier(asio::io_context&, G &generator) {
-  while (auto n = co_await generator)
-  {
+asio::experimental::coro<int> oddifier(asio::io_context &, G &generator) {
+  while (auto n = co_await generator) {
     co_yield (*n % 2 == 0) ? *n + 1 : *n;
   }
 }
