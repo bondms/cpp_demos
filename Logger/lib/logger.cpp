@@ -68,7 +68,7 @@ public:
       : path_{path}, ofs_{path, std::ios_base::app}, rotation_size_{
                                                          rotation_size} {
     if (!ofs_.good()) {
-      throw std::runtime_error{"Failed to open log file: " + path_.u8string()};
+      throw std::runtime_error{"Failed to open log file: "s + path_.u8string()};
     }
   }
 
