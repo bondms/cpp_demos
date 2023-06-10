@@ -22,7 +22,7 @@ asio::experimental::coro<T> randomGenerator(asio::io_context &, T min, T max) {
 }
 
 template <typename T>
-asio::experimental::coro<int>
+asio::experimental::coro<T>
 countedGenerator(asio::io_context &, asio::experimental::coro<T> &generator,
                  std::size_t count) {
   while (count > 0) {
@@ -44,7 +44,7 @@ asio::experimental::coro<T> oddifier(asio::io_context &,
 }
 
 template <typename G>
-asio::experimental::coro<int> printer(asio::io_context &, G &generator) {
+asio::experimental::coro<void> printer(asio::io_context &, G &generator) {
   while (auto n = co_await generator) {
     std::cout << *n << '\n';
   }
