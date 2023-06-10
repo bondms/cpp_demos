@@ -44,14 +44,14 @@ asio::experimental::coro<T> oddifier(asio::io_context &,
 }
 
 template <typename G>
-asio::experimental::coro<void> printer(asio::io_context &, G &generator) {
+asio::experimental::coro<void> linePrinter(asio::io_context &, G &generator) {
   while (auto n = co_await generator) {
     std::cout << *n << '\n';
   }
 }
 
 template <typename G>
-asio::awaitable<void> consumer(asio::io_context &, G &generator) {
+asio::awaitable<void> launcher(asio::io_context &, G &generator) {
   co_await generator.async_resume(asio::use_awaitable);
 }
 
@@ -64,9 +64,9 @@ int main() {
     auto rg = randomGenerator(io_context, 0, 99);
     auto o = oddifier(io_context, rg);
     auto cg = countedGenerator(io_context, o, 20);
-    auto p = printer(io_context, cg);
+    auto lp = linePrinter(io_context, cg);
 
-    co_spawn(io_context, consumer(io_context, p), asio::detached);
+    co_spawn(io_context, launcher(io_context, lp), asio::detached);
 
     io_context.run();
 
