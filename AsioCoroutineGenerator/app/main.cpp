@@ -21,9 +21,10 @@ asio::experimental::coro<T> randomGenerator(asio::io_context &, T min, T max) {
   }
 }
 
-template <typename G>
-asio::experimental::coro<int> countedGenerator(asio::io_context &, G &generator,
-                                               std::size_t count) {
+template <typename T>
+asio::experimental::coro<int>
+countedGenerator(asio::io_context &, asio::experimental::coro<T> &generator,
+                 std::size_t count) {
   while (count > 0) {
     --count;
     auto n = co_await generator;
