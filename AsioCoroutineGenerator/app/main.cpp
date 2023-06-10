@@ -50,6 +50,12 @@ asio::experimental::coro<void> printer(asio::io_context &, G &generator) {
   }
 }
 
+template <typename G>
+asio::awaitable<void> consumer(asio::io_context &, G &generator)
+{
+  co_await generator.async_resume(asio::use_awaitable);
+}
+
 int main() {
   std::cout << "Starting..." << std::endl;
 
@@ -62,6 +68,10 @@ int main() {
     auto p = printer(io_context, cg);
 
     // co_spawn(io_context, p);
+
+    // co_spawn(io_context, p, asio::detached);
+
+    co_spawn(io_context, consumer(io_context, p), asio::detached);
 
     // co_spawn(io_context, p, [](std::exception_ptr)
     // {
