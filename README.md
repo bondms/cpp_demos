@@ -28,11 +28,14 @@ bazel clean
   * Reconsider #includes and folder layouts.
   * Provide alternative compiler options in .bazelrc.
   * Investigate compiler differences:
-    * msdev eliminates default constructor when an =default copy constructor is provided. gcc does not.
     * gcc and clang eliminate the const reference copy operators when =default non-const are provided. msdev does not.
   * Using statements for namespaces and specific chrono literals.
 
 ## Projects
+
+### AsioCoroutineGenerator
+
+A synchronous coroutine generator using ASIO given the current limited availablity of std::generator.
 
 ### AsyncAsioServer
 
