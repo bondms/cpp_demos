@@ -39,7 +39,9 @@ template <typename T>
 asio::experimental::coro<T> oddifier(asio::io_context &,
                                      asio::experimental::coro<T> &generator) {
   while (auto n = co_await generator) {
+    // clang-format off
     co_yield (*n % 2 == 0) ? *n + 1 : *n;
+    // clang-format on
   }
 }
 
