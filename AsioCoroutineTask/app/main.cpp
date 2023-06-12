@@ -28,7 +28,7 @@ int main() {
   try {
     asio::io_context io_context{};
 
-    for (auto i = 1; i < 4; ++i) {
+    for (auto i = 3; i > 0; --i) {
       co_spawn(io_context, delayedTask(io_context, std::chrono::seconds{i}, i),
                [](std::exception_ptr, int result) {
                  std::cout << result << std::endl;
