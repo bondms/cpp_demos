@@ -11,7 +11,7 @@
 #include <asio.hpp>
 #include <asio/experimental/coro.hpp>
 
-using namespace std::chrono_literals;
+using std::chrono_literals::operator""s;
 
 template <typename T>
 asio::experimental::generator<T> randomGenerator(asio::io_context &, T min,
