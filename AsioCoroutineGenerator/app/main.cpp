@@ -11,7 +11,8 @@
 #include <asio/experimental/coro.hpp>
 
 template <typename T>
-asio::experimental::coro<T> randomGenerator(asio::io_context &, T min, T max) {
+asio::experimental::generator<T> randomGenerator(asio::io_context &, T min,
+                                                 T max) {
   std::random_device rd{};
   std::default_random_engine re{rd()};
   std::uniform_int_distribution<T> uid{min, max};
@@ -22,8 +23,9 @@ asio::experimental::coro<T> randomGenerator(asio::io_context &, T min, T max) {
 }
 
 template <typename T>
-asio::experimental::coro<T>
-countedGenerator(asio::io_context &, asio::experimental::coro<T> &generator,
+asio::experimental::generator<T>
+countedGenerator(asio::io_context &,
+                 asio::experimental::generator<T> &generator,
                  std::size_t count) {
   while (count > 0) {
     --count;
@@ -36,8 +38,8 @@ countedGenerator(asio::io_context &, asio::experimental::coro<T> &generator,
 }
 
 template <typename T>
-asio::experimental::coro<T> oddifier(asio::io_context &,
-                                     asio::experimental::coro<T> &generator) {
+asio::experimental::generator<T>
+oddifier(asio::io_context &, asio::experimental::generator<T> &generator) {
   while (auto n = co_await generator) {
     // clang-format off
     co_yield (*n % 2 == 0) ? *n + 1 : *n;
@@ -46,7 +48,8 @@ asio::experimental::coro<T> oddifier(asio::io_context &,
 }
 
 template <typename G>
-asio::experimental::coro<void> linePrinter(asio::io_context &, G &generator) {
+asio::experimental::generator<void> linePrinter(asio::io_context &,
+                                                G &generator) {
   while (auto n = co_await generator) {
     std::cout << *n << '\n';
   }
