@@ -41,6 +41,10 @@ Synchronous coroutine generators using ASIO given the current limited availablit
 
 Asynchronous coroutine tasks using ASIO.
 
+### AsioCoroutineTaskGenerator
+
+Combine ASIO tasks and generators.
+
 ### AsyncAsioServer
 
 A counter timer based on the daytime server example of using ASIO asynchronously. Features:
