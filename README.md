@@ -23,6 +23,10 @@ bazel clean
 
 ## TODO(MarkBond)
 
+* Consolidate the ASIO coroutine examples.
+  * Split ASIO coroutine examples into app, lib and tst.
+* What about using asio::experimental::task for tasks?
+* Re-use the `asio::steady_timer` in AsioCoroutineTaskGenerator?
 * Improve cross-platform support:
   * Eliminate ..._r functions.
   * Reconsider #includes and folder layouts.
