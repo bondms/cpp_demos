@@ -37,17 +37,9 @@ bazel clean
 
 ## Projects
 
-### AsioCoroutineGenerator
+### AsioCoroutines
 
-Synchronous coroutine generators using ASIO given the current limited availablity of std::generator.
-
-### AsioCoroutineTask
-
-Asynchronous coroutine tasks using ASIO.
-
-### AsioCoroutineTaskGenerator
-
-Combine ASIO tasks and generators.
+Co-routines in ASIO including synchronous generators and asynchronous tasks.
 
 ### AsyncAsioServer
 
