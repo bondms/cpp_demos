@@ -8,7 +8,6 @@ cc_binary(
   deps = [
     "@asio",
     "//AsioCoroutines/lib:counted_generator",
-    "//AsioCoroutines/lib:launcher",
     "//AsioCoroutines/lib:oddifier",
     "//AsioCoroutines/lib:random_generator",
     "//AsioCoroutines/lib:throttled_line_printer",

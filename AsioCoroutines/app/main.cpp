@@ -10,7 +10,6 @@
 #include <asio.hpp>
 
 #include "AsioCoroutines/lib/counted_generator.h"
-#include "AsioCoroutines/lib/launcher.h"
 #include "AsioCoroutines/lib/oddifier.h"
 #include "AsioCoroutines/lib/random_generator.h"
 #include "AsioCoroutines/lib/throttled_line_printer.h"

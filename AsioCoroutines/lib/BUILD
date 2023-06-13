@@ -14,19 +14,6 @@ cc_library(
 )
 
 cc_library(
-  name = "launcher",
-  srcs = [
-  ],
-  hdrs = [
-    "launcher.h",
-  ],
-  deps = [
-    "@asio",
-  ],
-  visibility = ["//:__subpackages__"],
-)
-
-cc_library(
   name = "oddifier",
   srcs = [
   ],
