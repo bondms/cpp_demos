@@ -23,10 +23,8 @@ bazel clean
 
 ## TODO(MarkBond)
 
-* Consolidate the ASIO coroutine examples.
-  * Split ASIO coroutine examples into app, lib and tst.
+* Tests for ASIO coroutine examples.
 * What about using asio::experimental::task for tasks?
-* Re-use the `asio::steady_timer` in AsioCoroutineTaskGenerator?
 * Improve cross-platform support:
   * Eliminate ..._r functions.
   * Reconsider #includes and folder layouts.
@@ -37,17 +35,9 @@ bazel clean
 
 ## Projects
 
-### AsioCoroutineGenerator
+### AsioCoroutines
 
-Synchronous coroutine generators using ASIO given the current limited availablity of std::generator.
-
-### AsioCoroutineTask
-
-Asynchronous coroutine tasks using ASIO.
-
-### AsioCoroutineTaskGenerator
-
-Combine ASIO tasks and generators.
+Co-routines in ASIO including synchronous generators and asynchronous tasks.
 
 ### AsyncAsioServer
 
