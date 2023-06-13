@@ -1,3 +1,5 @@
+# README
+
 Synchronous generators will be trivial without ASIO once `std::generator` is widely available in C++23, for example:
 
 ``` c++
