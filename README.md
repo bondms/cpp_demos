@@ -25,7 +25,6 @@ bazel clean
 
 * Tests for ASIO coroutine examples.
 * What about using asio::experimental::task for tasks?
-* Re-use the `asio::steady_timer` in AsioCoroutineTaskGenerator?
 * Improve cross-platform support:
   * Eliminate ..._r functions.
   * Reconsider #includes and folder layouts.
