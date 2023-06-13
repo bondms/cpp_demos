@@ -5,10 +5,10 @@
 
 #pragma once
 
+#include <random>
+
 #include <asio.hpp>
 #include <asio/experimental/coro.hpp>
-
-#include <random>
 
 template <typename T>
 asio::experimental::generator<T> randomGenerator(asio::io_context &, T min,
