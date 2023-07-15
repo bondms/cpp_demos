@@ -6,7 +6,7 @@
 
 struct Coro {
   struct promise_type {
-    std::suspend_always initial_suspend() noexcept { return {}; }
+    std::suspend_never initial_suspend() noexcept { return {}; }
 
     std::suspend_always final_suspend() noexcept { return {}; }
 
@@ -22,4 +22,8 @@ struct Coro {
   Coro(std::coroutine_handle<promise_type> handle) : handle_{handle} {}
 
   std::coroutine_handle<promise_type> handle_;
+
+  void resume() { handle_.resume(); }
+
+  bool done() { return handle_.done(); }
 };
