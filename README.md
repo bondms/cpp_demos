@@ -37,7 +37,7 @@ bazel clean
 
 ### AsioCoroutines
 
-Co-routines in ASIO including synchronous generators and asynchronous tasks.
+Coroutines in ASIO including synchronous generators and asynchronous tasks.
 
 ### AsyncAsioServer
 
@@ -63,6 +63,10 @@ Libraries shared between other projects, including:
 ### ConsumerProducer
 
 Example use of C++ threading primitives.
+
+### CppCoroutines
+
+Experimenting with C++ coroutines.
 
 ### Gmock
 
