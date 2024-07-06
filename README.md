@@ -37,7 +37,7 @@ bazel clean
 
 ### AsioCoroutines
 
-Co-routines in ASIO including synchronous generators and asynchronous tasks.
+Coroutines in ASIO including synchronous generators and asynchronous tasks.
 
 ### AsyncAsioServer
 
