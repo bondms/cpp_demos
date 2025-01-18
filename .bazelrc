@@ -23,5 +23,3 @@ build --cxxopt='-Wshadow'
 build --cxxopt='-Wsign-conversion'
 build --cxxopt='-Wunused'
 build --linkopt='-pthread'
-
-common --enable_bzlmod
