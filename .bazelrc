@@ -24,7 +24,4 @@ build --cxxopt='-Wsign-conversion'
 build --cxxopt='-Wunused'
 build --linkopt='-pthread'
 
-build --per_file_copt=\.(cc|cpp)$,-googletest/,-src/lib_json/@-Weffc++
-build --per_file_copt=\.(cc|cpp)$,-googletest/@-Wuseless-cast
-
 common --enable_bzlmod
