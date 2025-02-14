@@ -23,3 +23,6 @@ build --cxxopt='-Wshadow'
 build --cxxopt='-Wsign-conversion'
 build --cxxopt='-Wunused'
 build --linkopt='-pthread'
+
+# Don't error on warnings for external module code.
+build --per_file_copt=external/.*@-Wno-error
