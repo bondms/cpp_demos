@@ -5,9 +5,6 @@ cc_test(
   srcs = [
     "consumer_test.cpp",
   ],
-  copts = [
-    "-Iexternal/gmock/include",
-  ],
   deps = [
     "//ConsumerProducer/lib:consumer",
     "//Common/lib:event",

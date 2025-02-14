@@ -5,9 +5,6 @@ cc_test(
   srcs = [
     "encode_test.cpp",
   ],
-  copts = [
-    "-Iexternal/gmock/include",
-  ],
   deps = [
     "//VariableLengthIntegerProtocol/lib:encode",
     "@googletest//:gtest_main",

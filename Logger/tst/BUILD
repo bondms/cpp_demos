@@ -5,9 +5,6 @@ cc_test(
   srcs = [
     "escaper_test.cpp",
   ],
-  copts = [
-    "-Iexternal/gmock/include",
-  ],
   deps = [
     "//Logger/lib:escaper",
     "@googletest//:gtest_main",
@@ -19,9 +16,6 @@ cc_test(
   srcs = [
     "flush_controller_test.cpp",
   ],
-  copts = [
-    "-Iexternal/gmock/include",
-  ],
   deps = [
     "//Logger/lib:flush_controller",
     "@googletest//:gtest_main",
@@ -32,9 +26,6 @@ cc_test(
   name = "logger_test",
   srcs = [
     "logger_test.cpp",
-  ],
-  copts = [
-    "-Iexternal/gmock/include",
   ],
   deps = [
     "//Logger/lib:logger",

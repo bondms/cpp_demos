@@ -5,9 +5,6 @@ cc_test(
   srcs = [
     "shared_ptr_test.cpp",
   ],
-  copts = [
-    "-Iexternal/gmock/include",
-  ],
   deps = [
     "//SharedPtr/lib:shared_ptr",
     "@googletest//:gtest_main",
