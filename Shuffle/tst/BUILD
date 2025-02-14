@@ -5,9 +5,6 @@ cc_test(
   srcs = [
     "shuffle_test.cpp",
   ],
-  copts = [
-    "-Iexternal/gmock/include",
-  ],
   deps = [
     "//Shuffle/lib:shuffle",
     "@googletest//:gtest_main",

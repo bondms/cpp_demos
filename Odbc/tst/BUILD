@@ -5,9 +5,6 @@ cc_test(
   srcs = [
     "odbc_test.cpp",
   ],
-  copts = [
-    "-Iexternal/gmock/include",
-  ],
   deps = [
     "//Odbc/lib:odbc",
     "@googletest//:gtest_main",
